@@ -18,12 +18,14 @@ const loadInterface = async () => {
 
     const paths = {
         containers: "./interface/loadContainers.js",
+        listMenu: "./interface/loadListMenu.js"
     }
 
     let imports = {}
     for (const [key, value] of Object.entries(paths)) { imports[key] = await import(value) }
 
     const interfaceBoxes = imports.containers.init()
+    imports.listMenu.init(interfaceBoxes.panelLeft)
 }
 
 const main = async () => {
