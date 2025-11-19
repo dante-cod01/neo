@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+:root {
+    --panel_width: 200px;
+    --panel_height: calc(100% - 20px);
+    --panel_transition: 600ms ease-in-out;
+
+    /* colors */
+    --darkCrystal: rgba(30, 30, 30, 0.8);
+}

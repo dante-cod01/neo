@@ -1,0 +1,49 @@
+body {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: grey;
+
+    background: url("https://wallpapers.com/images/hd/scenic-view-of-faroe-islands-jdj06pr46tgkob59.jpg");
+
+    .mainBox {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .componentBox {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .panelMenu {
+        position: absolute;
+        top: 10px;
+        width: var(--panel_width);
+        height: var(--panel_height);
+        border: 1px solid red;
+    }
+
+    .panelLeft {
+        left: 10px;
+        transition: var(--panel_transition);
+    }
+
+    .panelRight {
+        right: 10px;
+        transition: var(--panel_transition);
+    }
+
+    .controlsBox {
+        position: absolute;
+    }
+
+    .infoBox {
+        position: absolute;
+    }
+}
