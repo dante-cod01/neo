@@ -1,32 +1,32 @@
 export class ComponentBasic {
 
-    config = {}
+    loadConfig(attributes, defaultConf, styleInstance) {
+        let config = structuredClone(defaultConf)
 
-    loadConfig(array) {
-        config = { ...defaultConf }
-        Object.entries(config).forEach(([type, obj]) => {
-            Object.entries(obj).forEach(([prop, value]) => config[type][prop] = value[0])
-        })
+        Object.entries(attributes).forEach(([prop, attributeValue]) => {
+            const propValid = prop in config
+            const defaultValueArray = Array.isArray(config[prop])
+            const attributeValid = typeof (attributeValue) === "string"
 
-        const attributes = JSON.parse(array)
-        Object.entries(attributes).forEach(([type, obj]) => {
-            if (!Object.keys(config).includes(type)) {
-                console.log({ type }, "type not allowed skipping")
+            if (!propValid || !attributeValid) {
+                console.log({ prop }, { attributeValue }, "not permited skipping")
                 return
             }
-            Object.entries(obj).forEach(([prop, value]) => {
-                const exist = config[type][prop] ? true : false
-                if (!exist) {
-                    console.log({ prop }, "prop not allowed skipping")
-                    return
-                }
-                if (defaultConf[type][prop].includes(value)) {
-                    config[type][prop] = value
-                } else {
-                    console.log({ prop }, { value }, "not allowed using default", config[type][prop].toUpperCase())
-                }
-            })
+
+            if (defaultValueArray) {
+                const validValue = config[prop].includes(attributeValue)
+                config[prop] = validValue ? attributeValue : config[prop][0]
+            } else {
+                config[prop] = attributeValue
+            }
         })
+
+        Object.entries(config).forEach(([prop, value]) => { if (Array.isArray(value)) config[prop] = value[0] })
+        return config
+    }
+
+    toCssVar(style, obj) {
+        Object.entries(obj).forEach(([prop, value]) => { style.setProperty(`--${prop}`, value) })
     }
 
     add(tag, box, classN = null, id = null) {

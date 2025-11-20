@@ -8,20 +8,19 @@ export const init = async (box) => {
         bottomBar: true,
     }
 
-    const config = {
-        css: {
-            ffff: "3333"
-        },
-        test: {}, 
-        logic: {
-            color: "red",
-            side: "top"
-        }
+    const css = {
+        panelSide: "left",
+        title_H: "40px",
+    }
+
+    const logic = {
+        title: "Components"
     }
 
     await import("./../components/nano/magicBox.js")
     const magicBox = document.createElement("magic-box")
     Object.entries(props).forEach(([prop, value]) => magicBox[prop] = value)
-    magicBox.setAttribute("config", JSON.stringify(config))
+    magicBox.setAttribute("css", JSON.stringify(css))
+    magicBox.setAttribute("logic", JSON.stringify(logic))
     box.appendChild(magicBox)
 }
