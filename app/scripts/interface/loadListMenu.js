@@ -2,24 +2,38 @@ import * as element from "./../modules/element.js"
 
 export const init = async (box) => {
     /* magic-box component */
-    const props = {
+    const config = {
         closeButtom: true,
-        topBar: true,
         bottomBar: true,
+        parentControl: true
     }
 
     const css = {
-        panelSide: "left",
-        title_H: "40px",
+        panelBorderRadius: "8px",
+        topBar_H: "30px",
+        topBarBack: "rgba(255, 255, 255, 0.5)",
+        titleFont: "Anta",
+        titleFontSize: "14px",
+        titleColor: "rgb(60,60,60)",
+        titleIndent: "20px",
+        closeIconSize: "16px",
+        closeColor: "rgb(60,60,60)",
+        nodeBack: "rgba(0,0,0,0.5)",
+        bottomBar_H: "30px",
+        bottomBarBack: "rgba(255, 255, 255, 0.5)",
+        transition: getComputedStyle(document.documentElement).getPropertyValue("--panel_transition")
     }
 
     const logic = {
-        title: "Components"
+        panelSide: "left",
+        title: "Components",
+        titleFontHref: "https://fonts.googleapis.com/css2?family=Anta&display=swap",
+        closeIcon: "menu",
     }
 
     await import("./../components/nano/magicBox.js")
     const magicBox = document.createElement("magic-box")
-    Object.entries(props).forEach(([prop, value]) => magicBox[prop] = value)
+    Object.entries(config).forEach(([prop, value]) => magicBox[prop] = value)
     magicBox.setAttribute("css", JSON.stringify(css))
     magicBox.setAttribute("logic", JSON.stringify(logic))
     box.appendChild(magicBox)

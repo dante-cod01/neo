@@ -1,48 +1,70 @@
-import { ComponentBasic } from "./../class/componentBasic.js"
-
-const defaultProps = {
-    closeButtom: true,
-    topBar: true,
-    bottomBar: true,
-}
+import { ComponentBase } from "./../class/componentBase.js"
 
 const defaultCss = {
-    panelSide: ["right", "left"],
-    title_H: "50px",
-
+    panelBorderRadius: "20px",
+    topBarBack: "red",
+    topBar_H: "50px",
+    titleFont: "initial",
+    titleFontSize: "initial",
+    titleColor: "blue",
+    titleIndent: "20px",
+    closeIconSize: "30px",
+    closeColor: "blue",
+    nodeBack: "blue",
+    bottomBar_H: "30px",
+    bottomBarBack: "red",
+    barShadow: "0 0 10px red",
+    transition: "2s ease-in-out"
 }
 
 const defaultLogic = {
-    title: "Title"
+    panelSide: ["left", "right"],
+    title: "Title",
+    titleFontHref: "",
+    closeIcon: "close"
 }
 
 export class MagicBox extends HTMLElement {
     constructor() {
         super()
 
-        this.basic = new ComponentBasic()
-
-        this.css,
-            this.logic,
-            this.closeButtom,
-            this.topBar,
-            this.bottomBar,
-            this.config
-
         this.dom = this.attachShadow({ mode: "open" })
-        this.container = this.basic.add("div", this.dom, "main relative")
-        this.newStyle = this.basic.add("style", this.dom)
+        this.base = new ComponentBase()
+        this.css
+        this.logic
+        this.closeButtom
+        this.bottomBar
+        this.config
+        this.parent
+        this.parentControl
+        this.parentInfo
+
+        this.container = this.base.add("div", this.dom, "main relative max transition")
+        this.newStyle = this.base.add("style", this.dom)
+
+        this.base.addLink(
+            document.head,
+            "stylesheet",
+            "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
+        )
 
         this.container.innerHTML = `
-            <div class="topBar verticalAlign">
-                <span class="title"></span>
-                <div class="closeBox center">
-                    <div class="close relative">
-                        <span class="material center"></span>
-                        <input type="checkbox" checked class="hiddenInput">
+            <div class="topBack absolute transition"></div>
+            <section class="topBar relative verticalAlign">
+                <div class="moveLayer absolute max transition">
+                    <div class="titleBox verticalAlign">
+                        <span class="title max verticalAlign"></span> 
+                    </div>
+                    <div class="closeBox center">
+                        <div class="close center relative">
+                            <span class="material center"></span>
+                            <input id="toogleButtom" type="checkbox" checked class="hiddenInput max">
+                        </div>
                     </div>
                 </div>
-            </div> 
+            </section> 
+            <section class="node"></section>
+            <section class="bottomBar"></section>
         `
 
         this.newStyle.textContent = `
@@ -59,33 +81,71 @@ export class MagicBox extends HTMLElement {
             }
 
             .main {
-                width: 100%;
-                height: 100%;
-                border: 1px solid blue;
+                border-radius: var(--panelBorderRadius);
+                overFlow: hidden;
+                
+                .topBack {
+                    width: 100%;
+                    height: var(--topBar_H);
+                    background: var(--topBarBack);
+                }
 
                 .topBar {
-                    display: flex;
                     width: 100%;
-                    height: var(--title_H);
-                    border: 1px solid red;
+                    height: var(--topBar_H);
 
-                    .title {
-                        width: calc(100% - 30px);
-                        height: 100%;
-                    }
+                    .moveLayer {
+                        left: 0;
+                        display: flex;
+                    
+                        .titleBox {
+                            display: flex;
+                            width: calc(100% - var(--topBar_H));
+                            height: 100%;
 
-                    .closeBox {
-                        width: 30px;
-                        height: 30px;
-                        border: 1px solid red;
+                            .title {
+                                font-family: var(--titleFont);
+                                font-size: var(--titleFontSize);
+                                color: var(--titleColor);
+                            }
+                        }
 
                         .closeBox {
-                            width: 30px;
-                            height: 30px;
-                            opacity: 0;
-                            border: 1px solid red;
+                            width: var(--topBar_H);
+                            height: var(--topBar_H);
+
+                            .close {
+                                width: 30px;
+                                height: 30px;
+
+                                .material {
+                                    width: fit-content;
+                                    height: fit-content;
+                                    font-family: "material symbols outlined";
+                                    font-size: var(--closeIconSize);
+                                    color: var(--closeColor);
+                                }
+
+                                .hiddenInput {
+                                    appearance: none;
+                                    position: absolute;
+                                    cursor: pointer;
+                                }
+                            }
                         }
                     }
+                }
+                   
+                .node {
+                    width: 100%;
+                    height: calc(100% -(var(--topBar_H) + var(--bottomBar_H)));
+                    background: var(--nodeBack);
+                }
+
+                .bottomBar {
+                    width: 100%;
+                    height: var(--bottomBar_H);
+                    background: var(--bottomBarBack);
                 }
             }
 
@@ -93,32 +153,95 @@ export class MagicBox extends HTMLElement {
             .absolute {position: absolute;}
             .center {display: flex; justify-content: center; align-items: center}
             .verticalAlign {display: flex; align-items: center;}
+            .max {width: 100%; height: 100%;}
+            .transition {transition: var(--transition);}
         `
+    }
+
+    #titleBoxHackWidth = () => {
+        const moveLayer = this.dom.querySelector(".moveLayer")
+        moveLayer.style.width = this.offsetWidth + "px"
     }
 
     #addCloseButtom = (boolean) => {
         const closeHidden = this.dom.querySelector(".closeBox")
-        closeHidden.style.opacity = boolean ? 1 : 0
+        const material = this.dom.querySelector(".material")
+        closeHidden.style.display = boolean ? "flex" : "none"
+        material.textContent = this.logic.closeIcon
     }
 
     #addTitle = (string) => {
         const title = this.dom.querySelector(".title")
+        this.logic.titleFontHref && this.base.addLink(this.dom, "stylesheet", this.logic.titleFontHref)
         title.textContent = string
     }
 
     #configureSide = () => {
-
+        const size = this.logic.panelSide
+        const moveLayer = this.dom.querySelector(".moveLayer")
+        const title = this.dom.querySelector(".title")
+        const closeBox = this.dom.querySelector(".closeBox")
+        size === "right" && moveLayer.prepend(closeBox)
+        title.style.textIndent = "20px"
     }
 
+    #addReactivity = () => {
+        const toogleButtom = this.dom.querySelector("#toogleButtom")
+        toogleButtom.addEventListener("change", (e) => {
+            this.#tooglePanel(e.target.checked, this.parentInfo)
+        })
+    }
+
+    async open() {
+        const moveLayer = this.dom.querySelector(".moveLayer")
+        const topBack = this.dom.querySelector(".topBack")
+        const box = this.parentControl ? this.parentElement : this.container
+        const time = this.base.convertTransition(this.css.transition)
+
+        topBack.style.opacity = 1
+        this.container.style.borderRadius = this.css.panelBorderRadius
+        moveLayer.style.left = 0
+        box.style.width = box === this.container ? "100%" : this.parentInfo.width
+        await this.base.wait(time)
+        box.style.height = box === this.container ? "100%" : this.parentInfo.height
+    }
+
+    async close() {
+        const moveLayer = this.dom.querySelector(".moveLayer")
+        const topBack = this.dom.querySelector(".topBack")
+        const box = this.parentControl ? this.parentElement : this.container
+        const time = this.base.convertTransition(this.css.transition)
+
+        box.style.height = this.css.topBar_H
+        await this.base.wait(time)
+        box.style.width = this.css.topBar_H
+        const leftHidden = parseFloat(this.parentInfo.width) * -1 + parseFloat(this.css.topBar_H) + "px"
+        this.logic.panelSide === "left" && (moveLayer.style.left = leftHidden)
+        this.container.style.borderRadius = parseFloat(this.css.topBar_H) / 2 + "px"
+        topBack.style.opacity = 0.5
+    }
+
+    #tooglePanel = async (boolean) => boolean ? this.open() : this.close()
+
     connectedCallback() {
-        this.css = this.basic.loadConfig(JSON.parse(this.getAttribute("css")), defaultCss)
-        this.basic.toCssVar(this.style, this.css)
-        this.logic = this.basic.loadConfig(JSON.parse(this.getAttribute("logic")), defaultLogic)
-/*         this.basic.toCssVar(this.style, this.logic)
- */
-        this.#addCloseButtom(this.closeButtom)
-        this.#configureSide(this.css.panel)
-        this.#addTitle(this.logic.title)
+        this.css = this.base.loadConfig(JSON.parse(this.getAttribute("css")), defaultCss)
+        this.base.toCssVar(this.style, this.css)
+        this.logic = this.base.loadConfig(JSON.parse(this.getAttribute("logic")), defaultLogic)
+
+        const main = () => {
+            this.parent = this.parentElement
+            this.parentInfo = this.base.getParentInfo(this.parent)
+            this.#configureSide(this.css.panel)
+
+            this.#addCloseButtom(this.closeButtom)
+            this.#titleBoxHackWidth()
+            this.#addTitle(this.logic.title)
+            this.#addReactivity()
+
+            console.log(this.css.transition)
+        }
+
+        main()
     }
 }
 
