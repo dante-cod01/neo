@@ -1,5 +1,4 @@
 export const add = (tag, classNames = null, idName = null) => {
-    console.log(tag)
     const createdElement = document.createElement(tag)
     if (classNames) createdElement.className = classNames
     if (idName) createdElement.id = idName

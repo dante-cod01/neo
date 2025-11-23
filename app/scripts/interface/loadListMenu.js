@@ -8,11 +8,12 @@ const magicBox = async (box) => {
     const props = {
         closeButtom: true,
         bottomBar: true,
-        parentControl: true
     }
 
     const css = {
-        panelBorderRadius: "4px",
+        panelWidth: getComputedStyle(document.documentElement).getPropertyValue("--panelList_width"),
+        panelHeight: getComputedStyle(document.documentElement).getPropertyValue("--panelsHeight"),
+        panelBorderRadius: "6px",
         topBar_H: "30px",
         topBarBack: "rgba(255, 255, 255, 0.5)",
         titleFont: "Anta",
@@ -21,7 +22,7 @@ const magicBox = async (box) => {
         titleIndent: "20px",
         closeIconSize: "16px",
         closeColor: "rgb(60,60,60)",
-        nodeBack: "rgba(0,0,0,0.5)",
+        nodeBack: "transparent",
         bottomBar_H: "30px",
         bottomBarBack: "rgba(255, 255, 255, 0.5)",
         transition: getComputedStyle(document.documentElement).getPropertyValue("--panel_transition")
@@ -35,7 +36,7 @@ const magicBox = async (box) => {
     }
 
     await import("./../components/nano/magicBox.js")
-    const magicBox = element.add("magic-box")
+    const magicBox = element.add("magic-box", "panelMenu panelLeft")
     element.insert(magicBox, box, { "css": JSON.stringify(css), "logic": JSON.stringify(logic) }, props)
     magicBox.dependency = new dependency()
     return magicBox.node
@@ -48,8 +49,14 @@ const dynamicList = async (box) => {
     const props = {
 
     }
+    
     const css = {
-
+        back: "transparent",
+        paddingHor: "4px",
+        paddingVer: "0",
+        borderColor: "rgba(255, 255, 255, 0.5)",
+        borderWidth: "10px",
+        borderRadius: "12px"
     }
 
     const logic = {
@@ -58,14 +65,16 @@ const dynamicList = async (box) => {
 
     await import("./../components/nano/dynamicList.js")
     const dynamicList = element.add("dynamic-list")
-    element.insert(dynamicList, box)
+    element.insert(dynamicList, box, {"css": JSON.stringify(css)}, props)
 
     const dataList = await json.get("./app/config/components/list.json")
+    dynamicList.dependency = new dependency()
+    dynamicList.dependency = new dependency()
     dynamicList.dependency = new dependency()
     dynamicList.data = dataList
 }
 
 export const init = async (box) => {
     const magicBoxNode = await magicBox(box)
-    const list = await dynamicList(magicBoxNode)
-}
+/*     const list = await dynamicList(magicBoxNode)
+ */}

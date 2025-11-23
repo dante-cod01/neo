@@ -24,10 +24,7 @@ body {
     .panelMenu {
         position: absolute;
         top: 10px;
-        width: var(--panel_width);
-        height: var(--panel_height);
-/*         border: 1px solid red;
- */    }
+    }
 
     .panelLeft {
         left: 10px;
@@ -35,7 +32,7 @@ body {
     }
 
     .panelRight {
-        right: 210px;
+        right: 10px;
         transition: var(--panel_transition);
     }
 

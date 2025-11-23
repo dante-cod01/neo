@@ -1,6 +1,6 @@
-/* import { ComponentBase } from "./../class/componentBase.js"
- */
 const defaultCss = {
+    panelWidth: "300px",
+    panelHeight: "100%",
     panelBorderRadius: "20px",
     topBarBack: "red",
     topBar_H: "50px",
@@ -36,15 +36,16 @@ export class MagicBox extends HTMLElement {
         this.closeButtom
         this.bottomBar
         this.config
-        this.parent = document
-        this.parentControl
-        this.parentInfo
         this.node
     }
 
     set dependency(injected) {
-        this._base = injected
-        this.init()
+        if (!this._base) {
+            this._base = injected
+            this.init()
+        } else {
+            console.log({ class: this }, "dependency already injected: ignoring")
+        }
     }
 
     #draw = () => {
@@ -62,7 +63,7 @@ export class MagicBox extends HTMLElement {
             <section class="topBar relative verticalAlign">
                 <div class="moveLayer absolute max transition">
                     <div class="titleBox verticalAlign">
-                        <span class="title max verticalAlign"></span> 
+                        <span class="title max verticalAlign transition"></span> 
                     </div>
                     <div class="closeBox center">
                         <div class="close center relative">
@@ -84,9 +85,8 @@ export class MagicBox extends HTMLElement {
             }
 
             :host {
-                display: flex;
-                width: 100%;
-                height: 100%;
+                width: var(--panelWidth);
+                height: var(--panelHeight);
             }
 
             .main {
@@ -106,7 +106,7 @@ export class MagicBox extends HTMLElement {
                     .moveLayer {
                         left: 0;
                         display: flex;
-                    
+
                         .titleBox {
                             display: flex;
                             width: calc(100% - var(--topBar_H));
@@ -147,8 +147,9 @@ export class MagicBox extends HTMLElement {
                    
                 .node {
                     width: 100%;
-                    height: calc(100% -(var(--topBar_H) + var(--bottomBar_H)));
+                    height: calc(100% - var(--topBar_H) - var(--bottomBar_H));
                     background: var(--nodeBack);
+                    overflow: hidden;
                 }
 
                 .bottomBar {
@@ -203,30 +204,35 @@ export class MagicBox extends HTMLElement {
     async open() {
         const moveLayer = this.dom.querySelector(".moveLayer")
         const topBack = this.dom.querySelector(".topBack")
-        const box = this.parentControl ? this.parentElement : this.container
+        const title = this.dom.querySelector(".title")
         const time = this._base.convertTransition(this.css.transition)
 
         topBack.style.opacity = 1
         this.container.style.borderRadius = this.css.panelBorderRadius
         moveLayer.style.left = 0
-        box.style.width = box === this.container ? "100%" : this.parentInfo.width
+        this.style.width = this.css.panelWidth
+        await this._base.wait(time / 2)
+        title.style.opacity = 1
+        await this._base.wait(time / 3)
+        this.style.height = this.css.panelHeight
         await this._base.wait(time)
-        box.style.height = box === this.container ? "100%" : this.parentInfo.height
     }
 
     async close() {
         const moveLayer = this.dom.querySelector(".moveLayer")
         const topBack = this.dom.querySelector(".topBack")
-        const box = this.parentControl ? this.parentElement : this.container
+        const title = this.dom.querySelector(".title")
         const time = this._base.convertTransition(this.css.transition)
 
-        box.style.height = this.css.topBar_H
+        this.style.height = this.css.topBar_H
+        title.style.opacity = 0
         await this._base.wait(time)
-        box.style.width = this.css.topBar_H
-        const leftHidden = parseFloat(this.parentInfo.width) * -1 + parseFloat(this.css.topBar_H) + "px"
+        this.style.width = this.css.topBar_H
+        const leftHidden = parseFloat(this.css.panelWidth) * -1 + parseFloat(this.css.topBar_H) + "px"
         this.logic.panelSide === "left" && (moveLayer.style.left = leftHidden)
         this.container.style.borderRadius = parseFloat(this.css.topBar_H) / 2 + "px"
         topBack.style.opacity = 0.5
+        await this._base.wait(time)
     }
 
     #tooglePanel = async (boolean) => boolean ? this.open() : this.close()
@@ -239,22 +245,17 @@ export class MagicBox extends HTMLElement {
     }
 
     init() {
+        this.node = this.dom.querySelector(".node")
+
         this.#draw()
         this.#configure()
-        
-        const main = () => {
-            this.node = this.dom.querySelector(".node")
-            this.parent = this.parentElement
-            this.parentInfo = this._base.getParentInfo(this.parent)
-            this.#configureSide(this.css.panel)
 
-            this.#addCloseButtom(this.closeButtom)
-            this.#titleBoxHackWidth()
-            this.#addTitle(this.logic.title)
-            this.#addReactivity()
-        }
-
-        main()
+        console.log(this.css.panelHeight)
+        this.#configureSide(this.css.panel)
+        this.#addCloseButtom(this.closeButtom)
+        this.#titleBoxHackWidth()
+        this.#addTitle(this.logic.title)
+        this.#addReactivity()
     }
 }
 

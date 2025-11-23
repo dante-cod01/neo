@@ -6,8 +6,8 @@
 }
 
 :root {
-    --panel_width: 200px;
-    --panel_height: calc(100% - 20px);
+    --panelList_width: 200px;
+    --panelsHeight: calc(100% - 20px);
     --panel_transition: 600ms ease-in-out;
 
     /* colors */
