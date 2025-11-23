@@ -1,5 +1,5 @@
-import { ComponentBase } from "./../class/componentBase.js"
-
+/* import { ComponentBase } from "./../class/componentBase.js"
+ */
 const defaultCss = {
     panelBorderRadius: "20px",
     topBarBack: "red",
@@ -25,25 +25,34 @@ const defaultLogic = {
 }
 
 export class MagicBox extends HTMLElement {
+    _base
+
     constructor() {
         super()
 
         this.dom = this.attachShadow({ mode: "open" })
-        this.base = new ComponentBase()
         this.css
         this.logic
         this.closeButtom
         this.bottomBar
         this.config
-        this.parent
+        this.parent = document
         this.parentControl
         this.parentInfo
+        this.node
+    }
 
-        this.container = this.base.add("div", this.dom, "main relative max transition")
-        this.newStyle = this.base.add("style", this.dom)
+    set dependency(injected) {
+        this._base = injected
+        this.init()
+    }
 
-        this.base.addLink(
-            document.head,
+    #draw = () => {
+        this.container = this._base.add("div", this.dom, "main relative max transition")
+        this.newStyle = this._base.add("style", this.dom)
+
+        this._base.addLink(
+            this,
             "stylesheet",
             "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
         )
@@ -158,6 +167,12 @@ export class MagicBox extends HTMLElement {
         `
     }
 
+    #configure = () => {
+        this.css = this._base.loadConfig(JSON.parse(this.getAttribute("css")), defaultCss)
+        this._base.toCssVar(this.style, this.css)
+        this.logic = this._base.loadConfig(JSON.parse(this.getAttribute("logic")), defaultLogic)
+    }
+
     #titleBoxHackWidth = () => {
         const moveLayer = this.dom.querySelector(".moveLayer")
         moveLayer.style.width = this.offsetWidth + "px"
@@ -172,7 +187,7 @@ export class MagicBox extends HTMLElement {
 
     #addTitle = (string) => {
         const title = this.dom.querySelector(".title")
-        this.logic.titleFontHref && this.base.addLink(this.dom, "stylesheet", this.logic.titleFontHref)
+        this.logic.titleFontHref && this._base.addLink(this.dom, "stylesheet", this.logic.titleFontHref)
         title.textContent = string
     }
 
@@ -185,24 +200,17 @@ export class MagicBox extends HTMLElement {
         title.style.textIndent = "20px"
     }
 
-    #addReactivity = () => {
-        const toogleButtom = this.dom.querySelector("#toogleButtom")
-        toogleButtom.addEventListener("change", (e) => {
-            this.#tooglePanel(e.target.checked, this.parentInfo)
-        })
-    }
-
     async open() {
         const moveLayer = this.dom.querySelector(".moveLayer")
         const topBack = this.dom.querySelector(".topBack")
         const box = this.parentControl ? this.parentElement : this.container
-        const time = this.base.convertTransition(this.css.transition)
+        const time = this._base.convertTransition(this.css.transition)
 
         topBack.style.opacity = 1
         this.container.style.borderRadius = this.css.panelBorderRadius
         moveLayer.style.left = 0
         box.style.width = box === this.container ? "100%" : this.parentInfo.width
-        await this.base.wait(time)
+        await this._base.wait(time)
         box.style.height = box === this.container ? "100%" : this.parentInfo.height
     }
 
@@ -210,10 +218,10 @@ export class MagicBox extends HTMLElement {
         const moveLayer = this.dom.querySelector(".moveLayer")
         const topBack = this.dom.querySelector(".topBack")
         const box = this.parentControl ? this.parentElement : this.container
-        const time = this.base.convertTransition(this.css.transition)
+        const time = this._base.convertTransition(this.css.transition)
 
         box.style.height = this.css.topBar_H
-        await this.base.wait(time)
+        await this._base.wait(time)
         box.style.width = this.css.topBar_H
         const leftHidden = parseFloat(this.parentInfo.width) * -1 + parseFloat(this.css.topBar_H) + "px"
         this.logic.panelSide === "left" && (moveLayer.style.left = leftHidden)
@@ -223,22 +231,27 @@ export class MagicBox extends HTMLElement {
 
     #tooglePanel = async (boolean) => boolean ? this.open() : this.close()
 
-    connectedCallback() {
-        this.css = this.base.loadConfig(JSON.parse(this.getAttribute("css")), defaultCss)
-        this.base.toCssVar(this.style, this.css)
-        this.logic = this.base.loadConfig(JSON.parse(this.getAttribute("logic")), defaultLogic)
+    #addReactivity = () => {
+        const toogleButtom = this.dom.querySelector("#toogleButtom")
+        toogleButtom.addEventListener("change", (e) => {
+            this.#tooglePanel(e.target.checked, this.parentInfo)
+        })
+    }
 
+    init() {
+        this.#draw()
+        this.#configure()
+        
         const main = () => {
+            this.node = this.dom.querySelector(".node")
             this.parent = this.parentElement
-            this.parentInfo = this.base.getParentInfo(this.parent)
+            this.parentInfo = this._base.getParentInfo(this.parent)
             this.#configureSide(this.css.panel)
 
             this.#addCloseButtom(this.closeButtom)
             this.#titleBoxHackWidth()
             this.#addTitle(this.logic.title)
             this.#addReactivity()
-
-            console.log(this.css.transition)
         }
 
         main()

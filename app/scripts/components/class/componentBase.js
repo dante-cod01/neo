@@ -16,7 +16,7 @@ export class ComponentBase {
             if (defaultValueArray) {
                 const validValue = config[prop].includes(attributeValue)
                 const defaultValue = config[prop][0]
-                !validValue && console.log({attributeValue}, "not valid value using default", {defaultValue})
+                !validValue && console.log({ attributeValue }, "not valid value using default", { defaultValue })
                 config[prop] = validValue ? attributeValue : config[prop][0]
             } else {
                 config[prop] = attributeValue

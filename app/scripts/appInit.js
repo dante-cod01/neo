@@ -26,7 +26,6 @@ const loadInterface = async () => {
 
     const interfaceBoxes = imports.containers.init()
     imports.listMenu.init(interfaceBoxes.panelLeft)
-    imports.listMenu.init(interfaceBoxes.panelRight)
 }
 
 const main = async () => {

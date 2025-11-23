@@ -1,15 +1,18 @@
 import * as element from "./../modules/element.js"
+import * as json from "./../modules/json.js"
 
-export const init = async (box) => {
+const magicBox = async (box) => {
     /* magic-box component */
-    const config = {
+    const dependency = (await import("./../components/class/componentBase.js")).ComponentBase
+
+    const props = {
         closeButtom: true,
         bottomBar: true,
         parentControl: true
     }
 
     const css = {
-        panelBorderRadius: "8px",
+        panelBorderRadius: "4px",
         topBar_H: "30px",
         topBarBack: "rgba(255, 255, 255, 0.5)",
         titleFont: "Anta",
@@ -32,9 +35,37 @@ export const init = async (box) => {
     }
 
     await import("./../components/nano/magicBox.js")
-    const magicBox = document.createElement("magic-box")
-    Object.entries(config).forEach(([prop, value]) => magicBox[prop] = value)
-    magicBox.setAttribute("css", JSON.stringify(css))
-    magicBox.setAttribute("logic", JSON.stringify(logic))
-    box.appendChild(magicBox)
+    const magicBox = element.add("magic-box")
+    element.insert(magicBox, box, { "css": JSON.stringify(css), "logic": JSON.stringify(logic) }, props)
+    magicBox.dependency = new dependency()
+    return magicBox.node
+}
+
+const dynamicList = async (box) => {
+    /* dynamic-list component */
+    const dependency = (await import("./../components/class/componentBase.js")).ComponentBase
+
+    const props = {
+
+    }
+    const css = {
+
+    }
+
+    const logic = {
+
+    }
+
+    await import("./../components/nano/dynamicList.js")
+    const dynamicList = element.add("dynamic-list")
+    element.insert(dynamicList, box)
+
+    const dataList = await json.get("./app/config/components/list.json")
+    dynamicList.dependency = new dependency()
+    dynamicList.data = dataList
+}
+
+export const init = async (box) => {
+    const magicBoxNode = await magicBox(box)
+    const list = await dynamicList(magicBoxNode)
 }
