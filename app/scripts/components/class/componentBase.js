@@ -70,4 +70,10 @@ export class ComponentBase {
     async wait(time_ms) {
         await new Promise(resolve => setTimeout(resolve, time_ms))
     }
+
+    setAttr(item, object) {
+        Object.entries(object).forEach(([key, value]) => {
+            item.setAttribute(key, value)
+        })
+    }
 }

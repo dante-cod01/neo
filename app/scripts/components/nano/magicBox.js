@@ -7,13 +7,11 @@ const defaultCss = {
     titleFont: "initial",
     titleFontSize: "initial",
     titleColor: "blue",
-    titleIndent: "20px",
     closeIconSize: "30px",
     closeColor: "blue",
     nodeBack: "blue",
     bottomBar_H: "30px",
     bottomBarBack: "red",
-    barShadow: "0 0 10px red",
     transition: "2s ease-in-out"
 }
 
@@ -23,6 +21,8 @@ const defaultLogic = {
     titleFontHref: "",
     closeIcon: "close"
 }
+
+export const tag = "magic-box"
 
 export class MagicBox extends HTMLElement {
     _base
@@ -113,9 +113,11 @@ export class MagicBox extends HTMLElement {
                             height: 100%;
 
                             .title {
+                                width: fit-content;
                                 font-family: var(--titleFont);
                                 font-size: var(--titleFontSize);
                                 color: var(--titleColor);
+                                margin: 0 10px;
                             }
                         }
 
@@ -170,8 +172,8 @@ export class MagicBox extends HTMLElement {
 
     #configure = () => {
         this.css = this._base.loadConfig(JSON.parse(this.getAttribute("css")), defaultCss)
-        this._base.toCssVar(this.style, this.css)
         this.logic = this._base.loadConfig(JSON.parse(this.getAttribute("logic")), defaultLogic)
+        this._base.toCssVar(this.style, this.css)
     }
 
     #titleBoxHackWidth = () => {
@@ -193,12 +195,11 @@ export class MagicBox extends HTMLElement {
     }
 
     #configureSide = () => {
-        const size = this.logic.panelSide
         const moveLayer = this.dom.querySelector(".moveLayer")
-        const title = this.dom.querySelector(".title")
+        const titleBox = this.dom.querySelector(".titleBox")
         const closeBox = this.dom.querySelector(".closeBox")
-        size === "right" && moveLayer.prepend(closeBox)
-        title.style.textIndent = "20px"
+        this.logic.panelSide === "right" && moveLayer.prepend(closeBox)
+        this.logic.panelSide === "right" && (titleBox.style.justifyContent = "flex-end")
     }
 
     async open() {
@@ -245,13 +246,11 @@ export class MagicBox extends HTMLElement {
     }
 
     init() {
+        this.#draw()
         this.node = this.dom.querySelector(".node")
 
-        this.#draw()
         this.#configure()
-
-        console.log(this.css.panelHeight)
-        this.#configureSide(this.css.panel)
+        this.#configureSide()
         this.#addCloseButtom(this.closeButtom)
         this.#titleBoxHackWidth()
         this.#addTitle(this.logic.title)

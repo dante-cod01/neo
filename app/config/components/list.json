@@ -6,7 +6,7 @@
         {"title": "title4", "tag": "tag4", "path": "path4"},
         {"title": "title5", "tag": "tag5", "path": "path5"}
     ],
-    "type1": [
+    "type2": [
         {"title": "title6", "tag": "tag6", "path": "path6"},
         {"title": "title7", "tag": "tag7", "path": "path7"},
         {"title": "title8", "tag": "tag8", "path": "path8"},
