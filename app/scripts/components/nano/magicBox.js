@@ -33,9 +33,9 @@ export class MagicBox extends HTMLElement {
         this.dom = this.attachShadow({ mode: "open" })
         this.css
         this.logic
+        this.props
         this.closeButtom
         this.bottomBar
-        this.config
         this.node
     }
 
@@ -170,10 +170,10 @@ export class MagicBox extends HTMLElement {
         `
     }
 
-    #configure = () => {
-        this.css = this._base.loadConfig(JSON.parse(this.getAttribute("css")), defaultCss)
-        this.logic = this._base.loadConfig(JSON.parse(this.getAttribute("logic")), defaultLogic)
+    #configure = () => { 
         this._base.toCssVar(this.style, this.css)
+        this._base.toCssVar(this.style, this.logic) 
+        this._base.updateProps(this.props, this)   
     }
 
     #titleBoxHackWidth = () => {
@@ -246,10 +246,10 @@ export class MagicBox extends HTMLElement {
     }
 
     init() {
+        this.#configure()
         this.#draw()
         this.node = this.dom.querySelector(".node")
 
-        this.#configure()
         this.#configureSide()
         this.#addCloseButtom(this.closeButtom)
         this.#titleBoxHackWidth()

@@ -7,12 +7,12 @@ const magicBox = async (box) => {
     const dependency = (await import("./../components/class/componentBase.js")).ComponentBase
     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
 
-    const props = {
+    const configProps = {
         closeButtom: true,
         bottomBar: true,
     }
 
-    const css = {
+    const configCss = {
         panelWidth: getComputedStyle(document.documentElement).getPropertyValue("--panelList_width"),
         panelHeight: getComputedStyle(document.documentElement).getPropertyValue("--panelsHeight"),
         panelBorderRadius: "6px",
@@ -29,7 +29,7 @@ const magicBox = async (box) => {
         transition: getComputedStyle(document.documentElement).getPropertyValue("--panel_transition")
     }
 
-    const logic = {
+    const configLogic = {
         panelSide: "right",
         panelSide: "left",
         title: "Components",
@@ -37,8 +37,10 @@ const magicBox = async (box) => {
         closeIcon: "menu",
     }
 
-    const magicBox = element.add(component.tag, "panelMenu panelLeft")
-    element.insert(magicBox, box, { "css": JSON.stringify(css), "logic": JSON.stringify(logic) }, props)
+    const magicBox = element.add(component.tag, box, "panelMenu panelLeft")
+    magicBox.css = configCss
+    magicBox.logic = configLogic
+    magicBox.props = configProps
     magicBox.dependency = new dependency()
     return magicBox.node
 }
@@ -55,24 +57,25 @@ const dynamicList = async (box) => {
 
     const css = {
         back: "transparent",
-        backSelected1: "rgba(255, 255, 255, 0.6)",
-
-        pointerSelected1: "rgba(27, 126, 139, 1)",
-
-        colorSelected1: "rgb(60, 60, 60)",
+        backSelected1: "rgba(50, 173, 255, 0.4)",
+        backSelected2: "rgba(37, 188, 196, 0.4)",
+        backSelected3: "rgba(255, 255, 255, 0.4)",
+        pointerColor: "rgba(30, 196, 218, 1)",
+        colorDefault: "rgba(153, 153, 153, 1)",
+        colorSelected1: "whitesmoke",
+        colorSelected2: "whitesmoke",
         paddingHor: "4px",
         paddingVer: "0",
         borderColor: "rgba(255, 255, 255, 0.5)",
         borderWidth: "10px",
-        borderRadius: "12px",
-        listBorderWidth: "6px",
+        borderRadius: "4px",
         sectionBack: "rgba(0, 0, 0, 0.6)",
-        title_H: "30px",
+        title_H: "26px",
         titleFont: "Anta",
         titleFontSize: "13px",
         titleColor: "rgb(200, 200, 200)",
         listItem_H: "24px",
-        transition: "500ms ease-in-out"
+        transition: "400ms ease-in-out",
     }
 
     const logic = {
@@ -85,9 +88,12 @@ const dynamicList = async (box) => {
 
     const dataList = await json.get("./app/config/components/list.json")
     dynamicList.newData = dataList
+    return dynamicList
 }
 
 export const init = async (box) => {
     const magicBoxNode = await magicBox(box)
-    const list = await dynamicList(magicBoxNode)
+/*     const list = await dynamicList(magicBoxNode)
+ */
+
 }

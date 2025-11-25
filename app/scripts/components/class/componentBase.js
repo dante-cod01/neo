@@ -31,6 +31,11 @@ export class ComponentBase {
         Object.entries(obj).forEach(([prop, value]) => { style.setProperty(`--${prop}`, value) })
     }
 
+    updateProps(props, item) {
+        console.log(item)
+        Object.entries(props).forEach(([key, value]) => item[key] = value)
+    }
+
     add(tag, box, classN = null, id = null) {
         const element = document.createElement(tag)
         classN && (element.className = classN)
