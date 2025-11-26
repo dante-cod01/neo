@@ -15,7 +15,7 @@ const magicBox = async (box) => {
     const configCss = {
         panelWidth: getComputedStyle(document.documentElement).getPropertyValue("--panelList_width"),
         panelHeight: getComputedStyle(document.documentElement).getPropertyValue("--panelsHeight"),
-        panelBorderRadius: "6px",
+        panelRadius: "6px",
         topBar_H: "30px",
         topBarBack: "rgba(255, 255, 255, 0.5)",
         titleFont: "Anta",
@@ -38,12 +38,16 @@ const magicBox = async (box) => {
     }
 
     const magicBox = element.add(component.tag, box, "panelMenu panelLeft")
-    magicBox.css = configCss
-    magicBox.logic = configLogic
-    magicBox.props = configProps
-    magicBox.dependency = new dependency()
+    magicBox.entryProps = configProps
+    magicBox.entryCss = configCss
+    magicBox.entryLogic = configLogic
+    magicBox.addDependency(new dependency())
+
+/*     await new Promise(resolve => setTimeout(resolve, 2000))
+    console.log("configurando")
+    magicBox.update("topBarBack", "red")
     return magicBox.node
-}
+ */}
 
 const dynamicList = async (box) => {
     /* dynamic-list component */
@@ -93,7 +97,7 @@ const dynamicList = async (box) => {
 
 export const init = async (box) => {
     const magicBoxNode = await magicBox(box)
-/*     const list = await dynamicList(magicBoxNode)
- */
+    /*     const list = await dynamicList(magicBoxNode)
+     */
 
 }

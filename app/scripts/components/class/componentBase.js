@@ -1,39 +1,48 @@
 export class ComponentBase {
 
-    loadConfig(attributes, defaultConf) {
-        let config = structuredClone(defaultConf)
-
-        Object.entries(attributes).forEach(([prop, attributeValue]) => {
-            const propValid = prop in config
-            const defaultValueArray = Array.isArray(config[prop])
-            const attributeValid = typeof (attributeValue) === "string"
-
-            if (!propValid || !attributeValid) {
-                console.log({ attributeValue }, "not permited skipping")
-                return
-            }
-
-            if (defaultValueArray) {
-                const validValue = config[prop].includes(attributeValue)
-                const defaultValue = config[prop][0]
-                !validValue && console.log({ attributeValue }, "not valid value using default", { defaultValue })
-                config[prop] = validValue ? attributeValue : config[prop][0]
-            } else {
-                config[prop] = attributeValue
-            }
+    #convertToObj(defaultObj) {
+        let newObj = {}
+        Object.entries(defaultObj).forEach(([key, value]) => {
+            newObj[key] = Array.isArray(defaultObj[key])
+                ? defaultObj[key][0]
+                : value
         })
-
-        Object.entries(config).forEach(([prop, value]) => { if (Array.isArray(value)) config[prop] = value[0] })
-        return config
+        return newObj
     }
 
-    toCssVar(style, obj) {
-        Object.entries(obj).forEach(([prop, value]) => { style.setProperty(`--${prop}`, value) })
+    isValidProp(prop, defaultData) {
+        return prop in defaultData
     }
 
-    updateProps(props, item) {
-        console.log(item)
-        Object.entries(props).forEach(([key, value]) => item[key] = value)
+    isValidValue(value, defaultProp, type) {
+        let result = false
+        if (type === "css" || type === "props") { result = typeof (value) === typeof (defaultProp) ? true : false }
+        if (type === "logic") result = typeof (value) === "string" ? true : false
+        return result
+    }
+
+    #toCssVar(style, varCss, value) {
+        style.setProperty(`--${varCss}`, value)
+    }
+
+    updateVar(varCss, value, dom) {
+        dom.style.setProperty(`--${varCss}`, value)
+    }
+
+    config(defaultData, newData, type, style = null) {
+        let checked = this.#convertToObj(defaultData)
+        if (Object.entries(newData).length) {
+            Object.entries(newData).forEach(([key, value]) => {
+                if (!this.isValidProp(key, defaultData)) {
+                    console.log({ type }, key, "not valid")
+                    return
+                }
+                if (!this.isValidValue(value, defaultData[key], type)) console.log({ type }, key, "value not valid using default")
+                if (type === "css") this.#toCssVar(style, key, value);
+                checked[key] = value
+            })
+        }
+        return checked
     }
 
     add(tag, box, classN = null, id = null) {
