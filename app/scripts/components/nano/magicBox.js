@@ -6,7 +6,7 @@ export class MagicBox extends HTMLElement {
 
         this.dom = this.attachShadow({ mode: "open" })
 
-        this.defaultProps = {
+        this.defaultConfig = {
             closeButtom: false,
             bottomBar: false
         }
@@ -37,15 +37,14 @@ export class MagicBox extends HTMLElement {
 
 
         /* received props */
-        this.entryProps = "props"
+        this.entryConfig = "props"
         this.entryCss = "css"
         this.entryLogic = "logic"
         /* work props */
-        this.outProps
+        this.outConfig
         this.outCss
         this.outLogic
         this.dependency
-        this.node
     }
 
     #draw = () => {
@@ -73,8 +72,8 @@ export class MagicBox extends HTMLElement {
                     </div>
                 </div>
             </section> 
-            <section class="node"></section>
-            <section class="bottomBar"></section>
+            <section class="listContainer" node="list"></section>
+            <section class="bottomBar" node="bottomBar"></section>
         `
 
         this.newStyle.textContent = `
@@ -149,7 +148,7 @@ export class MagicBox extends HTMLElement {
                     }
                 }
                    
-                .node {
+                .listContainer {
                     width: 100%;
                     height: calc(100% - var(--topBar_H) - var(--bottomBar_H));
                     background: var(--nodeBack);
@@ -160,6 +159,7 @@ export class MagicBox extends HTMLElement {
                     width: 100%;
                     height: var(--bottomBar_H);
                     background: var(--bottomBarBack);
+                    overflow: hidden;
                 }
             }
 
@@ -173,7 +173,7 @@ export class MagicBox extends HTMLElement {
             .displayNone {display: none;}
             .justifyEnd {justify-content: flex-end;}
             .opacity_0 {opacity: 0;}
-            .opacity_50 {opacity: 0.5;}
+            .opacity_50 {opacity: 0.3;}
             .opacity_1 {opacity: 1;}
             .radius_half {border-radius: calc(var(--topBar_H) / 2);}
             :host(.topBar_H_width) {width: var(--topBar_H);}
@@ -182,9 +182,10 @@ export class MagicBox extends HTMLElement {
     }
 
     #configure = () => {
-        this.outProps = this.dependency.config(this.defaultProps, this.entryProps, "props")
-        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css", this.style)
+        this.outConfig = this.dependency.config(this.defaultConfig, this.entryConfig, "config")
         this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic")
+        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css")
+        this.dependency.addCssVars(this.outCss, this)
     }
 
     #addCloseButtom = (boolean) => {
@@ -208,6 +209,15 @@ export class MagicBox extends HTMLElement {
         this.outLogic.panelSide === "right" && moveLayer.prepend(closeBox)
         this.outLogic.panelSide === "right" && (titleBox.classList.add("justifyEnd"))
     }
+
+    #addReactivity = () => {
+        const toogleButtom = this.dom.querySelector("#toogleButtom")
+        toogleButtom.addEventListener("change", (e) => {
+            this.#tooglePanel(e.target)
+        })
+    }
+
+    #tooglePanel = async (target) => target.checked ? this.open(target) : this.close(target)
 
     async open(input) {
         input.disabled = true
@@ -242,15 +252,7 @@ export class MagicBox extends HTMLElement {
         input.disabled = false
     }
 
-    #tooglePanel = async (target) => target.checked ? this.open(target) : this.close(target)
-
-    #addReactivity = () => {
-        const toogleButtom = this.dom.querySelector("#toogleButtom")
-        toogleButtom.addEventListener("change", (e) => {
-            this.#tooglePanel(e.target)
-        })
-    }
-
+    /* dependency based */
     addDependency(dependency) {
         if (!this.dependency) {
             this.dependency = dependency
@@ -258,28 +260,23 @@ export class MagicBox extends HTMLElement {
         }
     }
 
-    update(prop, value) {
-        let obj
-        [this.outProps, this.outCss, this.outLogic].forEach(item => {
-            if (this.dependency.isValidProp) obj = item
-            if (/* isvalidvalue */)
-            console.log(item)
-            item[prop] = value
-            console.log(item)
-        })
+    getNodes() {
+        return this.dependency.getNodes(this.dom)
     }
 
-    init() {
+    update(prop, value) {
+        const objects = [this.outConfig, this.outCss, this.outLogic]
+        let types = ["config", "css", "logic"]
+        this.dependency.update(this, prop, value, objects, types)
+}
+
+    async init() {
         this.#draw()
         this.#configure()
-        this.node = this.dom.querySelector(".node")
         this.#configureSide()
-        this.#addCloseButtom(this.outProps.closeButtom)
+        this.#addCloseButtom(this.outConfig.closeButtom)
         this.#addTitle(this.outLogic.title)
         this.#addReactivity()
-        console.log(this.outLogic)
-        this.update("bottomBar", false)
-
     }
 }
 

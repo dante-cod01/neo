@@ -16,29 +16,51 @@ export class ComponentBase {
 
     isValidValue(value, defaultProp, type) {
         let result = false
-        if (type === "css" || type === "props") { result = typeof (value) === typeof (defaultProp) ? true : false }
+        if (type === "config" || type === "css") { result = typeof (value) === typeof (defaultProp) ? true : false }
         if (type === "logic") result = typeof (value) === "string" ? true : false
         return result
     }
 
-    #toCssVar(style, varCss, value) {
-        style.setProperty(`--${varCss}`, value)
+    addCssVars(obj, dom) {
+        Object.entries(obj).forEach(([key, value]) => {
+            console.log(key, value)
+            dom.style.setProperty(`--${key}`, value)
+        })
     }
 
-    updateVar(varCss, value, dom) {
-        dom.style.setProperty(`--${varCss}`, value)
+    update(dom, prop, value, objects, types) {
+        let obj
+        let objType
+        const index = objects.findIndex(item => this.isValidProp(prop, item))
+        obj = index < 0 ? false : objects[index]
+
+        if (!obj) {
+            console.log({ prop }, "not valid")
+            return
+        }
+
+        objType = types[index]
+
+        if (this.isValidValue(value, obj[prop], objType)) {
+            obj[prop] = value
+            objType === "css" && (this.addCssVars({[prop]: value}, dom))
+        } else {
+            console.log("update not valid value", { prop })
+        }
     }
 
-    config(defaultData, newData, type, style = null) {
+    config(defaultData, newData, type) {
         let checked = this.#convertToObj(defaultData)
+
         if (Object.entries(newData).length) {
             Object.entries(newData).forEach(([key, value]) => {
                 if (!this.isValidProp(key, defaultData)) {
                     console.log({ type }, key, "not valid")
                     return
                 }
-                if (!this.isValidValue(value, defaultData[key], type)) console.log({ type }, key, "value not valid using default")
-                if (type === "css") this.#toCssVar(style, key, value);
+                if (!this.isValidValue(value, defaultData[key], type)) {
+                    console.log({ type }, key, "value not valid using default")
+                }
                 checked[key] = value
             })
         }
@@ -89,5 +111,12 @@ export class ComponentBase {
         Object.entries(object).forEach(([key, value]) => {
             item.setAttribute(key, value)
         })
+    }
+
+    getNodes = (dom) => {
+        const nodes = Array.from(dom.querySelectorAll("[node]"))
+        let obj = {}
+        nodes.forEach(item => { obj[item.getAttribute("node")] = item })
+        return obj
     }
 }

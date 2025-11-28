@@ -1,71 +1,63 @@
-const defaultCss = {
-    back: "red",
-    backSelected1: "blue",
-    backSelected2: "blue",
-    backSelected3: "blue",
-    pointerColor: "red",
-    colorDefault: "blue",
-    colorSelected1: "red",
-    colorSelected2: "red",
-    paddingHor: "0px",
-    paddingVer: "0px",
-    borderColor: "red",
-    borderWidth: "0px",
-    borderRadius: "0px",
-    listBorderColor: "transparent",
-    sectionBack: "red",
-    title_H: "30px",
-    titleFont: "initial",
-    titleFontSize: "initial",
-    titleColor: "blue",
-    listItem_H: "30px",
-    transition: "1s",
-    transitionFast: "var(--transition)"
-}
-
-const defaultLogic = {
-
-}
-
 export const tag = "dynamic-list"
-
 export class DynamicList extends HTMLElement {
-    _base
-    _data
-
     constructor() {
         super()
         this.dom = this.attachShadow({ mode: "open" })
-    }
 
-    set dependency(injected) {
-        if (!this._base) {
-            this._base = injected
-            this.init()
-        } else {
-            console.log({ class: this }, "dependency already injected: ignoring")
+        this.defaultConfig = {
+            algo: "ddd"
         }
-    }
 
-    set newData(inyected) {
-        this._data = inyected
-        this.#drawList()
-        this.#setExpandHeight()
+        this.defaultCss = {
+            back: "red",
+            backSelected1: "blue",
+            backSelected2: "blue",
+            backSelected3: "blue",
+            pointerColor: "red",
+            colorDefault: "blue",
+            colorSelected1: "red",
+            colorSelected2: "red",
+            paddingHor: "0px",
+            paddingVer: "0px",
+            borderColor: "red",
+            borderWidth: "0px",
+            borderRadius: "0px",
+            sectionBack: "red",
+            title_H: "30px",
+            titleFont: "initial",
+            titleFontSize: "initial",
+            titleColor: "blue",
+            listItem_H: "30px",
+            time: "1s",
+            transitionFast: "10s"
+        }
+
+        this.defaultLogic = {
+            titleFont_Href: false,
+        }
+
+        /* received props */
+        this.entryConfig = "props"
+        this.entryCss = "css"
+        this.entryLogic = "logic"
+        /* work props */
+        this.dependency
+        this.data
     }
 
     #draw() {
-        this.container = this._base.add("div", this.dom, "main")
-        this.newStyle = this._base.add("style", this.dom)
+        this.container = this.dependency.add("div", this.dom, "main")
+        const style = this.dependency.add("style", this.dom)
 
         this.container.innerHTML = `
             <div class="listBox">
                 <div class="list">
                     <div class="sectionsBox"></div>
-                </list>
+                </div>
             </div>
         `
 
-        this.newStyle.textContent = `
+        style.textContent = `
             * {
                 margin: 0;
                 padding: 0;
@@ -103,7 +95,7 @@ export class DynamicList extends HTMLElement {
                         .sectionsBox {
                             width: 100%;
 
-                            .section {
+                            .componentSections {
                                 width: 100%;
                                 height: auto;
 
@@ -116,7 +108,6 @@ export class DynamicList extends HTMLElement {
 
                                 .expand {
                                     width: 100%;
-                                    height: 0;
                                     border: 1px solid grey;
                                     overflow: hidden;
 
@@ -137,9 +128,12 @@ export class DynamicList extends HTMLElement {
                                     height: 9px;
                                     border-radius: 50%;
                                     margin: 0 10px;
+                                    transition: var(--transitionFast);
                                 }
 
-                                .listRow .pointer { width: 9px;}
+                                .listRow .pointer { 
+                                    width: 9px;
+                                }
 
                                 .rowExpand { width: 0px; height: auto; }
 
@@ -157,30 +151,29 @@ export class DynamicList extends HTMLElement {
                     }
                 }
 
-                .listBox .list .sectionsBox .section .sectionRow:has(input:not(:checked):hover) {
+                .listBox .list .sectionsBox .componentSections .sectionRow:has(input:not(:checked):hover) {
                     background: var(--backSelected3);
                     .name {color: var(--colorSelected1);}
                 }
 
-                .listBox .list .sectionsBox .section .sectionRow:has(input:checked) {
+                .listBox .list .sectionsBox .componentSections .sectionRow:has(input:checked) {
                     background: var(--backSelected1);
                     .rowExpand {flex: 1;}
                     .name {color: var(--colorSelected1);}
-                    +.expand {height: calc(var(--itemsNum) * var(--listItem_H) + var(--expandItemsMargin));}
                 }
 
-                .listBox .list .sectionsBox .section .listRow:has(input:not(:checked):hover) {
+                .listBox .list .sectionsBox .componentSections .listRow:has(input:not(:checked):hover) {
                     background: var(--backSelected3);
                     .name {color: var(--colorSelected2);}
                 }
 
-                .listBox .list .sectionsBox .section .listRow:has(input:checked) {
+                .listBox .list .sectionsBox .componentSections .listRow:has(input:checked) {
                     background: var(--backSelected2);
                     .rowExpand {flex: 1;}
                     .name {color: var(--colorSelected2);}
                 }
 
-                .listBox .list .sectionsBox .section:has(.listRow input:checked) .sectionRow .pointer {
+                .listBox .list .sectionsBox .componentSections:has(.listRow input:checked) .sectionRow .pointer {
                     background: var(--pointerColor);
                 }                
             }
@@ -190,59 +183,83 @@ export class DynamicList extends HTMLElement {
             .verticalAlign {display: flex; align-items: center;}
             .hiddenInput {appearance: none; width: 100%; height: 100%; cursor: pointer;}
             .radius {border-radius: var(--borderRadius);}
-            .transition {transition: var(--transition);}
-            .transitionFast {transition: var(--transitionFast);}
+            .transition {transition: var(--time);}
+            .expandClose {height: 0px;}
+            .expandOpen {height: var(--expandDynHeight);}
         `
     }
 
     #configure = () => {
-        this.css = this._base.loadConfig(JSON.parse(this.getAttribute("css")), defaultCss)
-        this.getAttribute("logic") && (this.logic = this._base.loadConfig(JSON.parse(this.getAttribute("logic")), defaultLogic))
-        this._base.toCssVar(this.style, this.css)
+        this.outConfig = this.dependency.config(this.defaultConfig, this.entryConfig, "config")
+        this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic")
+        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css")
+        this.dependency.addCssVars(this.outCss, this)
     }
 
-    #drawList() {
+    #drawList(json) {
         const sectionsBox = this.dom.querySelector(".sectionsBox")
 
-        Object.entries(this._data).forEach(([sectionTitle, sectionComponents]) => {
-            const section = this._base.add("section", sectionsBox, "section")
+        Object.entries(json).forEach(([sectionTitle, sectionComponents]) => {
+            const section = this.dependency.add("div", sectionsBox, "componentSections")
             this.#drawSection(section, sectionTitle, sectionComponents)
         })
     }
 
     #drawSection(section, title, componentsArray) {
         const create = (box, name, radiosName) => {
-            const pointer = this._base.add("div", box, `pointer pointer`)
-            const expand = this._base.add("div", box, `rowExpand rowExpand transitionFast`)
-            const title = this._base.add("span", box, `name verticalAlign`)
+            const pointer = this.dependency.add("div", box, `pointer`)
+            const expand = this.dependency.add("div", box, `rowExpand transition`)
+            const title = this.dependency.add("span", box, `name verticalAlign`)
             title.textContent = name
-            const radio = this._base.add("input", box, "hiddenInput absolute")
-            this._base.setAttr(radio, { "type": "radio", "name": radiosName })
+            const radio = this.dependency.add("input", box, "hiddenInput absolute")
+            this.dependency.setAttr(radio, { "type": "radio", "name": radiosName })
             return radio
         }
 
-        const sectionRow = this._base.add("div", section, "sectionRow verticalAlign relative radius")
-        const expand = this._base.add("div", section, "expand transition")
+        const sectionRow = this.dependency.add("div", section, "sectionRow verticalAlign relative radius")
+        const expand = this.dependency.add("div", section, "expand expandClose transition")
 
         create(sectionRow, title, "section")
 
         Object.entries(componentsArray).forEach(item => {
-            const listRow = this._base.add("div", expand, "listRow verticalAlign relative radius")
+            const listRow = this.dependency.add("div", expand, "listRow verticalAlign relative radius")
             const listItems = create(listRow, item[1].title, "list")
         })
     }
 
-    #setExpandHeight() {
-        const sections = Array.from(this.dom.querySelectorAll(".section"))
-        sections.forEach(section => {
-            const radio = section.querySelector("input[name='section']")
+    #dynamicExpandControl() {
+        const sections = Array.from(this.dom.querySelectorAll(".componentSections"))
 
-            radio.addEventListener("change", (e) => {
-                const actualSection = sections.find(item => item.querySelector("input[name='section']") === e.target)
-                const childs = actualSection.querySelectorAll(".expand .listRow").length
-                this.style.setProperty("--itemsNum", childs)
+        sections.forEach(section => {
+            const radios = Array.from(section.querySelectorAll("input[name='section']"))
+
+            radios.forEach(radio => {
+                radio.addEventListener("change", (e) => {
+                    sections.forEach(item => { item.querySelector(".expand").classList.remove("expandOpen") })
+
+                    const actualSection = sections.find(item => item.querySelector("input[name='section']") === e.target)
+                    const expand = actualSection.querySelector(".expand")
+                    const childs = actualSection.querySelectorAll(".expand .listRow").length
+                    const listRowHeight = expand.querySelector(".listRow").offsetHeight
+                    const expandMargin = parseFloat(getComputedStyle(this.dom.host).getPropertyValue("--expandItemsMargin"))
+                    const expandDynHeight = listRowHeight * childs + expandMargin * 2
+                    this.style.setProperty("--expandDynHeight", `${expandDynHeight}px`)
+                    expand.classList.add("expandOpen")
+                })
             })
         })
+    }
+
+    addDependency(dependency) {
+        if (!this.dependency) {
+            this.dependency = dependency
+            this.init()
+        }
+    }
+
+    async addData(json) {
+        this.#drawList(json)
+        this.#dynamicExpandControl()
     }
 
     async init() {

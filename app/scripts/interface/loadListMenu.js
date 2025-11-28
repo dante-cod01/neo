@@ -7,7 +7,7 @@ const magicBox = async (box) => {
     const dependency = (await import("./../components/class/componentBase.js")).ComponentBase
     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
 
-    const configProps = {
+    const config = {
         closeButtom: true,
         bottomBar: true,
     }
@@ -38,16 +38,12 @@ const magicBox = async (box) => {
     }
 
     const magicBox = element.add(component.tag, box, "panelMenu panelLeft")
-    magicBox.entryProps = configProps
+    magicBox.entryConfig = config
     magicBox.entryCss = configCss
     magicBox.entryLogic = configLogic
     magicBox.addDependency(new dependency())
-
-/*     await new Promise(resolve => setTimeout(resolve, 2000))
-    console.log("configurando")
-    magicBox.update("topBarBack", "red")
-    return magicBox.node
- */}
+    return magicBox
+}
 
 const dynamicList = async (box) => {
     /* dynamic-list component */
@@ -55,11 +51,11 @@ const dynamicList = async (box) => {
     const dependency = (await import("./../components/class/componentBase.js")).ComponentBase
     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
 
-    const props = {
+    const config = {
 
     }
 
-    const css = {
+    const configCss = {
         back: "transparent",
         backSelected1: "rgba(50, 173, 255, 0.4)",
         backSelected2: "rgba(37, 188, 196, 0.4)",
@@ -82,22 +78,23 @@ const dynamicList = async (box) => {
         transition: "400ms ease-in-out",
     }
 
-    const logic = {
-        sectionTitle_fontHref: componentFont_Href,
+    const configLogic = {
+        titleFont_Href: componentFont_Href,
     }
 
-    const dynamicList = element.add(component.tag)
-    element.insert(dynamicList, box, { "css": JSON.stringify(css) }, props)
-    dynamicList.dependency = new dependency()
+    const dynamicList = element.add(component.tag, box)
+    dynamicList.entryConfig = config
+    dynamicList.entryCss = configCss
+    dynamicList.entryLogic = configLogic
+    dynamicList.addDependency(new dependency())
 
     const dataList = await json.get("./app/config/components/list.json")
-    dynamicList.newData = dataList
+    dynamicList.addData(dataList)
     return dynamicList
 }
 
 export const init = async (box) => {
-    const magicBoxNode = await magicBox(box)
-    /*     const list = await dynamicList(magicBoxNode)
-     */
-
-}
+    const panel = await magicBox(box)
+    const panelNodes = panel.getNodes()
+/*     const list = await dynamicList(panelNodes.list)
+ */}
