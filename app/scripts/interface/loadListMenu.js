@@ -49,8 +49,8 @@ const dynamicList = async (box) => {
     /* dynamic-list component */
     const component = await import("./../components/nano/dynamicList.js")
     const dependency = (await import("./../components/class/componentBase.js")).ComponentBase
-    const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
-
+/*     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
+ */
     const config = {
 
     }
@@ -60,7 +60,7 @@ const dynamicList = async (box) => {
         backSelected1: "rgba(50, 173, 255, 0.4)",
         backSelected2: "rgba(37, 188, 196, 0.4)",
         backSelected3: "rgba(255, 255, 255, 0.4)",
-        pointerColor: "rgba(30, 196, 218, 1)",
+        pointerColor: "rgba(50, 173, 255, 0.17)",
         colorDefault: "rgba(153, 153, 153, 1)",
         colorSelected1: "whitesmoke",
         colorSelected2: "whitesmoke",
@@ -72,15 +72,15 @@ const dynamicList = async (box) => {
         sectionBack: "rgba(0, 0, 0, 0.6)",
         title_H: "26px",
         titleFont: "Anta",
-        titleFontSize: "13px",
+        titleFontSize: "12px",
         titleColor: "rgb(200, 200, 200)",
         listItem_H: "24px",
         transition: "400ms ease-in-out",
     }
 
     const configLogic = {
-        titleFont_Href: componentFont_Href,
-    }
+/*         titleFont_Href: componentFont_Href,
+ */    }
 
     const dynamicList = element.add(component.tag, box)
     dynamicList.entryConfig = config
@@ -96,5 +96,5 @@ const dynamicList = async (box) => {
 export const init = async (box) => {
     const panel = await magicBox(box)
     const panelNodes = panel.getNodes()
-/*     const list = await dynamicList(panelNodes.list)
- */}
+    const list = await dynamicList(panelNodes.list)
+}

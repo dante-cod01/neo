@@ -49,7 +49,7 @@ export class MagicBox extends HTMLElement {
 
     #draw = () => {
         this.container = this.dependency.add("div", this.dom, "main relative max transition")
-        this.newStyle = this.dependency.add("style", this.dom)
+        const style = this.dependency.add("style", this.dom)
 
         this.dependency.addLink(
             this,
@@ -76,7 +76,7 @@ export class MagicBox extends HTMLElement {
             <section class="bottomBar" node="bottomBar"></section>
         `
 
-        this.newStyle.textContent = `
+        style.textContent = `
             * {
                 margin: 0;
                 padding: 0;

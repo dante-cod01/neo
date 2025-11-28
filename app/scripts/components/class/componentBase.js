@@ -23,7 +23,6 @@ export class ComponentBase {
 
     addCssVars(obj, dom) {
         Object.entries(obj).forEach(([key, value]) => {
-            console.log(key, value)
             dom.style.setProperty(`--${key}`, value)
         })
     }

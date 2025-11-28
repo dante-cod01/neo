@@ -28,8 +28,9 @@ export class DynamicList extends HTMLElement {
             titleFontSize: "initial",
             titleColor: "blue",
             listItem_H: "30px",
-            time: "1s",
-            transitionFast: "10s"
+            transition: "1s",
+            transitionFast: "500ms ease-in-out",
+            expandBorderColor: "rgba(255, 255, 255, 0.24)"
         }
 
         this.defaultLogic = {
@@ -46,11 +47,11 @@ export class DynamicList extends HTMLElement {
     }
 
     #draw() {
-        this.container = this.dependency.add("div", this.dom, "main")
+        this.container = this.dependency.add("div", this.dom, "main max")
         const style = this.dependency.add("style", this.dom)
 
         this.container.innerHTML = `
-            <div class="listBox">
+            <div class="listBox max">
                 <div class="list">
                     <div class="sectionsBox"></div>
                 </div>
@@ -69,27 +70,23 @@ export class DynamicList extends HTMLElement {
                 width: 100%;
                 height: 100%;
 
-                --expandItemsMargin: 10px;
+                --expandFakePadding: 10px;
             }
 
             .main {
-                width: 100%;
-                height: 100%;
-                padding: var(--paddingVer) var(--paddingHor) ;
+                padding: var(--paddingVer) var(--paddingHor);
 
                 .listBox {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    width: 100%;
-                    height: 100%;
                     outline: var(--borderWidth) solid var(--borderColor);
                     border-radius: var(--borderRadius);
                     background: var(--sectionBack);
 
                     .list {
-                        width: calc(100% - 16px);
-                        height: calc(100% - 16px);
+                        width: calc(100% - 14px);
+                        height: calc(100% - 14px);
                         border-radius: var(--borderRadius);
 
                         .sectionsBox {
@@ -103,39 +100,34 @@ export class DynamicList extends HTMLElement {
                                     display: flex;
                                     width: 100%;
                                     height: var(--title_H);
-                                    margin-bottom: 4px;
+                                    overflow: hidden;
                                 }
 
                                 .expand {
                                     width: 100%;
-                                    border: 1px solid grey;
+                                    border-radius: 4px;
+                                    opacity: 0;
                                     overflow: hidden;
 
                                     .listRow {
                                         position: relative;
-                                        left: 20px;
+                                        left: 10px;
                                         display: flex;
-                                        width: calc(100% - 20px);
+                                        width: calc(100% - var(--expandFakePadding) * 2);
                                         height: var(--listItem_H);
+                                        margin-bottom: 2px;
 
-                                        &:first-of-type {margin-top: calc(var(--expandItemsMargin) / 2);}
-                                        &:last-of-type {margin-bottom: calc(var(--expandItemsMargin) / 2);}
+                                        &:first-of-type {margin-top: calc(var(--expandFakePadding));}
+                                        &:last-of-type {margin-bottom: calc(var(--expandFakePadding));}
                                     }
                                 }
 
                                 .sectionRow .pointer {
-                                    width: 9px;
-                                    height: 9px;
-                                    border-radius: 50%;
-                                    margin: 0 10px;
+                                    border-radius: 4px;
                                     transition: var(--transitionFast);
                                 }
 
-                                .listRow .pointer { 
-                                    width: 9px;
-                                }
-
-                                .rowExpand { width: 0px; height: auto; }
+                                .rowExpand { width: 8px; height: auto; }
 
                                 .name {
                                     width: fit-content;
@@ -158,8 +150,9 @@ export class DynamicList extends HTMLElement {
 
                 .listBox .list .sectionsBox .componentSections .sectionRow:has(input:checked) {
                     background: var(--backSelected1);
-                    .rowExpand {flex: 1;}
+                    .rowExpand {width: 100%;}
                     .name {color: var(--colorSelected1);}
+                    +.expand {opacity: 1;}
                 }
 
                 .listBox .list .sectionsBox .componentSections .listRow:has(input:not(:checked):hover) {
@@ -169,23 +162,24 @@ export class DynamicList extends HTMLElement {
 
                 .listBox .list .sectionsBox .componentSections .listRow:has(input:checked) {
                     background: var(--backSelected2);
-                    .rowExpand {flex: 1;}
+                    .rowExpand {width: 100%;}
                     .name {color: var(--colorSelected2);}
                 }
 
-                .listBox .list .sectionsBox .componentSections:has(.listRow input:checked) .sectionRow .pointer {
+                .listBox .list .sectionsBox .componentSections:has(.listRow input:checked) .sectionRow:has(input:not(:checked)) .pointer {
                     background: var(--pointerColor);
                 }                
             }
 
             .relative {position: relative;}
             .absolute {position: absolute;}
+            .max {width: 100%; height: 100%;}
             .verticalAlign {display: flex; align-items: center;}
             .hiddenInput {appearance: none; width: 100%; height: 100%; cursor: pointer;}
             .radius {border-radius: var(--borderRadius);}
-            .transition {transition: var(--time);}
-            .expandClose {height: 0px;}
-            .expandOpen {height: var(--expandDynHeight);}
+            .transition {transition: var(--transition);}
+            .expandClose {height: 0px; border: 1px solid transparent;}
+            .expandOpen {height: var(--expandDynHeight); border: 1px solid var(--expandBorderColor); margin: 10px 0;}
         `
     }
 
@@ -207,7 +201,7 @@ export class DynamicList extends HTMLElement {
 
     #drawSection(section, title, componentsArray) {
         const create = (box, name, radiosName) => {
-            const pointer = this.dependency.add("div", box, `pointer`)
+            const pointer = this.dependency.add("div", box, `pointer absolute max`)
             const expand = this.dependency.add("div", box, `rowExpand transition`)
             const title = this.dependency.add("span", box, `name verticalAlign`)
             title.textContent = name
@@ -241,8 +235,8 @@ export class DynamicList extends HTMLElement {
                     const expand = actualSection.querySelector(".expand")
                     const childs = actualSection.querySelectorAll(".expand .listRow").length
                     const listRowHeight = expand.querySelector(".listRow").offsetHeight
-                    const expandMargin = parseFloat(getComputedStyle(this.dom.host).getPropertyValue("--expandItemsMargin"))
-                    const expandDynHeight = listRowHeight * childs + expandMargin * 2
+                    const expandMargin = parseFloat(getComputedStyle(this.dom.host).getPropertyValue("--expandFakePadding"))
+                    const expandDynHeight = listRowHeight * childs + expandMargin * 2 + childs * 2
                     this.style.setProperty("--expandDynHeight", `${expandDynHeight}px`)
                     expand.classList.add("expandOpen")
                 })
@@ -263,8 +257,10 @@ export class DynamicList extends HTMLElement {
     }
 
     async init() {
-        this.#draw()
         this.#configure()
+        this.outLogic.titleFont_Href && this.dependency.addLink(this, "stylesheet", this.outLogic.titleFont_Href)
+        this.#draw()
+
     }
 }
 
