@@ -38,9 +38,9 @@ export class DynamicList extends HTMLElement {
         }
 
         /* received props */
-        this.entryConfig = "props"
-        this.entryCss = "css"
-        this.entryLogic = "logic"
+        this.entryConfig = {}
+        this.entryCss = {}
+        this.entryLogic = {}
         /* work props */
         this.dependency
         this.data
@@ -206,7 +206,7 @@ export class DynamicList extends HTMLElement {
             const title = this.dependency.add("span", box, `name verticalAlign`)
             title.textContent = name
             const radio = this.dependency.add("input", box, "hiddenInput absolute")
-            this.dependency.setAttr(radio, { "type": "radio", "name": radiosName })
+            this.dependency.setAttr(radio, { "type": "radio", "name": radiosName, "info": name })
             return radio
         }
 
@@ -217,7 +217,7 @@ export class DynamicList extends HTMLElement {
 
         Object.entries(componentsArray).forEach(item => {
             const listRow = this.dependency.add("div", expand, "listRow verticalAlign relative radius")
-            const listItems = create(listRow, item[1].title, "list")
+            const listItems = create(listRow, item[1].name, "list")
         })
     }
 
@@ -244,6 +244,23 @@ export class DynamicList extends HTMLElement {
         })
     }
 
+    #getOptionPars(target) {
+        const info = target.getAttribute("info")
+        const pars = Object.values(this.data).flat().find(item => item.name === info)
+        return pars
+    }
+
+    #addEvents() {
+        const listRadios = Array.from(this.dom.querySelectorAll("input[name='list']"))
+        listRadios.forEach(item => {
+            item.addEventListener("change", (e) => {
+                const pars = this.#getOptionPars(e.target)
+                console.log(pars)
+                this.dependency.sendCustomEvent(document, "menuList", pars)
+            })
+        })
+    }
+
     addDependency(dependency) {
         if (!this.dependency) {
             this.dependency = dependency
@@ -254,13 +271,18 @@ export class DynamicList extends HTMLElement {
     async addData(json) {
         this.#drawList(json)
         this.#dynamicExpandControl()
+        this.data = json
+        this.#addEvents(json)
     }
 
     async init() {
         this.#configure()
-        this.outLogic.titleFont_Href && this.dependency.addLink(this, "stylesheet", this.outLogic.titleFont_Href)
+        this.outLogic.titleFont_Href && this.dependency.addLink(
+            this,
+            "stylesheet",
+            this.outLogic.titleFont_Href
+        )
         this.#draw()
-
     }
 }
 

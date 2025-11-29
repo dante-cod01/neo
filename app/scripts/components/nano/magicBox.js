@@ -41,9 +41,9 @@ export class MagicBox extends HTMLElement {
         this.entryCss = "css"
         this.entryLogic = "logic"
         /* work props */
-        this.outConfig
-        this.outCss
-        this.outLogic
+        this.outConfig = {}
+        this.outCss = {}
+        this.outLogic = {}
         this.dependency
     }
 

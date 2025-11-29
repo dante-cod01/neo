@@ -118,4 +118,8 @@ export class ComponentBase {
         nodes.forEach(item => { obj[item.getAttribute("node")] = item })
         return obj
     }
+
+    sendCustomEvent(dom, eventName, detail) {
+        dom.dispatchEvent(new CustomEvent(eventName, {"detail": detail}))
+    }
 }
