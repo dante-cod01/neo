@@ -34,13 +34,15 @@ const magicBox = async (box) => {
         panelSide: "left",
         title: "Components",
         titleFontHref: componentFont_Href,
-        closeIcon: "menu",
+        closeIcon: "menu"
     }
 
     const magicBox = element.add(component.tag, box, "panelMenu panelLeft")
     magicBox.entryConfig = config
     magicBox.entryCss = configCss
     magicBox.entryLogic = configLogic
+    magicBox.eventDom = document
+    magicBox.eventName = "listMenu"
     magicBox.addDependency(new dependency())
     return magicBox
 }
@@ -49,8 +51,9 @@ const dynamicList = async (box) => {
     /* dynamic-list component */
     const component = await import("./../components/nano/dynamicList.js")
     const dependency = (await import("./../components/class/componentBase.js")).ComponentBase
-/*     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
- */
+    const dataList = await json.get("./app/config/components/list.json")
+    const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
+
     const config = {
 
     }
@@ -70,7 +73,7 @@ const dynamicList = async (box) => {
         borderWidth: "10px",
         borderRadius: "4px",
         sectionBack: "rgba(0, 0, 0, 0.6)",
-        title_H: "26px",
+        title_H: "24px",
         titleFont: "Anta",
         titleFontSize: "12px",
         titleColor: "rgb(200, 200, 200)",
@@ -79,17 +82,18 @@ const dynamicList = async (box) => {
     }
 
     const configLogic = {
-/*         titleFont_Href: componentFont_Href,
- */    }
+        titleFont_Href: componentFont_Href,
+    }
 
     const dynamicList = element.add(component.tag, box)
     dynamicList.entryConfig = config
     dynamicList.entryCss = configCss
     dynamicList.entryLogic = configLogic
+    dynamicList.eventDom = document
+    dynamicList.eventName = "listMenu"
+    dynamicList.data = dataList
+    /* init */
     dynamicList.addDependency(new dependency())
-
-    const dataList = await json.get("./app/config/components/list.json")
-    dynamicList.addData(dataList)
     return dynamicList
 }
 

@@ -1,3 +1,5 @@
+import { loadListeners } from "./eventsBus.js"
+
 const loadStyles = async () => {
     const path = [
         { rel: "stylesheet", href: "app/styles/globalConf.css" },
@@ -15,18 +17,16 @@ const loadStyles = async () => {
 }
 
 const loadInterface = async () => {
-
     const paths = {
         listMenu: "./interface/loadListMenu.js"
     }
-
     let imports = {}
     for (const [key, value] of Object.entries(paths)) { imports[key] = await import(value) }
-
     imports.listMenu.init(document.body)
 }
 
 const main = async () => {
+    loadListeners()
     await loadStyles()
     loadInterface()
 }

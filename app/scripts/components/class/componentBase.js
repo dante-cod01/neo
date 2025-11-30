@@ -119,7 +119,7 @@ export class ComponentBase {
         return obj
     }
 
-    sendCustomEvent(dom, eventName, detail) {
+    sendEvent(dom, eventName, detail) {
         dom.dispatchEvent(new CustomEvent(eventName, {"detail": detail}))
     }
 }

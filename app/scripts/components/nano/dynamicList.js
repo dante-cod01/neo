@@ -5,7 +5,6 @@ export class DynamicList extends HTMLElement {
         this.dom = this.attachShadow({ mode: "open" })
 
         this.defaultConfig = {
-            algo: "ddd"
         }
 
         this.defaultCss = {
@@ -44,6 +43,9 @@ export class DynamicList extends HTMLElement {
         /* work props */
         this.dependency
         this.data
+        this.eventDom
+        this.eventName
+
     }
 
     #draw() {
@@ -255,24 +257,19 @@ export class DynamicList extends HTMLElement {
         listRadios.forEach(item => {
             item.addEventListener("change", (e) => {
                 const pars = this.#getOptionPars(e.target)
-                console.log(pars)
-                this.dependency.sendCustomEvent(document, "menuList", pars)
+                this.dependency.sendEvent(this.eventDom, this.eventName, { type: "select", value: pars })
             })
         })
     }
 
     addDependency(dependency) {
+        if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
+        if (!this.eventName) { (console.log({ eventName: this.eventName }, "not configured")); return }
+        if (!this.data) { (console.log({ data: this.data }, "not configured")); return }
         if (!this.dependency) {
             this.dependency = dependency
             this.init()
         }
-    }
-
-    async addData(json) {
-        this.#drawList(json)
-        this.#dynamicExpandControl()
-        this.data = json
-        this.#addEvents(json)
     }
 
     async init() {
@@ -283,6 +280,9 @@ export class DynamicList extends HTMLElement {
             this.outLogic.titleFont_Href
         )
         this.#draw()
+        this.#drawList(this.data)
+        this.#dynamicExpandControl()
+        this.#addEvents(this.data)
     }
 }
 

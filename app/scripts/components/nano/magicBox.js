@@ -231,9 +231,12 @@ export class MagicBox extends HTMLElement {
         await this.dependency.wait(time / 2)
         title.classList.remove("opacity_0")
         await this.dependency.wait(time / 3)
+        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: false })
+
         this.classList.remove("topBar_H_height")
         await this.dependency.wait(time)
         input.disabled = false
+        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_H", value: false })
     }
 
     async close(input) {
@@ -245,15 +248,19 @@ export class MagicBox extends HTMLElement {
         this.classList.add("topBar_H_height")
         title.classList.add("opacity_0")
         await this.dependency.wait(time)
+        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_H", value: true })
+        
         this.classList.add("topBar_H_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
         await this.dependency.wait(time)
         input.disabled = false
+        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: true })
     }
 
-    /* dependency based */
     addDependency(dependency) {
+        if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
+        if (!this.eventName) { (console.log({ eventName: this.eventName }, "not configured")); return }
         if (!this.dependency) {
             this.dependency = dependency
             this.init()
@@ -268,7 +275,7 @@ export class MagicBox extends HTMLElement {
         const objects = [this.outConfig, this.outCss, this.outLogic]
         let types = ["config", "css", "logic"]
         this.dependency.update(this, prop, value, objects, types)
-}
+    }
 
     async init() {
         this.#draw()
