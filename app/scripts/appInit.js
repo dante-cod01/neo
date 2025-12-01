@@ -18,17 +18,20 @@ const loadStyles = async () => {
 
 const loadInterface = async () => {
     const paths = {
-        listMenu: "./interface/loadListMenu.js"
+        listMenuPanel: "./interface/loadListPanel.js",
+        configMenuPanel: "./interface/loadconfigPanel.js",
     }
     let imports = {}
     for (const [key, value] of Object.entries(paths)) { imports[key] = await import(value) }
-    imports.listMenu.init(document.body)
+    
+    imports.listMenuPanel.init(document.body)
+    imports.configMenuPanel.init(document.body)
 }
 
 const main = async () => {
     loadListeners()
     await loadStyles()
-    loadInterface()
+    await loadInterface()
 }
 
 main()

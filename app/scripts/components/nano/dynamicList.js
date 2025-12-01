@@ -16,8 +16,7 @@ export class DynamicList extends HTMLElement {
             colorDefault: "blue",
             colorSelected1: "red",
             colorSelected2: "red",
-            paddingHor: "0px",
-            paddingVer: "0px",
+            padding: "0px",
             borderColor: "red",
             borderWidth: "0px",
             borderRadius: "0px",
@@ -76,7 +75,7 @@ export class DynamicList extends HTMLElement {
             }
 
             .main {
-                padding: var(--paddingVer) var(--paddingHor);
+                padding: var(--padding);
 
                 .listBox {
                     display: flex;

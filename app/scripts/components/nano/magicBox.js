@@ -20,9 +20,9 @@ export class MagicBox extends HTMLElement {
             titleFont: "initial",
             titleFontSize: "initial",
             titleColor: "blue",
+            contentBack: "transparent",
             closeIconSize: "30px",
             closeColor: "blue",
-            nodeBack: "blue",
             bottomBar_H: "30px",
             bottomBarBack: "red",
             transition: "2s ease-in-out"
@@ -32,7 +32,7 @@ export class MagicBox extends HTMLElement {
             panelSide: ["left", "right"],
             title: "Title",
             titleFontHref: "",
-            closeIcon: "close"
+            closeIcon: "tune"
         }
 
 
@@ -73,7 +73,7 @@ export class MagicBox extends HTMLElement {
                 </div>
             </section> 
             <section class="listContainer" node="list"></section>
-            <section class="bottomBar" node="bottomBar"></section>
+            <section class="bottomBar displayNone" node="bottomBar"></section>
         `
 
         style.textContent = `
@@ -150,8 +150,7 @@ export class MagicBox extends HTMLElement {
                    
                 .listContainer {
                     width: 100%;
-                    height: calc(100% - var(--topBar_H) - var(--bottomBar_H));
-                    background: var(--nodeBack);
+                    background: var(--contentBack);
                     overflow: hidden;
                 }
 
@@ -176,12 +175,14 @@ export class MagicBox extends HTMLElement {
             .opacity_50 {opacity: 0.3;}
             .opacity_1 {opacity: 1;}
             .radius_half {border-radius: calc(var(--topBar_H) / 2);}
+            .content_Max {height: calc(100% - var(--topBar_H));}
+            .content_BottomBar {height: calc(100% - var(--topBar_H) - var(--bottomBar_H));}
             :host(.topBar_H_width) {width: var(--topBar_H);}
             :host(.topBar_H_height) {height: var(--topBar_H);}
         `
     }
 
-    #configure = () => {
+    #getConfig = () => {
         this.outConfig = this.dependency.config(this.defaultConfig, this.entryConfig, "config")
         this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic")
         this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css")
@@ -192,7 +193,6 @@ export class MagicBox extends HTMLElement {
         const closeBox = this.dom.querySelector(".closeBox")
         const material = this.dom.querySelector(".material")
         boolean && closeBox.classList.replace("displayNone", "displayFlex")
-        !boolean && closeBox.classList.replace("displayFlex", "displayNone")
         material.textContent = this.outLogic.closeIcon
     }
 
@@ -207,7 +207,24 @@ export class MagicBox extends HTMLElement {
         const titleBox = this.dom.querySelector(".titleBox")
         const closeBox = this.dom.querySelector(".closeBox")
         this.outLogic.panelSide === "right" && moveLayer.prepend(closeBox)
-        this.outLogic.panelSide === "right" && (titleBox.classList.add("justifyEnd"))
+        this.outConfig.bottomBar === "right" && (titleBox.classList.add("justifyEnd"))
+    }
+
+    #bottomBar = () => {
+        const boolean = this.outConfig.bottomBar
+        const bottomBar = this.dom.querySelector(".bottomBar")
+        const listContainer = this.dom.querySelector(".listContainer")
+        boolean && bottomBar.classList.replace("displayNone", "displayFlex")
+        listContainer.classList.add(boolean ? "content_BottomBar" : "content_Max")
+        
+        console.log(listContainer)
+    }
+
+    #applyConf = () => {
+        this.#addCloseButtom(this.outConfig.closeButtom)
+        this.#addTitle(this.outLogic.title)
+        this.#configureSide()
+        this.#bottomBar()
     }
 
     #addReactivity = () => {
@@ -229,12 +246,16 @@ export class MagicBox extends HTMLElement {
         this.container.classList.remove("radius_half")
         this.classList.remove("topBar_H_width")
         await this.dependency.wait(time / 2)
+
+        title.classList.remove("displayNone")
+        title.offsetWidth /* hack css */
         title.classList.remove("opacity_0")
         await this.dependency.wait(time / 3)
-        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: false })
 
+        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: false })
         this.classList.remove("topBar_H_height")
         await this.dependency.wait(time)
+
         input.disabled = false
         this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_H", value: false })
     }
@@ -248,12 +269,14 @@ export class MagicBox extends HTMLElement {
         this.classList.add("topBar_H_height")
         title.classList.add("opacity_0")
         await this.dependency.wait(time)
+
+        title.classList.add("displayNone")
         this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_H", value: true })
-        
         this.classList.add("topBar_H_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
         await this.dependency.wait(time)
+
         input.disabled = false
         this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: true })
     }
@@ -279,10 +302,8 @@ export class MagicBox extends HTMLElement {
 
     async init() {
         this.#draw()
-        this.#configure()
-        this.#configureSide()
-        this.#addCloseButtom(this.outConfig.closeButtom)
-        this.#addTitle(this.outLogic.title)
+        this.#getConfig()
+        this.#applyConf()
         this.#addReactivity()
     }
 }
