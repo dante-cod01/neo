@@ -1,9 +1,9 @@
 import * as element from "../modules/element.js"
 import * as json from "../modules/json.js"
 
-const magicBox = async (box) => {
-    /* magic-box component */
-    const component = await import("../components/nano/magicBox.js")
+const drawPanelBox = async (box) => {
+    /* panel-box component */
+    const component = await import("../components/nano/panelBox.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
 
@@ -13,48 +13,46 @@ const magicBox = async (box) => {
     }
 
     const configCss = {
-        panelWidth: getComputedStyle(document.documentElement).getPropertyValue("--panelList_width"),
-        panelHeight: getComputedStyle(document.documentElement).getPropertyValue("--panelsHeight"),
-        panelRadius: "6px",
-        topBar_H: "30px",
-        topBarBack: "rgba(0, 0, 0, 0.6)",
-        contentBack: "rgba(0, 0, 0, 0.4)",
-        titleFont: "Anta",
-        titleFontSize: "14px",
-        titleColor: "rgb(200, 200, 200)",
-        closeIconSize: "16px",
-        closeColor: "rgb(200, 200, 200)",
-        bottomBar_H: "30px",
-        bottomBarBack: "rgba(0, 0, 0, 0.6)",
-        transition: getComputedStyle(document.documentElement).getPropertyValue("--panel_transition")
+        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_Width"),
+        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_Height"),
+        box_radius: "6px",
+        box_blur: "blur(2px)",
+        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_Transition"),
+        topBar_h: "34px",
+        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_Back"),
+        content_back: "rgba(0, 0, 0, 0.4)",
+        title_font: "Anta",
+        title_fontSize: "14px",
+        title_color: "rgb(200, 200, 200)",
+        closeIcon_size: "16px",
+        close_color: "rgba(200, 200, 200, 1)",
+        bottomBar_h: "34px",
+        bottomBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_Back"),
     }
 
     const configLogic = {
-        panelSide: "left",
+        panel_side: "left",
         title: "Components",
-        titleFontHref: componentFont_Href,
-        closeIcon: "menu"
+        title_fontHref: componentFont_Href,
+        close_icon: "menu"
     }
 
-    const magicBox = element.add(component.tag, box, "panelMenu panelLeft")
-    magicBox.entryConfig = config
-    magicBox.entryCss = configCss
-    magicBox.entryLogic = configLogic
-    magicBox.eventDom = document
-    magicBox.eventName = "listMenu"
-    magicBox.addDependency(new dependency())
-    return magicBox
+    const panelBox = element.add(component.tag, box, "panelMenu panelLeft")
+    panelBox.entryConfig = config
+    panelBox.entryCss = configCss
+    panelBox.entryLogic = configLogic
+    panelBox.eventDom = document
+    panelBox.eventName = "listMenu"
+    panelBox.addDependency(new dependency())
+    return panelBox
 }
 
-const dynamicList = async (box) => {
+const drawDynamicList = async (box) => {
     /* dynamic-list component */
     const component = await import("../components/nano/dynamicList.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
     const dataList = await json.get("./app/config/components/list.json")
     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
-
-    const config = {
-    }
 
     const configCss = {
         back: "transparent",
@@ -81,7 +79,6 @@ const dynamicList = async (box) => {
     }
 
     const dynamicList = element.add(component.tag, box)
-    dynamicList.entryConfig = config
     dynamicList.entryCss = configCss
     dynamicList.entryLogic = configLogic
     dynamicList.eventDom = document
@@ -93,7 +90,7 @@ const dynamicList = async (box) => {
 }
 
 export const init = async (box) => {
-    const panel = await magicBox(box)
+    const panel = await drawPanelBox(box)
     const panelNodes = panel.getNodes()
-    const list = await dynamicList(panelNodes.list)
+    const list = await drawDynamicList(panelNodes.list)
 }

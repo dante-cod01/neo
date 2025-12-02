@@ -3,9 +3,14 @@ export class DynamicList extends HTMLElement {
     constructor() {
         super()
         this.dom = this.attachShadow({ mode: "open" })
-
-        this.defaultConfig = {
-        }
+        /* received props */
+        this.entryCss
+        this.entryLogic
+        /* work props */
+        this.dependency
+        this.data
+        this.outCss = {}
+        this.outLogic = {}
 
         this.defaultCss = {
             back: "red",
@@ -32,19 +37,8 @@ export class DynamicList extends HTMLElement {
         }
 
         this.defaultLogic = {
-            titleFont_Href: false,
+            titleFont_Href: "",
         }
-
-        /* received props */
-        this.entryConfig = {}
-        this.entryCss = {}
-        this.entryLogic = {}
-        /* work props */
-        this.dependency
-        this.data
-        this.eventDom
-        this.eventName
-
     }
 
     #draw() {
@@ -185,7 +179,6 @@ export class DynamicList extends HTMLElement {
     }
 
     #configure = () => {
-        this.outConfig = this.dependency.config(this.defaultConfig, this.entryConfig, "config")
         this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic")
         this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css")
         this.dependency.addCssVars(this.outCss, this)

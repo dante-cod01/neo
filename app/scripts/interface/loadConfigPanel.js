@@ -1,8 +1,8 @@
 import * as element from "../modules/element.js"
 
-const magicBox = async (box) => {
-    /* magic-box component */
-    const component = await import("../components/nano/magicBox.js")
+const drawPanelBox = async (box) => {
+    /* panel-box component */
+    const component = await import("../components/nano/panelBox.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
 
@@ -11,20 +11,22 @@ const magicBox = async (box) => {
     }
 
     const configCss = {
-        panelWidth: getComputedStyle(document.documentElement).getPropertyValue("--panelList_width"),
-        panelHeight: getComputedStyle(document.documentElement).getPropertyValue("--panelsHeight"),
-        panelRadius: "6px",
-        topBar_H: "30px",
-        topBarBack: "rgba(0, 0, 0, 0.6)",
+        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_Width"),
+        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_Height"),
+        box_radius: "6px",
+        box_blur: "blur(2px)",
+        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_Transition"),
+        topBar_h: "30px",
+        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_Back"),
         contentBack: "rgba(0, 0, 0, 0.5)",
-        titleFont: "Anta",
-        titleFontSize: "14px",
-        titleColor: "rgba(190, 190, 190, 1)",
-        closeIconSize: "16px",
-        closeColor: "rgba(190, 190, 190, 1",
-        nodeBack: "transparent",
-        transition: getComputedStyle(document.documentElement).getPropertyValue("--panel_transition")
+        title_font: "Anta",
+        title_fontSize: "14px",
+        title_color: "rgba(190, 190, 190, 1)",
+        closeIcon_size: "16px",
+        close_color: "rgba(190, 190, 190, 1",
     }
+
+    document.body.style.transition = configCss.transition
 
     const configLogic = {
         panelSide: "right",
@@ -32,17 +34,17 @@ const magicBox = async (box) => {
 
     }
 
-    const magicBox = element.add(component.tag, box, "panelMenu panelRight")
-    magicBox.entryConfig = config
-    magicBox.entryCss = configCss
-    magicBox.entryLogic = configLogic
-    magicBox.eventDom = document
-    magicBox.eventName = "config"
+    const panelBox = element.add(component.tag, box, "panelMenu panelRight")
+    panelBox.entryConfig = config
+    panelBox.entryCss = configCss
+    panelBox.entryLogic = configLogic
+    panelBox.eventDom = document
+    panelBox.eventName = "config"
 
-    magicBox.addDependency(new dependency())
-    return magicBox
+    panelBox.addDependency(new dependency())
+    return panelBox
 }
 
 export const init = async (box) => {
-    const panel = await magicBox(box)
+    const panel = await drawPanelBox(box)
 }

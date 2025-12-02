@@ -3,7 +3,6 @@ body {
     width: 100vw;
     height: 100vh;
     background: grey;
-
     background: url("https://wallpapers.com/images/hd/scenic-view-of-faroe-islands-jdj06pr46tgkob59.jpg");
 
     .mainBox {
@@ -23,24 +22,23 @@ body {
 
     .panelMenu {
         position: absolute;
-        top: 10px;
+        top: var(--body_Padding);
     }
 
     .panelLeft {
-        left: 10px;
-        transition: var(--panel_transition);
+        left: var(--body_Padding);
     }
 
     .panelRight {
-        right: 10px;
-        transition: var(--panel_transition);
+        right: var(--body_Padding);
     }
 
-    .controlsBox {
+    .bars {
         position: absolute;
     }
 
-    .infoBox {
-        position: absolute;
+    .topBar {
+        top: var(--body_Padding);
+        left: calc(var(--panel_Width) + 20px);
     }
 }

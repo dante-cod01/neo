@@ -1,10 +1,19 @@
-export const tag = "magic-box"
-export class MagicBox extends HTMLElement {
+export const tag = "panel-box"
+export class PanelBox extends HTMLElement {
 
     constructor() {
         super()
 
         this.dom = this.attachShadow({ mode: "open" })
+        /* received props */
+        this.entryConfig
+        this.entryCss
+        this.entryLogic
+        /* work props */
+        this.dependency
+        this.outConfig = {}
+        this.outCss = {}
+        this.outLogic = {}
 
         this.defaultConfig = {
             closeButtom: false,
@@ -12,39 +21,29 @@ export class MagicBox extends HTMLElement {
         }
 
         this.defaultCss = {
-            panelWidth: "300px",
-            panelHeight: "100%",
-            panelRadius: "20px",
-            topBarBack: "red",
-            topBar_H: "50px",
-            titleFont: "initial",
-            titleFontSize: "initial",
-            titleColor: "blue",
-            contentBack: "transparent",
-            closeIconSize: "30px",
-            closeColor: "blue",
-            bottomBar_H: "30px",
-            bottomBarBack: "red",
-            transition: "2s ease-in-out"
+            box_w: "300px",
+            box_h: "100%",
+            box_blur: "blur(none)",
+            box_transition: "2s ease-in-out",
+            box_radius: "20px",
+            topBar_back: "red",
+            topBar_h: "50px",
+            title_font: "initial",
+            title_fontSize: "initial",
+            title_color: "blue",
+            content_back: "transparent",
+            closeIcon_size: "30px",
+            close_color: "blue",
+            bottomBar_h: "30px",
+            bottomBar_back: "red",
         }
 
         this.defaultLogic = {
             panelSide: ["left", "right"],
             title: "Title",
-            titleFontHref: "",
-            closeIcon: "tune"
+            title_fontHref: "",
+            close_icon: "question_mark"
         }
-
-
-        /* received props */
-        this.entryConfig = "props"
-        this.entryCss = "css"
-        this.entryLogic = "logic"
-        /* work props */
-        this.outConfig = {}
-        this.outCss = {}
-        this.outLogic = {}
-        this.dependency
     }
 
     #draw = () => {
@@ -84,23 +83,24 @@ export class MagicBox extends HTMLElement {
             }
 
             :host {
-                width: var(--panelWidth);
-                height: var(--panelHeight);
+                width: var(--box_w);
+                height: var(--box_h);
             }
 
             .main {
-                border-radius: var(--panelRadius);
+                border-radius: var(--box_radius);
+                backdrop-filter: var(--box_blur);
                 overFlow: hidden;
                 
                 .topBack {
                     width: 100%;
-                    height: var(--topBar_H);
-                    background: var(--topBarBack);
+                    height: var(--topBar_h);
+                    background: var(--topBar_back);
                 }
 
                 .topBar {
                     width: 100%;
-                    height: var(--topBar_H);
+                    height: var(--topBar_h);
 
                     .moveLayer {
                         left: 0;
@@ -110,21 +110,21 @@ export class MagicBox extends HTMLElement {
 
                         .titleBox {
                             display: flex;
-                            width: calc(100% - var(--topBar_H));
+                            width: calc(100% - var(--topBar_h));
                             height: 100%;
 
                             .title {
                                 width: fit-content;
-                                font-family: var(--titleFont);
-                                font-size: var(--titleFontSize);
-                                color: var(--titleColor);
+                                font-family: var(--title_font);
+                                font-size: var(--title_fontSize);
+                                color: var(--title_color);
                                 margin: 0 10px;
                             }
                         }
 
                         .closeBox {
-                            width: var(--topBar_H);
-                            height: var(--topBar_H);
+                            width: var(--topBar_h);
+                            height: var(--topBar_h);
 
                             .close {
                                 width: 30px;
@@ -134,8 +134,8 @@ export class MagicBox extends HTMLElement {
                                     width: fit-content;
                                     height: fit-content;
                                     font-family: "material symbols outlined";
-                                    font-size: var(--closeIconSize);
-                                    color: var(--closeColor);
+                                    font-size: var(--close_icon_size);
+                                    color: var(--close_color);
                                 }
 
                                 .hiddenInput {
@@ -150,14 +150,14 @@ export class MagicBox extends HTMLElement {
                    
                 .listContainer {
                     width: 100%;
-                    background: var(--contentBack);
+                    background: var(--content_back);
                     overflow: hidden;
                 }
 
                 .bottomBar {
                     width: 100%;
-                    height: var(--bottomBar_H);
-                    background: var(--bottomBarBack);
+                    height: var(--bottomBar_h);
+                    background: var(--bottomBar_back);
                     overflow: hidden;
                 }
             }
@@ -167,18 +167,18 @@ export class MagicBox extends HTMLElement {
             .center {display: flex; justify-content: center; align-items: center}
             .verticalAlign {display: flex; align-items: center;}
             .max {width: 100%; height: 100%;}
-            .transition {transition: var(--transition);}
+            .transition {transition: var(--box_transition);}
             .displayFlex {display: flex;}
             .displayNone {display: none;}
             .justifyEnd {justify-content: flex-end;}
             .opacity_0 {opacity: 0;}
             .opacity_50 {opacity: 0.3;}
             .opacity_1 {opacity: 1;}
-            .radius_half {border-radius: calc(var(--topBar_H) / 2);}
-            .content_Max {height: calc(100% - var(--topBar_H));}
-            .content_BottomBar {height: calc(100% - var(--topBar_H) - var(--bottomBar_H));}
-            :host(.topBar_H_width) {width: var(--topBar_H);}
-            :host(.topBar_H_height) {height: var(--topBar_H);}
+            .radius_half {border-radius: calc(var(--topBar_h) / 2);}
+            .content_Max {height: calc(100% - var(--topBar_h));}
+            .content_BottomBar {height: calc(100% - var(--topBar_h) - var(--bottomBar_h));}
+            :host(.topBar_h_width) {width: var(--topBar_h);}
+            :host(.topBar_h_height) {height: var(--topBar_h);}
         `
     }
 
@@ -193,12 +193,12 @@ export class MagicBox extends HTMLElement {
         const closeBox = this.dom.querySelector(".closeBox")
         const material = this.dom.querySelector(".material")
         boolean && closeBox.classList.replace("displayNone", "displayFlex")
-        material.textContent = this.outLogic.closeIcon
+        material.textContent = this.outLogic.close_icon
     }
 
     #addTitle = (string) => {
         const title = this.dom.querySelector(".title")
-        this.outLogic.titleFontHref && this.dependency.addLink(this.dom, "stylesheet", this.outLogic.titleFontHref)
+        this.outLogic.title_fontHref && this.dependency.addLink(this.dom, "stylesheet", this.outLogic.title_fontHref)
         title.textContent = string
     }
 
@@ -207,7 +207,7 @@ export class MagicBox extends HTMLElement {
         const titleBox = this.dom.querySelector(".titleBox")
         const closeBox = this.dom.querySelector(".closeBox")
         this.outLogic.panelSide === "right" && moveLayer.prepend(closeBox)
-        this.outConfig.bottomBar === "right" && (titleBox.classList.add("justifyEnd"))
+        this.outLogic.panelSide === "right" && titleBox.classList.add("justifyEnd")
     }
 
     #bottomBar = () => {
@@ -216,8 +216,10 @@ export class MagicBox extends HTMLElement {
         const listContainer = this.dom.querySelector(".listContainer")
         boolean && bottomBar.classList.replace("displayNone", "displayFlex")
         listContainer.classList.add(boolean ? "content_BottomBar" : "content_Max")
-        
-        console.log(listContainer)
+    }
+
+    #applyTransition = () => {
+        this.style.transition = this.outCss.transition
     }
 
     #applyConf = () => {
@@ -225,6 +227,7 @@ export class MagicBox extends HTMLElement {
         this.#addTitle(this.outLogic.title)
         this.#configureSide()
         this.#bottomBar()
+        this.#applyTransition()
     }
 
     #addReactivity = () => {
@@ -244,7 +247,7 @@ export class MagicBox extends HTMLElement {
 
         topBack.classList.remove("opacity_50")
         this.container.classList.remove("radius_half")
-        this.classList.remove("topBar_H_width")
+        this.classList.remove("topBar_h_width")
         await this.dependency.wait(time / 2)
 
         title.classList.remove("displayNone")
@@ -253,7 +256,7 @@ export class MagicBox extends HTMLElement {
         await this.dependency.wait(time / 3)
 
         this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: false })
-        this.classList.remove("topBar_H_height")
+        this.classList.remove("topBar_h_height")
         await this.dependency.wait(time)
 
         input.disabled = false
@@ -266,13 +269,13 @@ export class MagicBox extends HTMLElement {
         const title = this.dom.querySelector(".title")
         const time = this.dependency.convertTransition(this.outCss.transition)
 
-        this.classList.add("topBar_H_height")
+        this.classList.add("topBar_h_height")
         title.classList.add("opacity_0")
         await this.dependency.wait(time)
 
         title.classList.add("displayNone")
         this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_H", value: true })
-        this.classList.add("topBar_H_width")
+        this.classList.add("topBar_h_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
         await this.dependency.wait(time)
@@ -308,4 +311,4 @@ export class MagicBox extends HTMLElement {
     }
 }
 
-customElements.define("magic-box", MagicBox)
+customElements.define("panel-box", PanelBox)
