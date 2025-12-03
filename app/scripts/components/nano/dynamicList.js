@@ -179,8 +179,8 @@ export class DynamicList extends HTMLElement {
     }
 
     #configure = () => {
-        this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic")
-        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css")
+        this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic", this)
+        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css", this)
         this.dependency.addCssVars(this.outCss, this)
     }
 
@@ -278,4 +278,4 @@ export class DynamicList extends HTMLElement {
     }
 }
 
-customElements.define("dynamic-list", DynamicList)
+customElements.define(tag, DynamicList)

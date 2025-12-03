@@ -48,13 +48,13 @@ export class ComponentBase {
         }
     }
 
-    config(defaultData, newData, type) {
+    config(defaultData, newData, type, dom = null) {
         let checked = this.#convertToObj(defaultData)
 
         if (Object.entries(newData).length) {
             Object.entries(newData).forEach(([key, value]) => {
                 if (!this.isValidProp(key, defaultData)) {
-                    console.log({ type }, key, "not valid")
+                    console.log({ type }, key, "not valid", {dom})
                     return
                 }
                 if (!this.isValidValue(value, defaultData[key], type)) {

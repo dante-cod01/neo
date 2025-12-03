@@ -22,15 +22,15 @@ body {
 
     .panelMenu {
         position: absolute;
-        top: var(--body_Padding);
+        top: var(--body_padding);
     }
 
     .panelLeft {
-        left: var(--body_Padding);
+        left: var(--body_padding);
     }
 
     .panelRight {
-        right: var(--body_Padding);
+        right: var(--body_padding);
     }
 
     .bars {
@@ -38,7 +38,7 @@ body {
     }
 
     .topBar {
-        top: var(--body_Padding);
-        left: calc(var(--panel_Width) + 20px);
+        top: var(--body_padding);
+        left: var(--bar_left);
     }
 }

@@ -39,7 +39,7 @@ export class PanelBox extends HTMLElement {
         }
 
         this.defaultLogic = {
-            panelSide: ["left", "right"],
+            panel_side: ["left", "right"],
             title: "Title",
             title_fontHref: "",
             close_icon: "question_mark"
@@ -183,9 +183,9 @@ export class PanelBox extends HTMLElement {
     }
 
     #getConfig = () => {
-        this.outConfig = this.dependency.config(this.defaultConfig, this.entryConfig, "config")
-        this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic")
-        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css")
+        this.outConfig = this.dependency.config(this.defaultConfig, this.entryConfig, "config", this)
+        this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic", this)
+        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css", this)
         this.dependency.addCssVars(this.outCss, this)
     }
 
@@ -206,8 +206,8 @@ export class PanelBox extends HTMLElement {
         const moveLayer = this.dom.querySelector(".moveLayer")
         const titleBox = this.dom.querySelector(".titleBox")
         const closeBox = this.dom.querySelector(".closeBox")
-        this.outLogic.panelSide === "right" && moveLayer.prepend(closeBox)
-        this.outLogic.panelSide === "right" && titleBox.classList.add("justifyEnd")
+        this.outLogic.panel_side === "right" && moveLayer.prepend(closeBox)
+        this.outLogic.panel_side === "right" && titleBox.classList.add("justifyEnd")
     }
 
     #bottomBar = () => {
@@ -219,7 +219,7 @@ export class PanelBox extends HTMLElement {
     }
 
     #applyTransition = () => {
-        this.style.transition = this.outCss.transition
+        this.style.transition = this.outCss.box_transition
     }
 
     #applyConf = () => {
@@ -243,8 +243,9 @@ export class PanelBox extends HTMLElement {
         input.disabled = true
         const topBack = this.dom.querySelector(".topBack")
         const title = this.dom.querySelector(".title")
-        const time = this.dependency.convertTransition(this.outCss.transition)
+        const time = this.dependency.convertTransition(this.outCss.box_transition)
 
+        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "open_W", value: false })
         topBack.classList.remove("opacity_50")
         this.container.classList.remove("radius_half")
         this.classList.remove("topBar_h_width")
@@ -255,19 +256,18 @@ export class PanelBox extends HTMLElement {
         title.classList.remove("opacity_0")
         await this.dependency.wait(time / 3)
 
-        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: false })
         this.classList.remove("topBar_h_height")
         await this.dependency.wait(time)
 
         input.disabled = false
-        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_H", value: false })
+        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "open_H", value: false })
     }
 
     async close(input) {
         input.disabled = true
         const topBack = this.dom.querySelector(".topBack")
         const title = this.dom.querySelector(".title")
-        const time = this.dependency.convertTransition(this.outCss.transition)
+        const time = this.dependency.convertTransition(this.outCss.box_transition)
 
         this.classList.add("topBar_h_height")
         title.classList.add("opacity_0")
@@ -311,4 +311,4 @@ export class PanelBox extends HTMLElement {
     }
 }
 
-customElements.define("panel-box", PanelBox)
+customElements.define(tag, PanelBox)

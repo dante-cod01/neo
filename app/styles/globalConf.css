@@ -6,14 +6,20 @@
 }
 
 :root {
-    --body_Padding: 5px;
-    --panel_Width: 200px;
-    --panel_Height: calc(100% - var(--body_Padding) * 2);
-    --bar_Width: calc(100% - (var(--panel_Width) * 2) - 40px);
-    --bar_Height: 30px;
-    --main_Back: rgba(0, 0, 0, 0.6);
-    --light_Transition: 600ms ease-in-out;
+    --body_padding: 5px;
+    --panel_w: 200px;
+    --panel_h: calc(100% - var(--body_padding) * 2);
+    --bar_w: calc(100% - (var(--panel_w) + var(--body_padding) * 2) * 2 - 120px);
+    --bar_h: 30px;
+    --main_back: rgba(0, 0, 0, 0.6);
+    --light_transition: 600ms ease-in-out;
 
     /* colors */
-    --darkCrystal: rgba(30, 30, 30, 0.8);
+    --dark_crystal: rgba(30, 30, 30, 0.8);
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

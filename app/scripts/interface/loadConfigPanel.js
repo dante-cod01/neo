@@ -11,14 +11,14 @@ const drawPanelBox = async (box) => {
     }
 
     const configCss = {
-        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_Width"),
-        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_Height"),
+        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_w"),
+        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_h"),
         box_radius: "6px",
         box_blur: "blur(2px)",
-        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_Transition"),
-        topBar_h: "30px",
-        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_Back"),
-        contentBack: "rgba(0, 0, 0, 0.5)",
+        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition"),
+        topBar_h: getComputedStyle(document.documentElement).getPropertyValue("--bar_h"),
+        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
+        content_back: "rgba(0, 0, 0, 0.5)",
         title_font: "Anta",
         title_fontSize: "14px",
         title_color: "rgba(190, 190, 190, 1)",
@@ -29,7 +29,7 @@ const drawPanelBox = async (box) => {
     document.body.style.transition = configCss.transition
 
     const configLogic = {
-        panelSide: "right",
+        panel_side: "right",
         title: "Config",
 
     }

@@ -13,13 +13,13 @@ const drawPanelBox = async (box) => {
     }
 
     const configCss = {
-        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_Width"),
-        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_Height"),
+        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_w"),
+        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_h"),
         box_radius: "6px",
         box_blur: "blur(2px)",
-        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_Transition"),
-        topBar_h: "34px",
-        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_Back"),
+        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition"),
+        topBar_h: getComputedStyle(document.documentElement).getPropertyValue("--bar_h"),
+        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
         content_back: "rgba(0, 0, 0, 0.4)",
         title_font: "Anta",
         title_fontSize: "14px",
@@ -27,7 +27,7 @@ const drawPanelBox = async (box) => {
         closeIcon_size: "16px",
         close_color: "rgba(200, 200, 200, 1)",
         bottomBar_h: "34px",
-        bottomBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_Back"),
+        bottomBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
     }
 
     const configLogic = {
