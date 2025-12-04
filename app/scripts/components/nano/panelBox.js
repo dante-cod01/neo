@@ -11,6 +11,7 @@ export class PanelBox extends HTMLElement {
         this.entryLogic
         /* work props */
         this.dependency
+        this.id
         this.outConfig = {}
         this.outCss = {}
         this.outLogic = {}
@@ -245,22 +246,21 @@ export class PanelBox extends HTMLElement {
         const title = this.dom.querySelector(".title")
         const time = this.dependency.convertTransition(this.outCss.box_transition)
 
-        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "open_W", value: false })
+        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: true })
         topBack.classList.remove("opacity_50")
         this.container.classList.remove("radius_half")
         this.classList.remove("topBar_h_width")
         await this.dependency.wait(time / 2)
 
+        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: true })
         title.classList.remove("displayNone")
         title.offsetWidth /* hack css */
         title.classList.remove("opacity_0")
         await this.dependency.wait(time / 3)
-
         this.classList.remove("topBar_h_height")
         await this.dependency.wait(time)
 
         input.disabled = false
-        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "open_H", value: false })
     }
 
     async close(input) {
@@ -269,19 +269,19 @@ export class PanelBox extends HTMLElement {
         const title = this.dom.querySelector(".title")
         const time = this.dependency.convertTransition(this.outCss.box_transition)
 
+        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: false })
         this.classList.add("topBar_h_height")
         title.classList.add("opacity_0")
         await this.dependency.wait(time)
 
+        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: false })
         title.classList.add("displayNone")
-        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_H", value: true })
         this.classList.add("topBar_h_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
         await this.dependency.wait(time)
 
         input.disabled = false
-        this.dependency.sendEvent(this.eventDom, this.eventName, { type: "close_W", value: true })
     }
 
     addDependency(dependency) {

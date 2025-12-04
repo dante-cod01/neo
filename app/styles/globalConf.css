@@ -9,8 +9,11 @@
     --body_padding: 5px;
     --panel_w: 200px;
     --panel_h: calc(100% - var(--body_padding) * 2);
-    --bar_w: calc(100% - (var(--panel_w) + var(--body_padding) * 2) * 2 - 120px);
+
+    --bar_w: calc(100% - var(--bar_left) * 2);
     --bar_h: 30px;
+    --bar_left: calc(var(--panel_w) + var(--body_padding) * 2 + 40px);
+
     --main_back: rgba(0, 0, 0, 0.6);
     --light_transition: 600ms ease-in-out;
 

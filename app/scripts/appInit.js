@@ -32,6 +32,7 @@ const loadInterface = async () => {
 
 const main = async () => {
     loadListeners()
+
     await loadStyles()
     await loadInterface()
 }

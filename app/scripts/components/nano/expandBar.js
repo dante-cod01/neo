@@ -13,9 +13,9 @@ export class ExpandBar extends HTMLElement {
         this.defaultCss = {
             box_w: "200px",
             box_h: "200px",
+            box_w_max: "100px",
             box_back: "red",
             box_radius: "0px",
-            open_leftWidth: "120%",
             transition: "3s"
         }
     }
@@ -32,7 +32,7 @@ export class ExpandBar extends HTMLElement {
         const style = this.dependency.add("style", this.dom)
 
         this.container.innerHTML = `
-            <div class="colorLayer relative max radius transition"></div>
+            <div class="colorLayer relative radius transition close"></div>
             <div class="contentLayer absolute max"></div>
         `
 
@@ -55,10 +55,11 @@ export class ExpandBar extends HTMLElement {
                 border: 1px solid red;
 
                 .colorLayer {
+                    height: 100%;
                     background: var(--box_back);  
                 }
 
-                .contentLayer {
+                .contentLayer { 
 /*                     border: 1px solid blue;
  */                }
             }
@@ -69,7 +70,11 @@ export class ExpandBar extends HTMLElement {
             .center {display: flex; justify-content: center; align-items: center;}
             .radius {border-radius: var(--box_radius);}
             .transition {transition: var(--transition);}
-            .openLeft {width: 110%}
+            /* colorLayer */
+            .close {width: 100%; left: 0px;}
+            .openLeft {width: calc(100% + var(--box_w_max)); left: calc(var(--box_w_max) * -1);}
+            .openRight {width: calc(100% + var(--box_w_max));}
+            .bothOpen {width: calc(100% + var(--box_w_max) * 2); left: calc(var(--box_w_max) * -1);}
         `
     }
 
@@ -78,18 +83,19 @@ export class ExpandBar extends HTMLElement {
         this.dependency.addCssVars(this.outCss, this)
     }
 
-    expand(boolean, mode, calc) {
-        const layerColor = this.dom.querySelector(".colorLayer")
-        if (boolean) {
-            if (mode === "left") {
-                layerColor.classList.add("openLeft")
-            }
-        }
-    }
-
     #init() {
+        this.dependency.sendEvent(this.eventDom, this.eventName, "preLoaded")
         this.#configure()
         this.#draw()
+    }
+
+    expand(mode = null) {
+        const colorLayer = this.dom.querySelector(".colorLayer")
+        colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
+
+        if (mode === "left") colorLayer.classList.add("openLeft")
+        if (mode === "right") colorLayer.classList.add("openRight")
+        if (mode === "both") colorLayer.classList.add("bothOpen")
     }
 }
 customElements.define(tag, ExpandBar)

@@ -42,7 +42,8 @@ const drawPanelBox = async (box) => {
     panelBox.entryCss = configCss
     panelBox.entryLogic = configLogic
     panelBox.eventDom = document
-    panelBox.eventName = "listMenu"
+    panelBox.eventName = "panel"
+    panelBox.id = "left"
     panelBox.addDependency(new dependency())
     return panelBox
 }
