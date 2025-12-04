@@ -18,6 +18,8 @@ const drawTopBar = async (box) => {
     topBar.eventDom = document
     topBar.eventName = "topBar"
     topBar.addDependency(new dependency())
+    topBar.addNodes(5)
+    console.log(topBar.getNodes())
     return topBar
 }
 
