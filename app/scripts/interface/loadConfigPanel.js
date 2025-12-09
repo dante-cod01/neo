@@ -4,44 +4,43 @@ const drawPanelBox = async (box) => {
     /* panel-box component */
     const component = await import("../components/nano/panelBox.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
-    const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
 
-    const config = {
-        closeButtom: true
-    }
+    const links = [
+        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
+        { type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
+    ]
 
-    const configCss = {
-        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_w"),
-        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_h"),
+    const css = {
+        box_width: getComputedStyle(document.documentElement).getPropertyValue("--panel_width"),
+        box_height: getComputedStyle(document.documentElement).getPropertyValue("--panel_height"),
         box_radius: "6px",
         box_blur: "blur(2px)",
         box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition"),
-        topBar_h: getComputedStyle(document.documentElement).getPropertyValue("--bar_h"),
+        topBar_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
         topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
         content_back: getComputedStyle(document.documentElement).getPropertyValue("--dark_crystal_light"),
         title_font: "Anta",
         title_fontSize: "14px",
         title_color: "rgba(190, 190, 190, 1)",
-        closeIcon_size: "16px",
-        close_color: "rgba(190, 190, 190, 1",
+        icon_size: "16px",
+        icon_color: "rgba(190, 190, 190, 1",
     }
 
-    document.body.style.transition = configCss.transition
+    document.body.style.transition = css.transition
 
-    const configLogic = {
-        panel_side: "right",
+    const logic = {
+        buttom: true,
+        side: "right",
         title: "Config",
-
+        icon: "tune"
     }
 
     const panelBox = element.add(component.tag, box, "panelMenu panelRight")
-    panelBox.entryConfig = config
-    panelBox.entryCss = configCss
-    panelBox.entryLogic = configLogic
+    panelBox.css = css
+    panelBox.logic = logic
     panelBox.eventDom = document
-    panelBox.id = "right"
     panelBox.eventName = "panel"
-
+    panelBox.id = "right"
     panelBox.addDependency(new dependency())
     return panelBox
 }

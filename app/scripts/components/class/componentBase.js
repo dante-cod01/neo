@@ -62,6 +62,7 @@ export class ComponentBase {
     }
 
     addLinks(dom, links) {
+        if (!links) return
         const loadedLinks = Array.from(document.head.querySelectorAll("link"))
 
         links.forEach(item => {

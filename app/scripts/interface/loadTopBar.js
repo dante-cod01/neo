@@ -1,19 +1,20 @@
 import * as element from "../modules/element.js"
 
 const drawTopBar = async (box, dependency) => {
+    /* expand-bar component */
     const component = await import("../components/nano/expandBar.js")
 
-    const configCss = {
-        box_w: getComputedStyle(document.documentElement).getPropertyValue("--bar_w"),
-        box_h: getComputedStyle(document.documentElement).getPropertyValue("--bar_h"),
-        box_w_max: "130px",
+    const css = {
+        box_width: getComputedStyle(document.documentElement).getPropertyValue("--bar_width"),
+        box_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
+        box_width_max: "130px",
         box_back: getComputedStyle(document.documentElement).getPropertyValue("--dark_crystal_light"),
         box_radius: "6px",
         transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition")
     }
 
     const topBar = element.add(component.tag, box, "bars topBar", "topBar")
-    topBar.entryCss = configCss
+    topBar.css = css
     topBar.eventDom = document
     topBar.eventName = "topBar"
     topBar.addDependency(new dependency())
@@ -64,5 +65,5 @@ export const init = async (box) => {
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const topBar = await drawTopBar(box, dependency)
-    const backChanger = await drawBackChanger(topBar.getNodes().node_1, dependency)
-}
+/*     const backChanger = await drawBackChanger(topBar.getNodes().node_1, dependency)
+ */}

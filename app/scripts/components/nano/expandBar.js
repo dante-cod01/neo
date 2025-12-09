@@ -4,16 +4,16 @@ export class ExpandBar extends HTMLElement {
         super()
 
         this.dom = this.attachShadow({ mode: "open" })
-        /* received props */
-        this.entryCss
-        /* work props */
-        this.dependency
-        this.outCss = {}
+        this.css
+        this.base
+        this.nodes
+        this.eventDom
+        this.eventName
 
         this.defaultCss = {
-            box_w: "200px",
-            box_h: "200px",
-            box_w_max: "100px",
+            box_width: "200px",
+            box_height: "200px",
+            box_width_max: "100px",
             box_back: "red",
             box_radius: "0px",
             transition: "1s"
@@ -21,8 +21,8 @@ export class ExpandBar extends HTMLElement {
     }
 
     #draw() {
-        this.container = this.dependency.add("div", this.dom, "main relative max")
-        const style = this.dependency.add("style", this.dom)
+        this.container = this.base.add("div", this.dom, "main relative max")
+        const style = this.base.add("style", this.dom)
 
         this.container.innerHTML = `
             <div class="colorLayer relative transition max close normalRadius"></div>
@@ -38,8 +38,8 @@ export class ExpandBar extends HTMLElement {
 
             :host {
                 display: flex;
-                width: var(--box_w);
-                height: var(--box_h);
+                width: var(--box_width);
+                height: var(--box_height);
 
                 --radiusMax: none;
             }
@@ -56,23 +56,23 @@ export class ExpandBar extends HTMLElement {
             .transition {transition: var(--transition);}
             /* colorLayer */
             .normalRadius {border-radius: var(--box_radius);}
-            .lateralRadius {border-radius: var(--box_h);}
+            .lateralRadius {border-radius: var(--box_height);}
             .opacityMax {opacity: 1;}
             .opacityHalf {opacity: 0.5;}
             .close {width: 100%; left: 0px;}
-            .openLeft {width: calc(100% + var(--box_w_max)); left: calc(var(--box_w_max) * -1);}
-            .openRight {width: calc(100% + var(--box_w_max));}
-            .bothOpen {width: calc(100% + var(--box_w_max) * 2); left: calc(var(--box_w_max) * -1);}
+            .openLeft {width: calc(100% + var(--box_width_max)); left: calc(var(--box_width_max) * -1);}
+            .openRight {width: calc(100% + var(--box_width_max));}
+            .bothOpen {width: calc(100% + var(--box_width_max) * 2); left: calc(var(--box_width_max) * -1);}
         `
     }
 
     #configure = () => {
-        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css", this)
-        this.dependency.addCssVars(this.outCss, this)
+        this.outCss = this.base.config(this.defaultCss, this.css, "css", this)
+        this.base.cssVar(this.outCss, this)
     }
 
     #init() {
-        this.dependency.sendEvent(this.eventDom, this.eventName, "preLoaded")
+        this.base.sendEvent(this.eventDom, this.eventName, "preLoaded")
         this.#configure()
         this.#draw()
     }
@@ -88,8 +88,8 @@ export class ExpandBar extends HTMLElement {
     }
 
     addDependency(dependency) {
-        if (!this.dependency) {
-            this.dependency = dependency
+        if (!this.base) {
+            this.base = dependency
             this.#init()
         }
     }
@@ -97,9 +97,10 @@ export class ExpandBar extends HTMLElement {
     addNodes = (number) => {
         const nodesLayer = this.dom.querySelector(".nodesLayer")
         for (let i = 0; i < Number(number); i++) {
-            const node = this.dependency.add("div", nodesLayer)
+            const node = this.base.add("div", nodesLayer)
             node.setAttribute("node", "node_" + i)
         }
+        this.nodes = this.base.getNodes(this)
     }
 
     expand(mode = null) {
@@ -113,7 +114,7 @@ export class ExpandBar extends HTMLElement {
     }
 
     getNodes() {
-        return this.dependency.getNodes(this.dom)
+        return this.base.getNodes(this.dom)
     }
 }
 customElements.define(tag, ExpandBar)

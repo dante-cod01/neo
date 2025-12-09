@@ -30,9 +30,9 @@ const drawPanelBox = async (box) => {
     }
 
     const logic = {
-        closeButtom: true,
-        bottomBar: true,
-        panel_side: "left",
+        buttom: true,
+        bottombar: true,
+        side: "left",
         title: "Components",
         icon: "menu"
     }
@@ -60,21 +60,21 @@ const drawDynamicList = async (box) => {
 
     const css = {
         back: "transparent",
-        backSelected1: "rgba(50, 173, 255, 0.4)",
-        backSelected2: "rgba(37, 188, 196, 0.4)",
-        backSelected3: "rgba(255, 255, 255, 0.4)",
-        pointerColor: "rgba(50, 173, 255, 0.17)",
-        colorDefault: "rgba(153, 153, 153, 1)",
-        colorSelected1: "whitesmoke",
-        colorSelected2: "whitesmoke",
-        borderColor: "rgba(255, 255, 255, 0.5)",
-        borderRadius: "4px",
-        sectionBack: "transparent",
-        title_H: "24px",
-        titleFont: "Anta",
-        titleFontSize: "12px",
-        titleColor: "rgb(200, 200, 200)",
-        listItem_H: "24px",
+        back_selected1: "rgba(50, 173, 255, 0.4)",
+        back_selected2: "rgba(37, 188, 196, 0.4)",
+        back_selected3: "rgba(255, 255, 255, 0.4)",
+        pointer_color: "rgba(50, 173, 255, 0.17)",
+        color_default: "rgba(153, 153, 153, 1)",
+        color_selected1: "whitesmoke",
+        color_selected2: "whitesmoke",
+        border_color: "rgba(255, 255, 255, 0.5)",
+        border_radius: "4px",
+        section_back: "transparent",
+        title_height: "24px",
+        title_font: "Anta",
+        title_fontSize: "12px",
+        title_color: "rgb(200, 200, 200)",
+        li_height: "24px",
         transition: "400ms ease-in-out",
     }
 

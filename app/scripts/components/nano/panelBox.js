@@ -34,9 +34,9 @@ export class PanelBox extends HTMLElement {
         }
 
         this.logic = {
-            closeButtom: false,
+            buttom: false,
             bottomBar: false,
-            panel_side: ["left", "right"],
+            side: ["left", "right"],
             title: "Title",
             icon: "menu",
         }
@@ -198,8 +198,8 @@ export class PanelBox extends HTMLElement {
         const moveLayer = this.dom.querySelector(".moveLayer")
         const titleBox = this.dom.querySelector(".titleBox")
         const closeBox = this.dom.querySelector(".closeBox")
-        this.logic.panel_side === "right" && moveLayer.prepend(closeBox)
-        this.logic.panel_side === "right" && titleBox.classList.add("justifyEnd")
+        this.logic.side === "right" && moveLayer.prepend(closeBox)
+        this.logic.side === "right" && titleBox.classList.add("justifyEnd")
     }
 
     #bottomBar = () => {
@@ -216,7 +216,7 @@ export class PanelBox extends HTMLElement {
 
     #applyConf = () => {
         this.#getLinks()
-        this.#addCloseButtom(this.logic.closeButtom)
+        this.#addCloseButtom(this.logic.buttom)
         this.#addTitle(this.logic.title)
         this.#configureSide()
         this.#bottomBar()
