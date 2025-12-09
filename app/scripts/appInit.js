@@ -26,9 +26,9 @@ const loadInterface = async () => {
     let imports = {}
     for (const [key, value] of Object.entries(paths)) { imports[key] = await import(value) }
     imports.listMenuPanel.init(document.body)
-    imports.configMenuPanel.init(document.body)
+/*     imports.configMenuPanel.init(document.body)
     imports.topPanel.init(document.body)
-}
+ */}
 
 const main = async () => {
     loadListeners()

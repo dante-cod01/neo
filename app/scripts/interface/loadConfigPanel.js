@@ -18,7 +18,7 @@ const drawPanelBox = async (box) => {
         box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition"),
         topBar_h: getComputedStyle(document.documentElement).getPropertyValue("--bar_h"),
         topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
-        content_back: "rgba(0, 0, 0, 0.5)",
+        content_back: getComputedStyle(document.documentElement).getPropertyValue("--dark_crystal_light"),
         title_font: "Anta",
         title_fontSize: "14px",
         title_color: "rgba(190, 190, 190, 1)",

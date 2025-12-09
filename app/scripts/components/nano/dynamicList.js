@@ -3,14 +3,10 @@ export class DynamicList extends HTMLElement {
     constructor() {
         super()
         this.dom = this.attachShadow({ mode: "open" })
-        /* received props */
-        this.entryCss
-        this.entryLogic
-        /* work props */
+        /* entry props */
+        this.css
         this.dependency
         this.data
-        this.outCss = {}
-        this.outLogic = {}
 
         this.defaultCss = {
             back: "red",
@@ -34,10 +30,6 @@ export class DynamicList extends HTMLElement {
             transition: "1s",
             transitionFast: "500ms ease-in-out",
             expandBorderColor: "rgba(255, 255, 255, 0.24)"
-        }
-
-        this.defaultLogic = {
-            titleFont_Href: "",
         }
     }
 
@@ -179,9 +171,8 @@ export class DynamicList extends HTMLElement {
     }
 
     #configure = () => {
-        this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic", this)
-        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css", this)
-        this.dependency.addCssVars(this.outCss, this)
+        this.css = this.dependency.config(this.defaultCss, this.css, "css", this)
+        this.dependency.cssVar(this.css, this)
     }
 
     #drawList(json) {

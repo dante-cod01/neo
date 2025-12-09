@@ -14,14 +14,13 @@ export class ComponentBase {
         return prop in defaultData
     }
 
-    isValidValue(value, defaultProp, type) {
-        let result = false
-        if (type === "config" || type === "css") { result = typeof (value) === typeof (defaultProp) ? true : false }
-        if (type === "logic") result = typeof (value) === "string" ? true : false
-        return result
+    isValidValue(value, defaultProp) {
+        if (typeof (value) === typeof (defaultProp)) return true
+        if (typeof (defaultProp) === "object" && defaultProp.includes(value)) return true
+        return false
     }
 
-    addCssVars(obj, dom) {
+    cssVar(obj, dom) {
         Object.entries(obj).forEach(([key, value]) => {
             dom.style.setProperty(`--${key}`, value)
         })
@@ -42,28 +41,27 @@ export class ComponentBase {
 
         if (this.isValidValue(value, obj[prop], objType)) {
             obj[prop] = value
-            objType === "css" && (this.addCssVars({[prop]: value}, dom))
+            objType === "css" && (this.cssVar({ [prop]: value }, dom))
         } else {
             console.log("update not valid value", { prop })
         }
     }
 
-    config(defaultData, newData, type, dom = null) {
-        let checked = this.#convertToObj(defaultData)
-
+    config = (defaultData, newData, type, dom = null) => {
+        let out = this.#convertToObj(defaultData)
         if (Object.entries(newData).length) {
             Object.entries(newData).forEach(([key, value]) => {
                 if (!this.isValidProp(key, defaultData)) {
-                    console.log({ type }, key, "not valid", {dom})
+                    console.log({ type }, key, "not valid", { dom })
                     return
                 }
                 if (!this.isValidValue(value, defaultData[key], type)) {
                     console.log({ type }, key, "value not valid using default")
                 }
-                checked[key] = value
+                out[key] = value
             })
         }
-        return checked
+        return out
     }
 
     add(tag, box, classN = null, id = null) {
@@ -74,17 +72,23 @@ export class ComponentBase {
         return element
     }
 
-    addLink(dom, rel, href) {
-        const link = document.createElement("link")
-        link.setAttribute("rel", rel)
-        link.setAttribute("href", href)
-        dom.appendChild(link)
+    addLinks(dom, links) {
+        const loadedLinks = Array.from(document.head.querySelectorAll("link"))
 
-        const previousLink = Array.from(document.head.querySelectorAll("link")).some(item => item.getAttribute("href") === href)
-        if (!previousLink) {
-            const globalLink = link.cloneNode()
-            document.head.appendChild(globalLink)
-        }
+        links.forEach(item => {
+            if (item.type === "font") {
+                const link = document.createElement("link")
+                link.setAttribute("rel", "stylesheet")
+                link.setAttribute("href", item.href)
+                dom.appendChild(link)
+
+                const previousLink = loadedLinks.some(item => item.getAttribute("href") === item.href)
+                if (!previousLink) {
+                    const globalLink = link.cloneNode()
+                    document.head.appendChild(globalLink)
+                }
+            }
+        })
     }
 
     getParentInfo(element) {
@@ -120,6 +124,6 @@ export class ComponentBase {
     }
 
     sendEvent(dom, eventName, detail) {
-        dom.dispatchEvent(new CustomEvent(eventName, {"detail": detail}))
+        dom.dispatchEvent(new CustomEvent(eventName, { "detail": detail }))
     }
 }

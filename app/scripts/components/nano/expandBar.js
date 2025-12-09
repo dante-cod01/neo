@@ -20,20 +20,13 @@ export class ExpandBar extends HTMLElement {
         }
     }
 
-    addDependency(dependency) {
-        if (!this.dependency) {
-            this.dependency = dependency
-            this.#init()
-        }
-    }
-
     #draw() {
         this.container = this.dependency.add("div", this.dom, "main relative max")
         const style = this.dependency.add("style", this.dom)
 
         this.container.innerHTML = `
             <div class="colorLayer relative transition max close normalRadius"></div>
-            <div class="nodesLayer absolute max"></div>
+            <div class="nodesLayer absolute"></div>
         `
 
         style.textContent = `
@@ -53,7 +46,7 @@ export class ExpandBar extends HTMLElement {
 
             .main {
                 .colorLayer {background: var(--box_back);}
-                .nodesLayer {top: 0; display: flex; border: 1px solid red;}
+                .nodesLayer {top: 0; display: flex; width: calc(100% - 40px); margin: 0 20px;}
             }
 
             .relative {position: relative;}
@@ -94,9 +87,15 @@ export class ExpandBar extends HTMLElement {
         }
     }
 
+    addDependency(dependency) {
+        if (!this.dependency) {
+            this.dependency = dependency
+            this.#init()
+        }
+    }
+
     addNodes = (number) => {
         const nodesLayer = this.dom.querySelector(".nodesLayer")
-        console.log(nodesLayer)
         for (let i = 0; i < Number(number); i++) {
             const node = this.dependency.add("div", nodesLayer)
             node.setAttribute("node", "node_" + i)

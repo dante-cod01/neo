@@ -5,57 +5,46 @@ export class PanelBox extends HTMLElement {
         super()
 
         this.dom = this.attachShadow({ mode: "open" })
-        /* received props */
-        this.entryConfig
-        this.entryCss
-        this.entryLogic
-        /* work props */
+        /* entry props */
+        this.css
+        this.logic
+        this.links
         this.dependency
         this.id
-        this.outConfig = {}
-        this.outCss = {}
-        this.outLogic = {}
+        this.eventDom
+        this.eventName
 
-        this.defaultConfig = {
-            closeButtom: false,
-            bottomBar: false
-        }
-
+        /* default */
         this.defaultCss = {
-            box_w: "300px",
-            box_h: "100%",
+            box_width: "300px",
+            box_height: "100%",
             box_blur: "blur(none)",
             box_transition: "2s ease-in-out",
             box_radius: "20px",
             topBar_back: "red",
-            topBar_h: "50px",
+            topBar_height: "50px",
             title_font: "initial",
             title_fontSize: "initial",
             title_color: "blue",
             content_back: "transparent",
             closeIcon_size: "30px",
             close_color: "blue",
-            bottomBar_h: "30px",
+            bottomBar_height: "30px",
             bottomBar_back: "red",
         }
 
         this.defaultLogic = {
+            closeButtom: false,
+            bottomBar: false,
             panel_side: ["left", "right"],
             title: "Title",
-            title_fontHref: "",
-            close_icon: "question_mark"
+            icon: "menu",
         }
     }
 
     #draw = () => {
         this.container = this.dependency.add("div", this.dom, "main relative max transition")
         const style = this.dependency.add("style", this.dom)
-
-        this.dependency.addLink(
-            this,
-            "stylesheet",
-            "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
-        )
 
         this.container.innerHTML = `
             <div class="topBack absolute transition"></div>
@@ -66,7 +55,7 @@ export class PanelBox extends HTMLElement {
                     </div>
                     <div class="closeBox center displayNone">
                         <div class="close center relative">
-                            <span class="material center"></span>
+                            <div class="icon max center"></div>
                             <input id="toogleButtom" type="checkbox" checked class="hiddenInput max">
                         </div>
                     </div>
@@ -84,8 +73,8 @@ export class PanelBox extends HTMLElement {
             }
 
             :host {
-                width: var(--box_w);
-                height: var(--box_h);
+                width: var(--box_width);
+                height: var(--box_height);
             }
 
             .main {
@@ -95,13 +84,13 @@ export class PanelBox extends HTMLElement {
                 
                 .topBack {
                     width: 100%;
-                    height: var(--topBar_h);
+                    height: var(--topBar_height);
                     background: var(--topBar_back);
                 }
 
                 .topBar {
                     width: 100%;
-                    height: var(--topBar_h);
+                    height: var(--topBar_height);
 
                     .moveLayer {
                         left: 0;
@@ -111,7 +100,7 @@ export class PanelBox extends HTMLElement {
 
                         .titleBox {
                             display: flex;
-                            width: calc(100% - var(--topBar_h));
+                            width: calc(100% - var(--topBar_height));
                             height: 100%;
 
                             .title {
@@ -124,19 +113,14 @@ export class PanelBox extends HTMLElement {
                         }
 
                         .closeBox {
-                            width: var(--topBar_h);
-                            height: var(--topBar_h);
+                            width: var(--topBar_height);
+                            height: var(--topBar_height);
 
                             .close {
                                 width: 30px;
                                 height: 30px;
 
-                                .material {
-                                    width: fit-content;
-                                    height: fit-content;
-                                    font-family: "material symbols outlined";
-                                    font-size: var(--close_icon_size);
-                                    color: var(--close_color);
+                                .icon {
                                 }
 
                                 .hiddenInput {
@@ -157,7 +141,7 @@ export class PanelBox extends HTMLElement {
 
                 .bottomBar {
                     width: 100%;
-                    height: var(--bottomBar_h);
+                    height: var(--bottomBar_height);
                     background: var(--bottomBar_back);
                     overflow: hidden;
                 }
@@ -175,31 +159,38 @@ export class PanelBox extends HTMLElement {
             .opacity_0 {opacity: 0;}
             .opacity_50 {opacity: 0.3;}
             .opacity_1 {opacity: 1;}
-            .radius_half {border-radius: calc(var(--topBar_h) / 2);}
-            .content_Max {height: calc(100% - var(--topBar_h));}
-            .content_BottomBar {height: calc(100% - var(--topBar_h) - var(--bottomBar_h));}
-            :host(.topBar_h_width) {width: var(--topBar_h);}
-            :host(.topBar_h_height) {height: var(--topBar_h);}
+            .radius_half {border-radius: calc(var(--topBar_height) / 2);}
+            .content_Max {height: calc(100% - var(--topBar_height));}
+            .content_BottomBar {height: calc(100% - var(--topBar_height) - var(--bottomBar_height));}
+            :host(.topBar_height_width) {width: var(--topBar_height);}
+            :host(.topBar_height_height) {height: var(--topBar_height);}
+            .icon {font-family: "material symbols outlined"; font-size: var(--closeIcon_size); color: var(--close_color);}
         `
     }
 
     #getConfig = () => {
-        this.outConfig = this.dependency.config(this.defaultConfig, this.entryConfig, "config", this)
-        this.outLogic = this.dependency.config(this.defaultLogic, this.entryLogic, "logic", this)
-        this.outCss = this.dependency.config(this.defaultCss, this.entryCss, "css", this)
-        this.dependency.addCssVars(this.outCss, this)
+        this.css = this.dependency.config(this.defaultCss, this.css, "css", this)
+        this.dependency.cssVar(this.css, this)
+        this.logic = this.dependency.config(this.defaultLogic, this.logic, "logic", this)
+    }
+
+    #getLinks = () => {
+        this.dependency.addLinks(this, this.links)
     }
 
     #addCloseButtom = (boolean) => {
         const closeBox = this.dom.querySelector(".closeBox")
-        const material = this.dom.querySelector(".material")
-        boolean && closeBox.classList.replace("displayNone", "displayFlex")
-        material.textContent = this.outLogic.close_icon
+        const icon = this.dom.querySelector(".icon")
+
+        if (this.logic.icon) {
+            icon.classList.add("icon")
+            icon.textContent = this.logic.icon
+            boolean && closeBox.classList.replace("displayNone", "displayFlex")
+        }
     }
 
     #addTitle = (string) => {
         const title = this.dom.querySelector(".title")
-        this.outLogic.title_fontHref && this.dependency.addLink(this.dom, "stylesheet", this.outLogic.title_fontHref)
         title.textContent = string
     }
 
@@ -207,12 +198,12 @@ export class PanelBox extends HTMLElement {
         const moveLayer = this.dom.querySelector(".moveLayer")
         const titleBox = this.dom.querySelector(".titleBox")
         const closeBox = this.dom.querySelector(".closeBox")
-        this.outLogic.panel_side === "right" && moveLayer.prepend(closeBox)
-        this.outLogic.panel_side === "right" && titleBox.classList.add("justifyEnd")
+        this.logic.panel_side === "right" && moveLayer.prepend(closeBox)
+        this.logic.panel_side === "right" && titleBox.classList.add("justifyEnd")
     }
 
     #bottomBar = () => {
-        const boolean = this.outConfig.bottomBar
+        const boolean = this.logic.bottomBar
         const bottomBar = this.dom.querySelector(".bottomBar")
         const listContainer = this.dom.querySelector(".listContainer")
         boolean && bottomBar.classList.replace("displayNone", "displayFlex")
@@ -220,12 +211,13 @@ export class PanelBox extends HTMLElement {
     }
 
     #applyTransition = () => {
-        this.style.transition = this.outCss.box_transition
+        this.style.transition = this.css.box_transition
     }
 
     #applyConf = () => {
-        this.#addCloseButtom(this.outConfig.closeButtom)
-        this.#addTitle(this.outLogic.title)
+        this.#getLinks()
+        this.#addCloseButtom(this.logic.closeButtom)
+        this.#addTitle(this.logic.title)
         this.#configureSide()
         this.#bottomBar()
         this.#applyTransition()
@@ -244,12 +236,12 @@ export class PanelBox extends HTMLElement {
         input.disabled = true
         const topBack = this.dom.querySelector(".topBack")
         const title = this.dom.querySelector(".title")
-        const time = this.dependency.convertTransition(this.outCss.box_transition)
+        const time = this.dependency.convertTransition(this.css.box_transition)
 
         this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: true })
         topBack.classList.remove("opacity_50")
         this.container.classList.remove("radius_half")
-        this.classList.remove("topBar_h_width")
+        this.classList.remove("topBar_height_width")
         await this.dependency.wait(time / 2)
 
         this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: true })
@@ -257,7 +249,7 @@ export class PanelBox extends HTMLElement {
         title.offsetWidth /* hack css */
         title.classList.remove("opacity_0")
         await this.dependency.wait(time / 3)
-        this.classList.remove("topBar_h_height")
+        this.classList.remove("topBar_height_height")
         await this.dependency.wait(time)
 
         input.disabled = false
@@ -267,16 +259,16 @@ export class PanelBox extends HTMLElement {
         input.disabled = true
         const topBack = this.dom.querySelector(".topBack")
         const title = this.dom.querySelector(".title")
-        const time = this.dependency.convertTransition(this.outCss.box_transition)
+        const time = this.dependency.convertTransition(this.css.box_transition)
 
         this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: false })
-        this.classList.add("topBar_h_height")
+        this.classList.add("topBar_height_height")
         title.classList.add("opacity_0")
         await this.dependency.wait(time)
 
         this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: false })
         title.classList.add("displayNone")
-        this.classList.add("topBar_h_width")
+        this.classList.add("topBar_height_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
         await this.dependency.wait(time)

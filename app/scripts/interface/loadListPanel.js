@@ -5,43 +5,43 @@ const drawPanelBox = async (box) => {
     /* panel-box component */
     const component = await import("../components/nano/panelBox.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
-    const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
 
-    const config = {
-        closeButtom: true,
-        bottomBar: true
-    }
-
-    const configCss = {
-        box_w: getComputedStyle(document.documentElement).getPropertyValue("--panel_w"),
-        box_h: getComputedStyle(document.documentElement).getPropertyValue("--panel_h"),
+    const css = {
+        box_width: getComputedStyle(document.documentElement).getPropertyValue("--panel_width"),
+        box_height: getComputedStyle(document.documentElement).getPropertyValue("--panel_height"),
         box_radius: "6px",
         box_blur: "blur(2px)",
         box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition"),
-        topBar_h: getComputedStyle(document.documentElement).getPropertyValue("--bar_h"),
+        topBar_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
         topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
-        content_back: "rgba(0, 0, 0, 0.4)",
+        content_back: getComputedStyle(document.documentElement).getPropertyValue("--dark_crystal_light"),
         title_font: "Anta",
         title_fontSize: "14px",
         title_color: "rgb(200, 200, 200)",
         closeIcon_size: "16px",
-        close_color: "rgba(200, 200, 200, 1)",
-        bottomBar_h: "34px",
+        close_color: "rgb(200, 200, 200)",
+        bottomBar_height: "34px",
         bottomBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
     }
 
-    const configLogic = {
+    const logic = {
+        closeButtom: true,
+        bottomBar: true,
         panel_side: "left",
         title: "Components",
-        title_fontHref: componentFont_Href,
-        close_icon: "menu"
+        icon: ""
     }
 
+    const links = [
+        {type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"},
+        {type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap"},
+    ]
+
     const panelBox = element.add(component.tag, box, "panelMenu panelLeft")
-    panelBox.entryConfig = config
-    panelBox.entryCss = configCss
-    panelBox.entryLogic = configLogic
+    panelBox.css = css
+    panelBox.logic = logic
     panelBox.eventDom = document
+    panelBox.links = links
     panelBox.eventName = "panel"
     panelBox.id = "left"
     panelBox.addDependency(new dependency())
@@ -53,9 +53,9 @@ const drawDynamicList = async (box) => {
     const component = await import("../components/nano/dynamicList.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
     const dataList = await json.get("./app/config/components/list.json")
-    const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
-
-    const configCss = {
+/*     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
+ */
+    const css = {
         back: "transparent",
         backSelected1: "rgba(50, 173, 255, 0.4)",
         backSelected2: "rgba(37, 188, 196, 0.4)",
@@ -75,17 +75,11 @@ const drawDynamicList = async (box) => {
         transition: "400ms ease-in-out",
     }
 
-    const configLogic = {
-        titleFont_Href: componentFont_Href,
-    }
-
     const dynamicList = element.add(component.tag, box)
-    dynamicList.entryCss = configCss
-    dynamicList.entryLogic = configLogic
+    dynamicList.css = css
     dynamicList.eventDom = document
     dynamicList.eventName = "listMenu"
     dynamicList.data = dataList
-    /* init */
     dynamicList.addDependency(new dependency())
     return dynamicList
 }
