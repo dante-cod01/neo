@@ -2,11 +2,16 @@ export const tag = "dynamic-list"
 export class DynamicList extends HTMLElement {
     constructor() {
         super()
+
+        /* props */
         this.dom = this.attachShadow({ mode: "open" })
-        /* entry props */
         this.css
-        this.dependency
+        this.base
         this.data
+        this.links
+        this.id
+        this.eventDom
+        this.eventName
 
         this.defaultCss = {
             back: "red",
@@ -34,8 +39,8 @@ export class DynamicList extends HTMLElement {
     }
 
     #draw() {
-        this.container = this.dependency.add("div", this.dom, "main max")
-        const style = this.dependency.add("style", this.dom)
+        this.container = this.base.add("div", this.dom, "main max")
+        const style = this.base.add("style", this.dom)
 
         this.container.innerHTML = `
             <div class="listBox max">
@@ -171,37 +176,41 @@ export class DynamicList extends HTMLElement {
     }
 
     #configure = () => {
-        this.css = this.dependency.config(this.defaultCss, this.css, "css", this)
-        this.dependency.cssVar(this.css, this)
+        this.css = this.base.config(this.defaultCss, this.css, "css", this)
+        this.base.cssVar(this.css, this)
+    }
+
+    #getLinks = () => {
+        this.base.addLinks(this, this.links)
     }
 
     #drawList(json) {
         const sectionsBox = this.dom.querySelector(".sectionsBox")
 
         Object.entries(json).forEach(([sectionTitle, sectionComponents]) => {
-            const section = this.dependency.add("div", sectionsBox, "componentSections")
+            const section = this.base.add("div", sectionsBox, "componentSections")
             this.#drawSection(section, sectionTitle, sectionComponents)
         })
     }
 
     #drawSection(section, title, componentsArray) {
         const create = (box, name, radiosName) => {
-            const pointer = this.dependency.add("div", box, `pointer absolute max`)
-            const expand = this.dependency.add("div", box, `rowExpand transition`)
-            const title = this.dependency.add("span", box, `name verticalAlign`)
+            const pointer = this.base.add("div", box, `pointer absolute max`)
+            const expand = this.base.add("div", box, `rowExpand transition`)
+            const title = this.base.add("span", box, `name verticalAlign`)
             title.textContent = name
-            const radio = this.dependency.add("input", box, "hiddenInput absolute")
-            this.dependency.setAttr(radio, { "type": "radio", "name": radiosName, "info": name })
+            const radio = this.base.add("input", box, "hiddenInput absolute")
+            this.base.setAttr(radio, { "type": "radio", "name": radiosName, "info": name })
             return radio
         }
 
-        const sectionRow = this.dependency.add("div", section, "sectionRow verticalAlign relative radius")
-        const expand = this.dependency.add("div", section, "expand expandClose transition")
+        const sectionRow = this.base.add("div", section, "sectionRow verticalAlign relative radius")
+        const expand = this.base.add("div", section, "expand expandClose transition")
 
         create(sectionRow, title, "section")
 
         Object.entries(componentsArray).forEach(item => {
-            const listRow = this.dependency.add("div", expand, "listRow verticalAlign relative radius")
+            const listRow = this.base.add("div", expand, "listRow verticalAlign relative radius")
             const listItems = create(listRow, item[1].name, "list")
         })
     }
@@ -240,7 +249,7 @@ export class DynamicList extends HTMLElement {
         listRadios.forEach(item => {
             item.addEventListener("change", (e) => {
                 const pars = this.#getOptionPars(e.target)
-                this.dependency.sendEvent(this.eventDom, this.eventName, { type: "select", value: pars })
+                this.base.sendEvent(this.eventDom, this.eventName, { type: "select", value: pars })
             })
         })
     }
@@ -249,19 +258,19 @@ export class DynamicList extends HTMLElement {
         if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (!this.eventName) { (console.log({ eventName: this.eventName }, "not configured")); return }
         if (!this.data) { (console.log({ data: this.data }, "not configured")); return }
-        if (!this.dependency) {
-            this.dependency = dependency
+        if (!this.base) {
+            this.base = dependency
             this.init()
         }
     }
 
+    updateProp(prop, value) {
+        this.base.updateProp(this.css, prop, value, this)
+    }
+
     async init() {
         this.#configure()
-        this.outLogic.titleFont_Href && this.dependency.addLink(
-            this,
-            "stylesheet",
-            this.outLogic.titleFont_Href
-        )
+        this.#getLinks()
         this.#draw()
         this.#drawList(this.data)
         this.#dynamicExpandControl()

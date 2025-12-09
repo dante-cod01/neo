@@ -26,24 +26,13 @@ export class ComponentBase {
         })
     }
 
-    update(dom, prop, value, objects, types) {
-        let obj
-        let objType
-        const index = objects.findIndex(item => this.isValidProp(prop, item))
-        obj = index < 0 ? false : objects[index]
-
-        if (!obj) {
-            console.log({ prop }, "not valid")
-            return
-        }
-
-        objType = types[index]
-
-        if (this.isValidValue(value, obj[prop], objType)) {
-            obj[prop] = value
-            objType === "css" && (this.cssVar({ [prop]: value }, dom))
+    updateProp(css, prop, value, dom) {
+        const valid = this.isValidProp(prop, css)
+        if (valid) {
+            css[prop] = value
+            this.cssVar({ [prop]: value }, dom)
         } else {
-            console.log("update not valid value", { prop })
+            console.log({ prop }, "not valid")
         }
     }
 

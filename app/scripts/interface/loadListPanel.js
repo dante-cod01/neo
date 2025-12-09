@@ -6,6 +6,11 @@ const drawPanelBox = async (box) => {
     const component = await import("../components/nano/panelBox.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
+    const links = [
+        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
+        { type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
+    ]
+
     const css = {
         box_width: getComputedStyle(document.documentElement).getPropertyValue("--panel_width"),
         box_height: getComputedStyle(document.documentElement).getPropertyValue("--panel_height"),
@@ -18,8 +23,8 @@ const drawPanelBox = async (box) => {
         title_font: "Anta",
         title_fontSize: "14px",
         title_color: "rgb(200, 200, 200)",
-        closeIcon_size: "16px",
-        close_color: "rgb(200, 200, 200)",
+        icon_size: "16px",
+        icon_color: "rgb(200, 200, 200)",
         bottomBar_height: "34px",
         bottomBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
     }
@@ -29,13 +34,8 @@ const drawPanelBox = async (box) => {
         bottomBar: true,
         panel_side: "left",
         title: "Components",
-        icon: ""
+        icon: "menu"
     }
-
-    const links = [
-        {type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"},
-        {type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap"},
-    ]
 
     const panelBox = element.add(component.tag, box, "panelMenu panelLeft")
     panelBox.css = css
@@ -53,8 +53,11 @@ const drawDynamicList = async (box) => {
     const component = await import("../components/nano/dynamicList.js")
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
     const dataList = await json.get("./app/config/components/list.json")
-/*     const componentFont_Href = "https://fonts.googleapis.com/css2?family=Anta&display=swap"
- */
+
+    const links = [
+        { type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
+    ]
+
     const css = {
         back: "transparent",
         backSelected1: "rgba(50, 173, 255, 0.4)",
@@ -77,6 +80,7 @@ const drawDynamicList = async (box) => {
 
     const dynamicList = element.add(component.tag, box)
     dynamicList.css = css
+    dynamicList.links = links
     dynamicList.eventDom = document
     dynamicList.eventName = "listMenu"
     dynamicList.data = dataList
@@ -86,6 +90,5 @@ const drawDynamicList = async (box) => {
 
 export const init = async (box) => {
     const panel = await drawPanelBox(box)
-    const panelNodes = panel.getNodes()
-    const list = await drawDynamicList(panelNodes.list)
+    const list = await drawDynamicList(panel.nodes.list)
 }

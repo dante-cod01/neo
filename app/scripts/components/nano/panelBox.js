@@ -4,18 +4,18 @@ export class PanelBox extends HTMLElement {
     constructor() {
         super()
 
+        /* props */
         this.dom = this.attachShadow({ mode: "open" })
-        /* entry props */
         this.css
         this.logic
         this.links
-        this.dependency
+        this.base
         this.id
         this.eventDom
         this.eventName
+        this.nodes
 
-        /* default */
-        this.defaultCss = {
+        this.css = {
             box_width: "300px",
             box_height: "100%",
             box_blur: "blur(none)",
@@ -27,13 +27,13 @@ export class PanelBox extends HTMLElement {
             title_fontSize: "initial",
             title_color: "blue",
             content_back: "transparent",
-            closeIcon_size: "30px",
-            close_color: "blue",
+            icon_size: "30px",
+            icon_color: "blue",
             bottomBar_height: "30px",
             bottomBar_back: "red",
         }
 
-        this.defaultLogic = {
+        this.logic = {
             closeButtom: false,
             bottomBar: false,
             panel_side: ["left", "right"],
@@ -43,8 +43,8 @@ export class PanelBox extends HTMLElement {
     }
 
     #draw = () => {
-        this.container = this.dependency.add("div", this.dom, "main relative max transition")
-        const style = this.dependency.add("style", this.dom)
+        this.container = this.base.add("div", this.dom, "main relative max transition")
+        const style = this.base.add("style", this.dom)
 
         this.container.innerHTML = `
             <div class="topBack absolute transition"></div>
@@ -164,18 +164,18 @@ export class PanelBox extends HTMLElement {
             .content_BottomBar {height: calc(100% - var(--topBar_height) - var(--bottomBar_height));}
             :host(.topBar_height_width) {width: var(--topBar_height);}
             :host(.topBar_height_height) {height: var(--topBar_height);}
-            .icon {font-family: "material symbols outlined"; font-size: var(--closeIcon_size); color: var(--close_color);}
+            .icon {font-family: "material symbols outlined"; font-size: var(--icon_size); color: var(--icon_color);}
         `
     }
 
     #getConfig = () => {
-        this.css = this.dependency.config(this.defaultCss, this.css, "css", this)
-        this.dependency.cssVar(this.css, this)
-        this.logic = this.dependency.config(this.defaultLogic, this.logic, "logic", this)
+        this.css = this.base.config(this.css, this.css, "css", this)
+        this.base.cssVar(this.css, this)
+        this.logic = this.base.config(this.logic, this.logic, "logic", this)
     }
 
     #getLinks = () => {
-        this.dependency.addLinks(this, this.links)
+        this.base.addLinks(this, this.links)
     }
 
     #addCloseButtom = (boolean) => {
@@ -223,6 +223,10 @@ export class PanelBox extends HTMLElement {
         this.#applyTransition()
     }
 
+    #getNodes = () => {
+        this.nodes = this.base.getNodes(this.dom)
+    }
+
     #addReactivity = () => {
         const toogleButtom = this.dom.querySelector("#toogleButtom")
         toogleButtom.addEventListener("change", (e) => {
@@ -236,21 +240,21 @@ export class PanelBox extends HTMLElement {
         input.disabled = true
         const topBack = this.dom.querySelector(".topBack")
         const title = this.dom.querySelector(".title")
-        const time = this.dependency.convertTransition(this.css.box_transition)
+        const time = this.base.convertTransition(this.css.box_transition)
 
-        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: true })
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: true })
         topBack.classList.remove("opacity_50")
         this.container.classList.remove("radius_half")
         this.classList.remove("topBar_height_width")
-        await this.dependency.wait(time / 2)
+        await this.base.wait(time / 2)
 
-        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: true })
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: true })
         title.classList.remove("displayNone")
         title.offsetWidth /* hack css */
         title.classList.remove("opacity_0")
-        await this.dependency.wait(time / 3)
+        await this.base.wait(time / 3)
         this.classList.remove("topBar_height_height")
-        await this.dependency.wait(time)
+        await this.base.wait(time)
 
         input.disabled = false
     }
@@ -259,19 +263,19 @@ export class PanelBox extends HTMLElement {
         input.disabled = true
         const topBack = this.dom.querySelector(".topBack")
         const title = this.dom.querySelector(".title")
-        const time = this.dependency.convertTransition(this.css.box_transition)
+        const time = this.base.convertTransition(this.css.box_transition)
 
-        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: false })
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: false })
         this.classList.add("topBar_height_height")
         title.classList.add("opacity_0")
-        await this.dependency.wait(time)
+        await this.base.wait(time)
 
-        this.dependency.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: false })
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: false })
         title.classList.add("displayNone")
         this.classList.add("topBar_height_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
-        await this.dependency.wait(time)
+        await this.base.wait(time)
 
         input.disabled = false
     }
@@ -279,26 +283,21 @@ export class PanelBox extends HTMLElement {
     addDependency(dependency) {
         if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (!this.eventName) { (console.log({ eventName: this.eventName }, "not configured")); return }
-        if (!this.dependency) {
-            this.dependency = dependency
+        if (!this.base) {
+            this.base = dependency
             this.init()
         }
     }
 
-    getNodes() {
-        return this.dependency.getNodes(this.dom)
-    }
-
-    update(prop, value) {
-        const objects = [this.outConfig, this.outCss, this.outLogic]
-        let types = ["config", "css", "logic"]
-        this.dependency.update(this, prop, value, objects, types)
+    updateProp(prop, value) {
+        this.base.updateProp(this.css, prop, value, this)
     }
 
     async init() {
         this.#draw()
         this.#getConfig()
         this.#applyConf()
+        this.#getNodes()
         this.#addReactivity()
     }
 }
