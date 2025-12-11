@@ -81,6 +81,14 @@ export class ComponentBase {
         })
     }
 
+    addInput = (inputType, box, name = null, classNames = null) => {
+        const input = this.add("input", box)
+        input.setAttribute("type", inputType)
+        name && input.setAttribute("name", name)
+        classNames && (input.className = classNames)
+        box.appendChild(input)
+    }
+
     getParentInfo(element) {
         const props = getComputedStyle(element)
         let info = {}

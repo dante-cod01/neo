@@ -24,8 +24,9 @@
     --light_transition: 600ms ease-in-out;
 
     /* colors */
-    --dark_crystal: rgba(30, 30, 30, 0.8);
-    --dark_crystal_light: rgba(0, 0, 0, 0.2);
+    --enphasis_color1: rgba(0, 255, 234, 0.384);
+    --darkCrystal: rgba(30, 30, 30, 0.8);
+    --darkCrystal_light: rgba(0, 0, 0, 0.2);
 }
 
 .center {
