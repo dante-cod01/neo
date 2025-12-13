@@ -31,6 +31,7 @@ export class PanelBox extends HTMLElement {
             icon_color: "blue",
             bottomBar_height: "30px",
             bottomBar_back: "red",
+            node_padding: "none"
         }
 
         this.logic = {
@@ -137,6 +138,7 @@ export class PanelBox extends HTMLElement {
                     width: 100%;
                     background: var(--content_back);
                     overflow: hidden;
+                    padding: var(--node_padding);
                 }
 
                 .bottomBar {

@@ -23,31 +23,45 @@ export class RadioGroup extends HTMLElement {
 
             option_width: "fit-content",
             option_height: "fit-content",
-            backHover_color: "red",
-            hover_color: "red",
-            transition: "1s",
+            option_hover_color: "blue",
+            option_hover_back: "initial",
+            option_checked_back: "initial",
 
-            iconBox_width: "30px",
-            iconBox_height: "30px",
-            iconBox_border: "none",
-            iconBox_radius: "none",
-            iconBox_back: "none",
+            iconBox_size: "fit-content",
             iconBox_margin: "none",
-            iconBox_font: "initial",
-            iconBox_fontSize: "initial",
-            iconBox_color: "initial",
+
+            icon_font: "initial",
+            icon_color: "initial",
+            icon_size: "20px",
+            icon_border: "none",
+            icon_radius: "none",
+            icon_back: "none",
+            icon_fontSize: "initial",
+
+            material_font: "Material Symbols Outlined",
             material_fontSize: "initial",
             material_color: "initial",
-            titleBox_font: "initial",
-            titleBox_fontSize: "initial",
-            titleBox_color: "initial",
-            titleBox_fontStyle: "none",
-            titleBox_margin: "none"
+            material_size: "20px",
+            material_border: "none",
+            material_radius: "none",
+            material_back: "none",
+
+            label_width: "100%",
+            label_height: "100%",
+            label_font: "initial",
+            label_fontSize: "initial",
+            label_color: "initial",
+            label_indent: "none",
+            label_border: "none",
+            label_radius: "none",
+            label_back: "none",
+
+            transition: "none"
         }
     }
 
     #draw = () => {
-        this.container = this.base.add("div", this.dom, "main relative max")
+        this.container = this.base.add("div", this.dom, "main relative")
         const style = this.base.add("style", this.dom)
 
         style.textContent += `
@@ -55,44 +69,78 @@ export class RadioGroup extends HTMLElement {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
+                color: var(--font_color);
             }
 
             :host {
+                display: block;
                 width: var(--box_width);
                 height: var(--box_height);
             }
 
-            .main .option {
-                width: var(--option_width);
-                height: var(--option_height);
+            .main {
+                width: 100%;
+                height: 100%;
 
-                .iconBox, .titleBox {transition: var(--transition);}
+                .option {
+                    width: var(--option_width);
+                    height: var(--option_height);
 
-                .iconBox {
-                    width: var(--iconBox_width);
-                    height: var(--iconBox_height);
-                    margin: var(--iconBox_margin);
-                }
+                    .iconBox {
+                        width: var(--iconBox_size);
+                        aspect-ratio: 1/1;
+                        margin: var(--iconBox_margin);
 
-                .titleBox {
-                    width: fit-content;
-                    height: 100%;
-                    margin: var(--titleBox_margin);
-                    font-family: var(--titleBox_font); 
-                    font-size: var(--titleBox_fontSize); 
-                    color: var(--titleBox_color); 
-                    font-style: var(--titleBox_fontStyle)
-                }
+                        .icon {
+                            width: var(--icon_size);
+                            aspect-ratio: 1/1;
+                            border: var(--icon_border);
+                            border-radius: var(--icon_radius);
+                            background: var(--icon_back);
+                            font-family: var(--icon_font); 
+                            font-size: var(--icon_fontSize); 
+                            color: var(--icon_color);
+                        }
 
-                &:hover {
-                    .iconFont, .titleBox {
-                        border-color: transparent;
-                        background: var(--backHover_color);
-                        color: var(--hover_color);
+                        .material {
+                            width: var(--icon_size);
+                            aspect-ratio: 1/1;
+                            border: var(--material_border);
+                            border-radius: var(--material_radius);
+                            background: var(--material_back);
+                            font-family: var(--material_font); 
+                            font-size: var(--material_fontSize); 
+                            color: var(--material_color);
+                        }
                     }
 
-                    .material {
-                        color: var(--hover_color);
+                    .label {
+                        width: var(--label_width);
+                        height: var(--label_height);
+                        border: var(--label_border);
+                        border-radius: var(--label_radius);
+                        background: var(--label_back);
+                        font-family: var(--label_font);
+                        font-size: var(--label_fontSize);
+                        text-indent: var(--label_indent);
+                        color: var(--label_color);
+                    }
+
+                    &:hover .icon {
+                        border-color: transparent;
+                        background: var(--option_hover_back);
+                        color: var(--text_dark_color);
+                    }
+
+                    &:has(input:checked) .icon {
+                        border-color: transparent;
+                        background: var(--option_checked_back);
+                        color: var(--text_dark_color);
+                    }
+
+                    &:hover .label,
+                    &:has(input:checked) .label {
+                        color: var(--text_dark_color);
                     }
                 }
             }
@@ -100,15 +148,11 @@ export class RadioGroup extends HTMLElement {
             .relative {position: relative;}
             .absolute {position: absolute;}
             .horizontal {display: flex;}
-            .vertical {display: flex; flex-direction: column;}
+            .verticalCenter {display: flex; align-items: center;}
             .center {display: flex; justify-content: center; align-items: center;}
-            .iconFont {font-family: var(--iconBox_font); font-size: var(--iconBox_fontSize); color: var(--iconBox_color); background: var(--iconBox_back);}
-            .material {font-family: "Material Symbols Outlined"; font-size: var(--material_fontSize); color: var(--material_color);}
-            .border {border: var(--iconBox_border); border-radius: var(--iconBox_radius);}
-            .iconMargin {margin: var(--iconBox_margin);}
-            .titleMargin {margin: var(--titleBox_margin);}
             .hiddenInput {appearance: none; width: 100%; height: 100%; cursor: pointer;}
-       `
+            .transition {transition: var(--transition);}
+        `
     }
 
     #configure = () => {
@@ -118,9 +162,7 @@ export class RadioGroup extends HTMLElement {
     }
 
     #applyOrientation = () => {
-        this.logic.horizontal
-            ? this.container.classList.add("horizontal")
-            : this.container.classList.add("vertical")
+        this.logic.horizontal && this.container.classList.add("horizontal")
     }
 
     #applyFonts = () => {
@@ -132,49 +174,69 @@ export class RadioGroup extends HTMLElement {
         this.#applyFonts()
     }
 
+    #addSpace = (size, num) => {
+        console.log("space")
+        const ownClassCss = this.base.add("style", this.dom)
+        ownClassCss.textContent = `.space_${num} {width: ${size}}`
+        return this.base.add("span", this.container, `space_${num}`)
+    }
+
     #checkData = (item) => {
         const boxesTypes = ["space", "radio", "checkbox"]
-        const iconsTypes = ["text", "material"]
+        const types = ["text", "material"]
         const boxCorrect = boxesTypes.includes(item.box)
 
         if (!item.box) { console.log({ item }, "no type defined return"); return }
         if (!boxCorrect) { console.log({ item }, "box type not defined permited:", boxesTypes); return }
-        if (item.box !== "space" && !item.iconType && !item.title) { console.log("imput empty no title no icon defined") }
+        if (item.box !== "space" && !item.type && !item.label) { console.log("imput empty no label no icon defined") }
         if (item.input === "radio" && !item.name) { console.log({ item }, "radio without name defined"); return }
-        if (item.iconType && !iconsTypes.includes(item.iconType)) { console.log({ item }, "type not permited"); return }
-        if (item.iconType && !item.icon) { console.log({ item }, "missing icon"); return }
+        if (item.type && !types.includes(item.type)) { console.log({ item }, "type not permited"); return }
+        if (item.type && !item.icon) { console.log({ item }, "missing icon"); return }
+        if (item.box === "space" && !item.size) { console.log({ item }, "no size defined"); return }
         return true
     }
 
     #drawInputs = () => {
-        this.data.forEach(item => {
+        this.data.forEach((item, num) => {
             this.#checkData(item)
-            const box = item.box
-            const iconType = item.iconType ?? null
-            const icon = item.icon ?? null
-            const title = item.title ?? null
-            const option = this.base.add("div", this.container, "option center relative")
+            const itemBox = item.box
+            const itemType = item.type ?? null
+            const itemIcon = item.icon ?? null
+            const itemLabel = item.label ?? null
+            const option = this.base.add("div", this.container, "option verticalCenter relative")
 
-            if (icon) {
+            if (itemIcon) {
                 const iconBox = this.base.add("div", option, "iconBox center")
 
-                if (iconType === "text") {
-                    iconBox.textContent = item.icon
-                    iconBox.classList.add("iconFont", "border")
+                if (itemType === "text") {
+                    const icon = this.base.add("div", iconBox, "icon center transition")
+                    icon.textContent = item.icon
                 }
-                if (iconType === "material") {
-                    iconBox.textContent = item.icon
-                    iconBox.classList.add("material")
+                if (itemType === "material") {
+                    const icon = this.base.add("div", iconBox, "material center transition")
+                    icon.textContent = item.icon
                 }
             }
 
-            if (title) {
-                const titleBox = this.base.add("div", option, "titleBox titleFont center")
-                titleBox.textContent = item.title
+            if (itemLabel) {
+                const labelBox = this.base.add("div", option, "label verticalCenter transition")
+                labelBox.textContent = item.label
             }
+            if (itemBox === "radio") {
+                const radio = this.base.addInput(item.box, option, num + 1, item.name, "hiddenInput absolute")
+                item.checked && (radio.checked = true)
+            }
+            if (itemBox === "checkbox") this.base.addInput(item.box, option, num + 1, "", "hiddenInput absolute")
+            if (itemBox === "space") this.#addSpace(item.size, num)
+        })
+        return this.dom.querySelectorAll("input")
+    }
 
-            if (box === "radio") this.base.addInput(item.box, option, item.name, "hiddenInput absolute")
-            if (box === "checkbox") this.base.addInput(item.box, option, "", "hiddenInput absolute")
+    #applyEvents = (inputs) => {
+        inputs.forEach(item => {
+            item.addEventListener("change", (e) => {
+                this.base.sendEvent(this.eventDom, this.eventName, { input: e.target.id })
+            })
         })
     }
 
@@ -182,7 +244,8 @@ export class RadioGroup extends HTMLElement {
         this.#configure()
         this.#draw()
         this.#applyConf()
-        this.#drawInputs()
+        const inputs = this.#drawInputs()
+        this.#applyEvents(inputs)
     }
 
     addDependency(dependency) {

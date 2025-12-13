@@ -24,7 +24,15 @@
     --light_transition: 600ms ease-in-out;
 
     /* colors */
-    --enphasis_color1: rgba(0, 255, 234, 0.384);
+    --text_light_color: rgb(160, 160, 160);
+    --text_dark_color: rgb(30, 30, 30);
+    
+    --back_light: rgba(255, 255, 255, 0.397);
+    --back_dark: rgba(0, 0, 0, 0.4);
+
+    --selected_back: rgb(187, 243, 245);
+    --hover_back: rgba(187, 243, 245, 0.5);
+
     --darkCrystal: rgba(30, 30, 30, 0.8);
     --darkCrystal_light: rgba(0, 0, 0, 0.2);
 }

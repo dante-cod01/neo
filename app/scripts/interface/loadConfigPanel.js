@@ -1,4 +1,5 @@
 import * as element from "../modules/element.js"
+import * as cssHelper from "../modules/css.js"
 
 const drawPanelBox = async (box) => {
     /* panel-box component */
@@ -24,6 +25,7 @@ const drawPanelBox = async (box) => {
         title_color: "rgba(190, 190, 190, 1)",
         icon_size: "16px",
         icon_color: "rgba(190, 190, 190, 1",
+        node_padding: "4px"
     }
 
     document.body.style.transition = css.transition
@@ -38,6 +40,7 @@ const drawPanelBox = async (box) => {
     const panelBox = element.add(component.tag, box, "panelMenu panelRight")
     panelBox.css = css
     panelBox.logic = logic
+    panelBox.links = links
     panelBox.eventDom = document
     panelBox.eventName = "panel"
     panelBox.id = "right"

@@ -1,5 +1,6 @@
 import * as element from "../modules/element.js"
 import * as json from "../modules/json.js"
+import * as cssHelper from "../modules/css.js"
 
 const drawPanelBox = async (box) => {
     /* panel-box component */
@@ -40,8 +41,8 @@ const drawPanelBox = async (box) => {
     const panelBox = element.add(component.tag, box, "panelMenu panelLeft")
     panelBox.css = css
     panelBox.logic = logic
-    panelBox.eventDom = document
     panelBox.links = links
+    panelBox.eventDom = document
     panelBox.eventName = "panel"
     panelBox.id = "left"
     panelBox.addDependency(new dependency())
@@ -73,7 +74,7 @@ const drawDynamicList = async (box) => {
         title_height: "24px",
         title_font: "Anta",
         title_fontSize: "12px",
-        title_color: "rgb(200, 200, 200)",
+        title_color: cssHelper.getVar("text_light_color"),
         li_height: "24px",
         transition: "400ms ease-in-out",
     }

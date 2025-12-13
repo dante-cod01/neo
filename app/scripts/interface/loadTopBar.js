@@ -1,4 +1,5 @@
 import * as element from "../modules/element.js"
+import * as cssHelper from "../modules/css.js"
 
 const drawTopBar = async (box) => {
     /* expand-bar component */
@@ -28,47 +29,36 @@ const drawBackChanger = async (box) => {
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const links = [
-        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
         { type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
     ]
 
     const data = [
-        { box: "radio", name: "back", iconType: "text", icon: "1" },
-        { box: "radio", name: "back", iconType: "text", icon: "2" },
-        { box: "radio", name: "back", iconType: "text", icon: "3" },
-        { box: "radio", name: "back", iconType: "text", icon: "4" },
-        { box: "radio", name: "back", iconType: "material", icon: "menu" },
-        { box: "space", size: "20px"},
-        { box: "radio", name: "back", iconType: "material", icon: "landscape_2" },
+        { box: "radio", name: "back", type: "text", icon: "1", checked: true },
+        { box: "radio", name: "back", type: "text", icon: "2" },
+        { box: "radio", name: "back", type: "text", icon: "3" },
+        { box: "radio", name: "back", type: "text", icon: "4" },
+        { box: "radio", name: "back", type: "text", icon: "5" },
     ]
 
     const css = {
-        box_width: "fit-content",
-        box_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
+        box_width: "300px",
+        box_height: cssHelper.getVar("bar_height"),
+
         option_width: "fit-content",
-        option_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
-        hover_color: "whitesmoke",
-        backHover_color: getComputedStyle(document.documentElement).getPropertyValue("--enphasis_color1"),
-        transition: "100ms",
+        option_height: "100%",
+        option_hover_color: cssHelper.getVar("text_dark_color"),
+        option_hover_back: cssHelper.getVar("hover_back"),
+        option_checked_back: cssHelper.getVar("selected_back"),
 
-        iconBox_width: "22px",
-        iconBox_height: "22px",
-        iconBox_border: "2px solid rgba(255, 255, 255, 0.2",
-        iconBox_radius: "50%",
-        iconBox_back: "rgba(0, 0, 0, 0.1)",
-        iconBox_margin: "0 0 0 8px",
-        iconBox_font: "Anta",
-        iconBox_fontSize: "10px",
-        iconBox_color: "rgba(255, 255, 255, 0.4)",
+        iconBox_size: cssHelper.getVar("bar_height"),
+        icon_font: "Anta",
+        icon_color: cssHelper.getVar("text_light_color"),
+        icon_size: "22px",
+        icon_radius: "50%",
+        icon_back: cssHelper.getVar("back_dark"),
+        icon_fontSize: "10px",
 
-        material_fontSize: "22px",
-        material_color: "rgba(255, 255, 255, 0.4)",
-
-        titleBox_font: "Anta",
-        titleBox_fontSize: "12px",
-        titleBox_color: "rgb(200, 200, 200)",
-        titleBox_fontStyle: "italic",
-        titleBox_margin: "0 0 0 16px"
+        transition: "140ms ease-in-out"
     }
 
     const logic = {
@@ -80,6 +70,8 @@ const drawBackChanger = async (box) => {
     backChanger.links = links
     backChanger.css = css
     backChanger.logic = logic
+    backChanger.eventDom = document
+    backChanger.eventName = "backChanger"
     backChanger.addDependency(new dependency())
 }
 

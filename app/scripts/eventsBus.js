@@ -1,8 +1,15 @@
-const panelEvents = () => {
-    const topBar = document.getElementById("topBar")
-    const panels = { left: true, right: true }
+const topBarEvents = () => {
+    document.addEventListener("backChanger", (e) => {
+        const inputIndex = e.detail.input
 
+        console.log(inputIndex)
+    })
+}
+
+const panelEvents = () => {
     document.addEventListener("panel", (e) => {
+        const topBar = document.getElementById("topBar")
+        const panels = { left: true, right: true }
         const panel = e.detail.panel
         const type = e.detail.type
         const value = e.detail.value
@@ -18,8 +25,6 @@ const panelEvents = () => {
 }
 
 export const loadListeners = async () => {
-    /* panels */
-    document.addEventListener("topBar", (e) => {
-        if (e.detail === "preLoaded") { panelEvents() }
-    }, { once: true })
+    panelEvents()
+    topBarEvents()
 }

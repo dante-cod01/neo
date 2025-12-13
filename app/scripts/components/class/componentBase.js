@@ -81,12 +81,14 @@ export class ComponentBase {
         })
     }
 
-    addInput = (inputType, box, name = null, classNames = null) => {
+    addInput = (inputType, box, id = null, name = null, classNames = null) => {
         const input = this.add("input", box)
         input.setAttribute("type", inputType)
+        id && (input.id = id)
         name && input.setAttribute("name", name)
         classNames && (input.className = classNames)
         box.appendChild(input)
+        return input
     }
 
     getParentInfo(element) {
