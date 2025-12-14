@@ -30,18 +30,18 @@ export class RadioGroup extends HTMLElement {
             iconBox_size: "fit-content",
             iconBox_margin: "none",
 
+            icon_size: "20px",
+            icon_fontSize: "initial",
             icon_font: "initial",
             icon_color: "initial",
-            icon_size: "20px",
             icon_border: "none",
             icon_radius: "none",
             icon_back: "none",
-            icon_fontSize: "initial",
 
-            material_font: "Material Symbols Outlined",
-            material_fontSize: "initial",
-            material_color: "initial",
             material_size: "20px",
+            material_fontSize: "initial",
+            material_font: "Material Symbols Outlined",
+            material_color: "initial",
             material_border: "none",
             material_radius: "none",
             material_back: "none",
@@ -93,7 +93,7 @@ export class RadioGroup extends HTMLElement {
 
                         .icon {
                             width: var(--icon_size);
-                            aspect-ratio: 1/1;
+                            height: var(--icon_size);
                             border: var(--icon_border);
                             border-radius: var(--icon_radius);
                             background: var(--icon_back);
@@ -103,8 +103,8 @@ export class RadioGroup extends HTMLElement {
                         }
 
                         .material {
-                            width: var(--icon_size);
-                            aspect-ratio: 1/1;
+                            width: var(--material_size);
+                            height: var(--material_size);
                             border: var(--material_border);
                             border-radius: var(--material_radius);
                             background: var(--material_back);
@@ -156,9 +156,9 @@ export class RadioGroup extends HTMLElement {
     }
 
     #configure = () => {
-        this.css = this.base.config(this.defaultCss, this.css, "css", this)
+        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
         this.base.cssVar(this.css, this)
-        this.logic = this.base.config(this.defaultLogic, this.logic, "logic", this)
+        this.logic = this.logic ? this.base.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
     }
 
     #applyOrientation = () => {
@@ -166,7 +166,7 @@ export class RadioGroup extends HTMLElement {
     }
 
     #applyFonts = () => {
-        if (this.links.length) this.base.addLinks(this, this.links)
+        if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
     #applyConf = () => {

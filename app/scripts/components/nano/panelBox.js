@@ -15,7 +15,7 @@ export class PanelBox extends HTMLElement {
         this.eventName
         this.nodes
 
-        this.css = {
+        this.defaultCss = {
             box_width: "300px",
             box_height: "100%",
             box_blur: "blur(none)",
@@ -34,7 +34,7 @@ export class PanelBox extends HTMLElement {
             node_padding: "none"
         }
 
-        this.logic = {
+        this.defaultLogic = {
             buttom: false,
             bottomBar: false,
             side: ["left", "right"],
@@ -62,8 +62,8 @@ export class PanelBox extends HTMLElement {
                     </div>
                 </div>
             </section> 
-            <section class="listContainer" node="list"></section>
-            <section class="bottomBar displayNone" node="bottomBar"></section>
+            <section class="listContainer" node="node_0"></section>
+            <section class="bottomBar displayNone" node="node_1"></section>
         `
 
         style.textContent = `
@@ -171,13 +171,13 @@ export class PanelBox extends HTMLElement {
     }
 
     #getConfig = () => {
-        this.css = this.base.config(this.css, this.css, "css", this)
+        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
         this.base.cssVar(this.css, this)
-        this.logic = this.base.config(this.logic, this.logic, "logic", this)
+        this.logic = this.logic ? this.base.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
     }
 
     #getLinks = () => {
-        this.base.addLinks(this, this.links)
+        if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
     #addCloseButtom = (boolean) => {

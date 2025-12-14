@@ -30,6 +30,8 @@
     --back_light: rgba(255, 255, 255, 0.397);
     --back_dark: rgba(0, 0, 0, 0.4);
 
+    --icon_light: rgb(131, 131, 131);
+
     --selected_back: rgb(187, 243, 245);
     --hover_back: rgba(187, 243, 245, 0.5);
 

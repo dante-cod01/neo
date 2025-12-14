@@ -176,12 +176,12 @@ export class DynamicList extends HTMLElement {
     }
 
     #configure = () => {
-        this.css = this.base.config(this.defaultCss, this.css, "css", this)
+        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
         this.base.cssVar(this.css, this)
     }
 
     #getLinks = () => {
-        this.base.addLinks(this, this.links)
+        if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
     #drawList(json) {

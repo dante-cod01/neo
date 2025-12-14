@@ -32,7 +32,7 @@ const drawPanelBox = async (box) => {
 
     const logic = {
         buttom: true,
-        bottombar: true,
+        bottomBar: true,
         side: "left",
         title: "Components",
         icon: "menu"
@@ -91,5 +91,5 @@ const drawDynamicList = async (box) => {
 
 export const init = async (box) => {
     const panel = await drawPanelBox(box)
-    const list = await drawDynamicList(panel.nodes.list)
+    const list = await drawDynamicList(panel.nodes.node_0)
 }

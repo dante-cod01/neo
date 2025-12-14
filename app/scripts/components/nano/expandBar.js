@@ -46,7 +46,7 @@ export class ExpandBar extends HTMLElement {
 
             .main {
                 .colorLayer {background: var(--box_back);}
-                .nodesLayer {top: 0; display: flex; width: calc(100% - 40px); margin: 0 20px;}
+                .nodesLayer {top: 0; display: flex; justify-content: space-between; width: calc(100% - 40px); margin: 0 20px;}
             }
 
             .relative {position: relative;}
@@ -57,8 +57,6 @@ export class ExpandBar extends HTMLElement {
             /* colorLayer */
             .normalRadius {border-radius: var(--box_radius);}
             .lateralRadius {border-radius: var(--box_height);}
-            .opacityMax {opacity: 1;}
-            .opacityHalf {opacity: 0.5;}
             .close {width: 100%; left: 0px;}
             .openLeft {width: calc(100% + var(--box_width_max)); left: calc(var(--box_width_max) * -1);}
             .openRight {width: calc(100% + var(--box_width_max));}
@@ -67,8 +65,8 @@ export class ExpandBar extends HTMLElement {
     }
 
     #configure = () => {
-        this.outCss = this.base.config(this.defaultCss, this.css, "css", this)
-        this.base.cssVar(this.outCss, this)
+        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
+        this.base.cssVar(this.css, this)
     }
 
     #init() {
@@ -78,13 +76,7 @@ export class ExpandBar extends HTMLElement {
     }
 
     #newRadius = (boolean, box) => {
-        if (boolean) {
-            box.classList.add("lateralRadius")
-            box.classList.add("opacityHalf")
-        } else {
-            box.classList.remove("lateralRadius")
-            box.classList.remove("opacityHalf")
-        }
+        boolean ? box.classList.add("lateralRadius") : box.classList.remove("lateralRadius")
     }
 
     addDependency(dependency) {
@@ -96,11 +88,12 @@ export class ExpandBar extends HTMLElement {
 
     addNodes = (number) => {
         const nodesLayer = this.dom.querySelector(".nodesLayer")
+
         for (let i = 0; i < Number(number); i++) {
             const node = this.base.add("div", nodesLayer)
             node.setAttribute("node", "node_" + i)
         }
-        this.nodes = this.base.getNodes(this)
+        this.nodes = this.base.getNodes(this.dom)
     }
 
     expand(mode = null) {
@@ -111,10 +104,6 @@ export class ExpandBar extends HTMLElement {
         if (mode === "left") colorLayer.classList.add("openLeft")
         if (mode === "right") colorLayer.classList.add("openRight")
         if (mode === "both") { colorLayer.classList.add("bothOpen"); this.#newRadius(true, colorLayer) }
-    }
-
-    getNodes() {
-        return this.base.getNodes(this.dom)
     }
 }
 customElements.define(tag, ExpandBar)

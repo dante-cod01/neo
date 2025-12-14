@@ -41,7 +41,7 @@ const drawBackChanger = async (box) => {
     ]
 
     const css = {
-        box_width: "300px",
+        box_width: "fit-content",
         box_height: cssHelper.getVar("bar_height"),
 
         option_width: "fit-content",
@@ -51,9 +51,9 @@ const drawBackChanger = async (box) => {
         option_checked_back: cssHelper.getVar("selected_back"),
 
         iconBox_size: cssHelper.getVar("bar_height"),
+        icon_size: "22px",
         icon_font: "Anta",
         icon_color: cssHelper.getVar("text_light_color"),
-        icon_size: "22px",
         icon_radius: "50%",
         icon_back: cssHelper.getVar("back_dark"),
         icon_fontSize: "10px",
@@ -75,9 +75,60 @@ const drawBackChanger = async (box) => {
     backChanger.addDependency(new dependency())
 }
 
+const drawViewChanger = async (box) => {
+    const component = await import("../components/nano/checkersGroup.js")
+    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+
+    const links = [
+        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
+    ]
+
+    const data = [
+        { box: "radio", name: "view", type: "material", icon: "computer", checked: true },
+        { box: "radio", name: "view", type: "material", icon: "crop_landscape" },
+        { box: "radio", name: "view", type: "material", icon: "mobile_3" },
+        { box: "radio", name: "view", type: "material", icon: "mobile_rotate" },
+        { box: "space", size: "18px" },
+        { box: "checkbox", type: "material", icon: "panorama_horizontal" },
+    ]
+
+    const css = {
+        box_width: "fit-content",
+        box_height: cssHelper.getVar("bar_height"),
+
+        option_width: "fit-content",
+        option_height: "100%",
+        option_hover_color: cssHelper.getVar("text_dark_color"),
+        option_hover_back: cssHelper.getVar("hover_back"),
+        option_checked_back: cssHelper.getVar("selected_back"),
+
+        iconBox_size: cssHelper.getVar("bar_height"),
+        material_size: "100%",
+        material_color: cssHelper.getVar("icon_light"),
+        material_fontSize: "20px",
+        material_radius: "4px",
+        material_back: cssHelper.getVar("back_dark")
+    }
+
+    const logic = {
+        horizontal: true
+    }
+
+    const viewChanger = element.add(component.tag, box)
+    viewChanger.data = data
+    viewChanger.links = links
+    viewChanger.css = css
+    viewChanger.logic = logic
+    viewChanger.eventDom = document
+    viewChanger.eventName = "viewChanger"
+    viewChanger.addDependency(new dependency())
+
+}
+
 export const init = async (box) => {
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const topBar = await drawTopBar(box, dependency)
-    const backChanger = await drawBackChanger(topBar.getNodes().node_1, dependency)
+    const backChanger = await drawBackChanger(topBar.nodes.node_0, dependency)
+    const viewChanger = await drawViewChanger(topBar.nodes.node_1, dependency)
 }
