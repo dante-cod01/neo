@@ -12,20 +12,21 @@ const drawPanelBox = async (box) => {
     ]
 
     const css = {
-        box_width: getComputedStyle(document.documentElement).getPropertyValue("--panel_width"),
-        box_height: getComputedStyle(document.documentElement).getPropertyValue("--panel_height"),
+        box_width: cssHelper.getVar("panel_width"),
+        box_height: cssHelper.getVar("panel_height"),
         box_radius: "6px",
         box_blur: "blur(2px)",
-        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition"),
-        topBar_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
-        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
-        content_back: getComputedStyle(document.documentElement).getPropertyValue("--darkCrystal_light"),
+        box_transition: cssHelper.getVar("normal_transition"),
+        topBar_height: cssHelper.getVar("bar_height"),
+        topBar_back: cssHelper.getVar("dark_2"),
+        content_back: cssHelper.getVar("dark_4"),
         title_font: "Anta",
         title_fontSize: "14px",
-        title_color: "rgba(190, 190, 190, 1)",
+        title_color: cssHelper.getVar("light_2"),
         icon_size: "16px",
-        icon_color: "rgba(190, 190, 190, 1",
-        node_padding: "4px"
+        icon_color: cssHelper.getVar("light_2"),
+        bottomBar_height: "34px",
+        bottomBar_back: cssHelper.getVar("dark_2"),
     }
 
     document.body.style.transition = css.transition

@@ -15,13 +15,21 @@ export class DynamicList extends HTMLElement {
 
         this.defaultCss = {
             back: "red",
-            back_selected1: "blue",
-            back_selected2: "blue",
-            back_selected3: "blue",
-            pointer_color: "red",
-            color_default: "blue",
-            color_selected1: "red",
-            color_selected2: "red",
+            back_hover_1: "blue",
+            back_hover_2: "blue",
+
+            color_hover_1: "red",
+            color_hover_2: "red",
+
+            back_selected_1: "blue",
+            back_selected_2: "blue",
+
+            color_selected_1: "red",
+            color_selected_2: "red",
+
+            pointer_back: "green",
+            pointer_color: "green",
+
             main_padding: "0px",
             border_color: "red",
             border_width: "0px",
@@ -128,7 +136,6 @@ export class DynamicList extends HTMLElement {
                                     font-size: var(--title_fontSize);
                                     color: var(--title_color);
                                     margin-right: 10px;
-                                    color: var(--color_default);
                                 }
                             }
                         }
@@ -136,31 +143,32 @@ export class DynamicList extends HTMLElement {
                 }
 
                 .listBox .list .sectionsBox .componentSections .sectionRow:has(input:not(:checked):hover) {
-                    background: var(--back_selected3);
-                    .name {color: var(--color_selected1);}
+                    background: var(--back_hover_1);
+                    .name {color: var(--color_hover_1);}
                 }
 
                 .listBox .list .sectionsBox .componentSections .sectionRow:has(input:checked) {
-                    background: var(--back_selected1);
+                    background: var(--back_selected_1);
                     .rowExpand {width: 100%;}
-                    .name {color: var(--color_selected1);}
+                    .name {color: var(--color_selected_1);}
                     +.expand {opacity: 1;}
                 }
 
                 .listBox .list .sectionsBox .componentSections .listRow:has(input:not(:checked):hover) {
-                    background: var(--back_selected3);
-                    .name {color: var(--color_selected2);}
+                    background: var(--back_hover_1);
+                    .name {color: var(--color_hover_2);}
                 }
 
                 .listBox .list .sectionsBox .componentSections .listRow:has(input:checked) {
-                    background: var(--back_selected2);
+                    background: var(--back_selected_2);
                     .rowExpand {width: 100%;}
-                    .name {color: var(--color_selected2);}
+                    .name {color: var(--color_selected_2);}
                 }
 
-                .listBox .list .sectionsBox .componentSections:has(.listRow input:checked) .sectionRow:has(input:not(:checked)) .pointer {
-                    background: var(--pointer_color);
-                }                
+                .listBox .list .sectionsBox .componentSections:has(.listRow input:checked) .sectionRow {
+                    background: var(--pointer_back);
+                    .name {color: var(--pointer_color);}
+                }
             }
 
             .relative {position: relative;}
@@ -204,7 +212,7 @@ export class DynamicList extends HTMLElement {
             return radio
         }
 
-        const sectionRow = this.base.add("div", section, "sectionRow verticalAlign relative radius")
+        const sectionRow = this.base.add("div", section, "sectionRow verticalAlign relative radius transition")
         const expand = this.base.add("div", section, "expand expandClose transition")
 
         create(sectionRow, title, "section")

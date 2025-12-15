@@ -20,23 +20,27 @@
     --bar_height: 30px;
     --bar_left: calc(var(--panel_width) + var(--body_padding) * 2 + 40px);
 
-    --main_back: rgba(0, 0, 0, 0.6);
-    --light_transition: 600ms ease-in-out;
+    --normal_transition: 600ms ease-in-out;
 
     /* colors */
-    --text_light_color: rgb(160, 160, 160);
-    --text_dark_color: rgb(30, 30, 30);
+    --light_1: white;
+    --light_2: rgba(255, 255, 255, 0.8);
+    --light_4: rgba(255, 255, 255, 0.5);
+    --light_5: rgba(255, 255, 255, 0.2);
+
+    --dark_1: rgba(0, 0, 0, 0.8);
+    --dark_2: rgba(0, 0, 0, 0.6);
+    --dark_3: rgba(0, 0, 0, 0.4);
+    --dark_4: rgba(0, 0, 0, 0.2);
     
-    --back_light: rgba(255, 255, 255, 0.397);
-    --back_dark: rgba(0, 0, 0, 0.4);
+    --grey_1: rgb(160, 160, 160);
+    --grey_2: rgb(126, 126, 126);
+    --grey_3: rgb(60, 60, 60);
+    --grey_4: rgb(28, 28, 28);
+    --grey_5: rgb(16, 16, 16);
 
-    --icon_light: rgb(131, 131, 131);
-
-    --selected_back: rgb(187, 243, 245);
-    --hover_back: rgba(187, 243, 245, 0.5);
-
-    --darkCrystal: rgba(30, 30, 30, 0.8);
-    --darkCrystal_light: rgba(0, 0, 0, 0.2);
+    --enphasis_1: rgb(162, 255, 175);
+    --enphasis_2: rgb(171, 255, 182);
 }
 
 .center {

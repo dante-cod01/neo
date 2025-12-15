@@ -7,12 +7,12 @@ const drawTopBar = async (box) => {
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const css = {
-        box_width: getComputedStyle(document.documentElement).getPropertyValue("--bar_width"),
-        box_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
+        box_width: cssHelper.getVar("bar_width"),
+        box_height: cssHelper.getVar("bar_height"),
         box_width_max: "130px",
-        box_back: getComputedStyle(document.documentElement).getPropertyValue("--darkCrystal_light"),
+        box_back: cssHelper.getVar("dark_4"),
         box_radius: "6px",
-        transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition")
+        transition: cssHelper.getVar("normal_transition")
     }
 
     const topBar = element.add(component.tag, box, "bars topBar", "topBar")
@@ -46,16 +46,17 @@ const drawBackChanger = async (box) => {
 
         option_width: "fit-content",
         option_height: "100%",
-        option_hover_color: cssHelper.getVar("text_dark_color"),
-        option_hover_back: cssHelper.getVar("hover_back"),
-        option_checked_back: cssHelper.getVar("selected_back"),
+        option_hover_color: cssHelper.getVar("dark_1"),
+        option_hover_back: cssHelper.getVar("light_2"),
+        option_checked_color: cssHelper.getVar("dark_1"),
+        option_checked_back: cssHelper.getVar("enphasis_2"),
 
         iconBox_size: cssHelper.getVar("bar_height"),
         icon_size: "22px",
         icon_font: "Anta",
-        icon_color: cssHelper.getVar("text_light_color"),
+        icon_color: cssHelper.getVar("grey_2"),
         icon_radius: "50%",
-        icon_back: cssHelper.getVar("back_dark"),
+        icon_back: cssHelper.getVar("dark_2"),
         icon_fontSize: "10px",
 
         transition: "140ms ease-in-out"
@@ -84,30 +85,31 @@ const drawViewChanger = async (box) => {
     ]
 
     const data = [
+        { box: "space", size: "8px" },
         { box: "radio", name: "view", type: "material", icon: "computer", checked: true },
         { box: "radio", name: "view", type: "material", icon: "crop_landscape" },
         { box: "radio", name: "view", type: "material", icon: "mobile_3" },
         { box: "radio", name: "view", type: "material", icon: "mobile_rotate" },
         { box: "space", size: "18px" },
-        { box: "checkbox", type: "material", icon: "panorama_horizontal" },
+        { box: "checkbox", type: "material", icon: "crop_free" },
+        { box: "space", size: "8px" },
     ]
 
     const css = {
         box_width: "fit-content",
-        box_height: cssHelper.getVar("bar_height"),
+        box_height: `calc(${cssHelper.getVar("bar_height")} - 6px)`,
+        box_back: cssHelper.getVar("dark_3"),
+        box_radius: "6px",
 
         option_width: "fit-content",
         option_height: "100%",
-        option_hover_color: cssHelper.getVar("text_dark_color"),
-        option_hover_back: cssHelper.getVar("hover_back"),
-        option_checked_back: cssHelper.getVar("selected_back"),
+        option_hover_color: cssHelper.getVar("light_2"),
+        option_checked_color: cssHelper.getVar("enphasis_1"),
 
         iconBox_size: cssHelper.getVar("bar_height"),
-        material_size: "100%",
-        material_color: cssHelper.getVar("icon_light"),
-        material_fontSize: "20px",
-        material_radius: "4px",
-        material_back: cssHelper.getVar("back_dark")
+        material_size: cssHelper.getVar("bar_height"),
+        material_color: cssHelper.getVar("grey_2"),
+        material_fontSize: "16px",
     }
 
     const logic = {

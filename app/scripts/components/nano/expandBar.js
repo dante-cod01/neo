@@ -90,7 +90,7 @@ export class ExpandBar extends HTMLElement {
         const nodesLayer = this.dom.querySelector(".nodesLayer")
 
         for (let i = 0; i < Number(number); i++) {
-            const node = this.base.add("div", nodesLayer)
+            const node = this.base.add("div", nodesLayer, "center")
             node.setAttribute("node", "node_" + i)
         }
         this.nodes = this.base.getNodes(this.dom)

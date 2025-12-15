@@ -13,21 +13,21 @@ const drawPanelBox = async (box) => {
     ]
 
     const css = {
-        box_width: getComputedStyle(document.documentElement).getPropertyValue("--panel_width"),
-        box_height: getComputedStyle(document.documentElement).getPropertyValue("--panel_height"),
+        box_width: cssHelper.getVar("panel_width"),
+        box_height: cssHelper.getVar("panel_height"),
         box_radius: "6px",
         box_blur: "blur(2px)",
-        box_transition: getComputedStyle(document.documentElement).getPropertyValue("--light_transition"),
-        topBar_height: getComputedStyle(document.documentElement).getPropertyValue("--bar_height"),
-        topBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
-        content_back: getComputedStyle(document.documentElement).getPropertyValue("--darkCrystal_light"),
+        box_transition: cssHelper.getVar("normal_transition"),
+        topBar_height: cssHelper.getVar("bar_height"),
+        topBar_back: cssHelper.getVar("dark_2"),
+        content_back: cssHelper.getVar("dark_4"),
         title_font: "Anta",
         title_fontSize: "14px",
-        title_color: "rgb(200, 200, 200)",
+        title_color: cssHelper.getVar("light_2"),
         icon_size: "16px",
-        icon_color: "rgb(200, 200, 200)",
+        icon_color: cssHelper.getVar("light_2"),
         bottomBar_height: "34px",
-        bottomBar_back: getComputedStyle(document.documentElement).getPropertyValue("--main_back"),
+        bottomBar_back: cssHelper.getVar("dark_2"),
     }
 
     const logic = {
@@ -60,21 +60,27 @@ const drawDynamicList = async (box) => {
     ]
 
     const css = {
+        back_hover_1: cssHelper.getVar("light_5"),
+        color_hover_1: cssHelper.getVar("light_1"),
+        back_selected_1: cssHelper.getVar("light_4"),
+        color_selected_1: cssHelper.getVar("grey_5"),
+
+        back_hover_2: cssHelper.getVar("light_5"),
+        color_hover_2: cssHelper.getVar("light_1"),
+        back_selected_2: cssHelper.getVar("light_4"),
+        color_selected_2: cssHelper.getVar("grey_5"),
+
+        pointer_back: cssHelper.getVar("enphasis_2"), 
+        pointer_color: cssHelper.getVar("grey_5"),
+
         back: "transparent",
-        back_selected1: "rgba(50, 173, 255, 0.4)",
-        back_selected2: "rgba(37, 188, 196, 0.4)",
-        back_selected3: "rgba(255, 255, 255, 0.4)",
-        pointer_color: "rgba(50, 173, 255, 0.17)",
-        color_default: "rgba(153, 153, 153, 1)",
-        color_selected1: "whitesmoke",
-        color_selected2: "whitesmoke",
         border_color: "rgba(255, 255, 255, 0.5)",
         border_radius: "4px",
         section_back: "transparent",
         title_height: "24px",
         title_font: "Anta",
         title_fontSize: "12px",
-        title_color: cssHelper.getVar("text_light_color"),
+        title_color: cssHelper.getVar("light_4"),
         li_height: "24px",
         transition: "400ms ease-in-out",
     }

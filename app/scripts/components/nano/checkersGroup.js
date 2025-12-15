@@ -20,12 +20,15 @@ export class RadioGroup extends HTMLElement {
         this.defaultCss = {
             box_width: "fit-content",
             box_height: "fit-content",
+            box_back: "none",
+            box_radius: "none",
 
             option_width: "fit-content",
             option_height: "fit-content",
-            option_hover_color: "blue",
-            option_hover_back: "initial",
-            option_checked_back: "initial",
+            option_hover_color: "none",
+            option_hover_back: "none",
+            option_checked_color: "none",
+            option_checked_back: "none",
 
             iconBox_size: "fit-content",
             iconBox_margin: "none",
@@ -81,6 +84,8 @@ export class RadioGroup extends HTMLElement {
             .main {
                 width: 100%;
                 height: 100%;
+                background: var(--box_back);
+                border-radius: var(--box_radius);
 
                 .option {
                     width: var(--option_width);
@@ -126,23 +131,37 @@ export class RadioGroup extends HTMLElement {
                         color: var(--label_color);
                     }
 
-                    &:hover .icon {
+                    &:hover .icon,
+                    &:hover .material {
                         border-color: transparent;
                         background: var(--option_hover_back);
-                        color: var(--text_dark_color);
+                        color: var(--option_hover_color);
+                    }
+
+                    &:hover .material {
+                        transform: scale(125%);
+                        border-color: transparent;
+                        color: var(--option_hover_color);
                     }
 
                     &:has(input:checked) .icon {
                         border-color: transparent;
                         background: var(--option_checked_back);
-                        color: var(--text_dark_color);
+                        color: var(--option_checked_color);
                     }
 
-                    &:hover .label,
-                    &:has(input:checked) .label {
-                        color: var(--text_dark_color);
+                    &:has(input:checked) .material {
+                        border-color: transparent;
+                        background: var(--option_checked_back);
+                        color: var(--option_checked_color);
                     }
-                }
+
+
+/*                     &:hover .label,
+                    &:has(input:checked) .label {
+                        color: red;
+                    }
+ */                }
             }
 
             .relative {position: relative;}
