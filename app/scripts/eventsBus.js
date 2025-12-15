@@ -1,12 +1,15 @@
+import { viewControl } from "./interface/controls/boxControls.js"
+
 const topBarEvents = () => {
     document.addEventListener("backChanger", (e) => {
-        const inputIndex = e.detail.input
+        const inputIndex = Number(e.detail.input)
 
         console.log(inputIndex)
     })
 
     document.addEventListener("viewChanger", (e) => {
-        console.log(e.detail.input)
+        const value = Number(e.detail.input)
+        viewControl(value)
     })
 }
 
@@ -17,7 +20,7 @@ const panelEvents = () => {
         const topBar = document.getElementById("topBar")
         const panel = e.detail.panel
         const type = e.detail.type
-        const value = e.detail.value
+        const value = Number(e.detail.value)
 
         if (type === "open_W") {
             openPanels[panel] = value
