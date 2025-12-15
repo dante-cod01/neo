@@ -156,12 +156,8 @@ export class RadioGroup extends HTMLElement {
                         color: var(--option_checked_color);
                     }
 
-
-/*                     &:hover .label,
-                    &:has(input:checked) .label {
-                        color: red;
-                    }
- */                }
+/* FALTA LOS LABELS */
+                }
             }
 
             .relative {position: relative;}
@@ -194,7 +190,6 @@ export class RadioGroup extends HTMLElement {
     }
 
     #addSpace = (size, num) => {
-        console.log("space")
         const ownClassCss = this.base.add("style", this.dom)
         ownClassCss.textContent = `.space_${num} {width: ${size}}`
         return this.base.add("span", this.container, `space_${num}`)
@@ -216,7 +211,10 @@ export class RadioGroup extends HTMLElement {
     }
 
     #drawInputs = () => {
-        this.data.forEach((item, num) => {
+        let inputIndex = 1
+        let spaceIndex = 1
+
+        this.data.forEach(item => {
             this.#checkData(item)
             const itemBox = item.box
             const itemType = item.type ?? null
@@ -242,11 +240,15 @@ export class RadioGroup extends HTMLElement {
                 labelBox.textContent = item.label
             }
             if (itemBox === "radio") {
-                const radio = this.base.addInput(item.box, option, num + 1, item.name, "hiddenInput absolute")
+                const radio = this.base.addInput(item.box, option, inputIndex, item.name, "hiddenInput absolute")
                 item.checked && (radio.checked = true)
+                inputIndex++
             }
-            if (itemBox === "checkbox") this.base.addInput(item.box, option, num + 1, "", "hiddenInput absolute")
-            if (itemBox === "space") this.#addSpace(item.size, num)
+            if (itemBox === "checkbox") {
+                this.base.addInput(item.box, option, inputIndex, "", "hiddenInput absolute")
+                inputIndex++
+            }
+            if (itemBox === "space") { this.#addSpace(item.size, spaceIndex); spaceIndex++ }
         })
         return this.dom.querySelectorAll("input")
     }

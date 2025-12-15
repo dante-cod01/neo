@@ -4,6 +4,10 @@ const topBarEvents = () => {
 
         console.log(inputIndex)
     })
+
+    document.addEventListener("viewChanger", (e) => {
+        console.log(e.detail.input)
+    })
 }
 
 const panelEvents = () => {
