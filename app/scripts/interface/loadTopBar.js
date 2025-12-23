@@ -33,11 +33,11 @@ const drawBackChanger = async (box) => {
     ]
 
     const data = [
-        { box: "radio", name: "back", type: "text", icon: "1", checked: true },
-        { box: "radio", name: "back", type: "text", icon: "2" },
-        { box: "radio", name: "back", type: "text", icon: "3" },
-        { box: "radio", name: "back", type: "text", icon: "4" },
-        { box: "radio", name: "back", type: "text", icon: "5" },
+        { box: "radio", id: "1", name: "back", type: "text", icon: "1", checked: true },
+        { box: "radio", id: "2", name: "back", type: "text", icon: "2" },
+        { box: "radio", id: "3", name: "back", type: "text", icon: "3" },
+        { box: "radio", id: "4", name: "back", type: "text", icon: "4" },
+        { box: "radio", id: "5", name: "back", type: "text", icon: "5" },
     ]
 
     const css = {
@@ -47,14 +47,14 @@ const drawBackChanger = async (box) => {
         option_width: "fit-content",
         option_height: "100%",
         option_hover_color: cssHelper.getVar("dark_1"),
-        option_hover_back: cssHelper.getVar("light_2"),
+        option_hover_back: cssHelper.getVar("light_3"),
         option_checked_color: cssHelper.getVar("dark_1"),
-        option_checked_back: cssHelper.getVar("enphasis_2"),
+        option_checked_back: cssHelper.getVar("enphasis_1"),
 
         iconBox_size: cssHelper.getVar("bar_height"),
         icon_size: "22px",
         icon_font: "Anta",
-        icon_color: cssHelper.getVar("grey_2"),
+        icon_color: cssHelper.getVar("grey_1"),
         icon_radius: "50%",
         icon_back: cssHelper.getVar("dark_2"),
         icon_fontSize: "10px",
@@ -74,6 +74,7 @@ const drawBackChanger = async (box) => {
     backChanger.eventDom = document
     backChanger.eventName = "backChanger"
     backChanger.addDependency(new dependency())
+    return backChanger
 }
 
 const drawViewChanger = async (box) => {
@@ -85,38 +86,39 @@ const drawViewChanger = async (box) => {
     ]
 
     const data = [
-        { box: "space", size: "8px" },
-        { box: "radio", name: "view", type: "material", icon: "computer", checked: true },
-        { box: "radio", name: "view", type: "material", icon: "crop_landscape" },
-        { box: "radio", name: "view", type: "material", icon: "mobile_3" },
-        { box: "radio", name: "view", type: "material", icon: "mobile_rotate" },
-        { box: "space", size: "18px" },
-        { box: "checkbox", type: "material", icon: "crop_free" },
-        { box: "space", size: "8px" },
+        { box: "space", size: "5px" },
+        { box: "radio", id: "computer", name: "view", type: "material", icon: "computer", checked: true },
+        { box: "radio", id: "tablet", name: "view", type: "material", icon: "crop_landscape" },
+        { box: "radio", id: "mobile", name: "view", type: "material", icon: "mobile_3" },
+        { box: "space", size: "20px" },
+        { box: "checkbox", id: "rotate", type: "material", icon: "autorenew", disabled: true },
+        { box: "checkbox", id: "fullscreen", type: "material", icon: "crop_free" },
+        { box: "space", size: "5px" },
     ]
 
     const css = {
-        box_width: "fit-content",
+        box_width: "auto",
         box_height: `calc(${cssHelper.getVar("bar_height")} - 6px)`,
-        box_back: cssHelper.getVar("dark_3"),
+        box_back: cssHelper.getVar("dark_2"),
         box_radius: "6px",
 
-        option_width: "fit-content",
+        option_width: "28px",
         option_height: "100%",
         option_hover_color: cssHelper.getVar("light_2"),
         option_checked_color: cssHelper.getVar("enphasis_1"),
 
         iconBox_size: cssHelper.getVar("bar_height"),
         material_size: cssHelper.getVar("bar_height"),
-        material_color: cssHelper.getVar("grey_2"),
+        material_color: cssHelper.getVar("light_4"),
         material_fontSize: "16px",
+        material_disabled: cssHelper.getVar("grey_2")
     }
 
     const logic = {
         horizontal: true
     }
 
-    const viewChanger = element.add(component.tag, box)
+    const viewChanger = element.add(component.tag, box, "", "viewChanger")
     viewChanger.data = data
     viewChanger.links = links
     viewChanger.css = css
@@ -124,7 +126,7 @@ const drawViewChanger = async (box) => {
     viewChanger.eventDom = document
     viewChanger.eventName = "viewChanger"
     viewChanger.addDependency(new dependency())
-
+    return viewChanger
 }
 
 export const init = async (box) => {

@@ -1,4 +1,4 @@
-export const tag = "radio-group"
+export const tag = "checkers-group"
 export class RadioGroup extends HTMLElement {
     constructor() {
         super()
@@ -12,6 +12,7 @@ export class RadioGroup extends HTMLElement {
         this.id
         this.eventDom
         this.eventName
+        this.inputs
 
         this.defaultLogic = {
             horizontal: false
@@ -48,6 +49,7 @@ export class RadioGroup extends HTMLElement {
             material_border: "none",
             material_radius: "none",
             material_back: "none",
+            material_disabled: "initial",
 
             label_width: "100%",
             label_height: "100%",
@@ -115,7 +117,6 @@ export class RadioGroup extends HTMLElement {
                             background: var(--material_back);
                             font-family: var(--material_font); 
                             font-size: var(--material_fontSize); 
-                            color: var(--material_color);
                         }
                     }
 
@@ -131,17 +132,15 @@ export class RadioGroup extends HTMLElement {
                         color: var(--label_color);
                     }
 
-                    &:hover .icon,
-                    &:hover .material {
+                    &:hover:has(input:not(:checked)) .icon,
+                    &:hover:has(input:not(:disabled):not(:checked)) .material {
                         border-color: transparent;
                         background: var(--option_hover_back);
                         color: var(--option_hover_color);
                     }
 
-                    &:hover .material {
-                        transform: scale(125%);
+                    &:hover:has(input:not(:disabled):not(:checked)) .material {
                         border-color: transparent;
-                        color: var(--option_hover_color);
                     }
 
                     &:has(input:checked) .icon {
@@ -150,13 +149,13 @@ export class RadioGroup extends HTMLElement {
                         color: var(--option_checked_color);
                     }
 
-                    &:has(input:checked) .material {
+                    &:has(input:checked:not(:disabled)) .material {
                         border-color: transparent;
                         background: var(--option_checked_back);
                         color: var(--option_checked_color);
                     }
 
-/* FALTA LOS LABELS */
+/* FALTAN LOS LABELS */
                 }
             }
 
@@ -165,8 +164,12 @@ export class RadioGroup extends HTMLElement {
             .horizontal {display: flex;}
             .verticalCenter {display: flex; align-items: center;}
             .center {display: flex; justify-content: center; align-items: center;}
-            .hiddenInput {appearance: none; width: 100%; height: 100%; cursor: pointer;}
+            .hiddenInput {appearance: none; width: 100%; height: 100%;}
             .transition {transition: var(--transition);}
+            .enabledColor {color: var(--material_color);}
+            .disabledColor {color: var(--material_disabled);}
+            .enabledPointer {cursor: pointer;}
+            .disabledPointer {cursor: auto;}
         `
     }
 
@@ -211,44 +214,47 @@ export class RadioGroup extends HTMLElement {
     }
 
     #drawInputs = () => {
-        let inputIndex = 1
-        let spaceIndex = 1
 
-        this.data.forEach(item => {
+        this.data.forEach((item, num) => {
             this.#checkData(item)
             const itemBox = item.box
             const itemType = item.type ?? null
             const itemIcon = item.icon ?? null
             const itemLabel = item.label ?? null
-            const option = this.base.add("div", this.container, "option verticalCenter relative")
 
-            if (itemIcon) {
-                const iconBox = this.base.add("div", option, "iconBox center")
+            if (itemBox === "space") {
+                this.#addSpace(item.size, num)
+            } else {
+                const option = this.base.add("div", this.container, "option verticalCenter relative")
 
-                if (itemType === "text") {
-                    const icon = this.base.add("div", iconBox, "icon center transition")
-                    icon.textContent = item.icon
+                if (itemIcon) {
+                    const iconBox = this.base.add("div", option, "iconBox center")
+
+                    if (itemType === "text") {
+                        const icon = this.base.add("div", iconBox, "icon center transition")
+                        icon.textContent = item.icon
+                    }
+                    if (itemType === "material") {
+                        const icon = this.base.add("div", iconBox, "material enabledColor center transition")
+                        icon.textContent = item.icon
+                    }
                 }
-                if (itemType === "material") {
-                    const icon = this.base.add("div", iconBox, "material center transition")
-                    icon.textContent = item.icon
+                if (itemLabel) {
+                    const labelBox = this.base.add("div", option, "label verticalCenter transition")
+                    labelBox.textContent = item.label
+                }
+                if (itemBox === "radio") {
+                    const radio = this.base.addInput(item.box, option, item.id, item.name, "hiddenInput absolute enabledPointer")
+                    item.checked && (radio.checked = true)
+                }
+                if (itemBox === "checkbox") {
+                    this.base.addInput(item.box, option, item.id, "", "hiddenInput absolute enabledPointer")
+                }
+                if (item.disabled) {
+                    const input = option.querySelector("input")
+                    this.disableInput(input, true)
                 }
             }
-
-            if (itemLabel) {
-                const labelBox = this.base.add("div", option, "label verticalCenter transition")
-                labelBox.textContent = item.label
-            }
-            if (itemBox === "radio") {
-                const radio = this.base.addInput(item.box, option, inputIndex, item.name, "hiddenInput absolute")
-                item.checked && (radio.checked = true)
-                inputIndex++
-            }
-            if (itemBox === "checkbox") {
-                this.base.addInput(item.box, option, inputIndex, "", "hiddenInput absolute")
-                inputIndex++
-            }
-            if (itemBox === "space") { this.#addSpace(item.size, spaceIndex); spaceIndex++ }
         })
         return this.dom.querySelectorAll("input")
     }
@@ -256,10 +262,12 @@ export class RadioGroup extends HTMLElement {
     #applyEvents = (inputs) => {
         inputs.forEach(item => {
             item.addEventListener("change", (e) => {
-                this.base.sendEvent(this.eventDom, this.eventName, { input: e.target.id })
+                this.base.sendEvent(this.eventDom, this.eventName, { detail: e.target })
             })
         })
     }
+
+    #publicInputs = () => { return this.dom.querySelectorAll("input") }
 
     #init = () => {
         this.#configure()
@@ -267,6 +275,20 @@ export class RadioGroup extends HTMLElement {
         this.#applyConf()
         const inputs = this.#drawInputs()
         this.#applyEvents(inputs)
+        this.inputs = this.#publicInputs()
+        this.base.sendEvent(this.eventDom, this.eventName, "ready")
+    }
+
+    disableInput = (input, disable) => {
+        const icon = input.parentElement.querySelector(".iconBox .icon, .iconBox .material")
+        input.disabled = disable
+        if (disable) {
+            input.classList.replace("enabledPointer", "disabledPointer")
+            icon.classList.replace("enabledColor", "disabledColor")
+        } else {
+            input.classList.replace("disabledPointer", "enabledPointer")
+            icon.classList.replace("disabledColor", "enabledColor")
+        }
     }
 
     addDependency(dependency) {

@@ -14,10 +14,7 @@
     --panel_height: calc(100% - var(--body_padding) * 2);
 
     --bar_width: calc(100% - var(--bar_left) * 2);
-    --bar_height: 30px;
-
-    --bar_width: calc(100% - var(--bar_left) * 2);
-    --bar_height: 30px;
+    --bar_height: 32px;
     --bar_left: calc(var(--panel_width) + var(--body_padding) * 2 + 40px);
 
     --normal_transition: 600ms ease-in-out;
@@ -25,22 +22,22 @@
     /* colors */
     --light_1: white;
     --light_2: rgba(255, 255, 255, 0.8);
-    --light_4: rgba(255, 255, 255, 0.5);
+    --light_3: rgba(255, 255, 255, 0.6);
+    --light_4: rgba(255, 255, 255, 0.4);
     --light_5: rgba(255, 255, 255, 0.2);
 
     --dark_1: rgba(0, 0, 0, 0.8);
     --dark_2: rgba(0, 0, 0, 0.6);
     --dark_3: rgba(0, 0, 0, 0.4);
     --dark_4: rgba(0, 0, 0, 0.2);
-    
+
     --grey_1: rgb(160, 160, 160);
-    --grey_2: rgb(126, 126, 126);
+    --grey_2: rgb(100, 100, 100);
     --grey_3: rgb(60, 60, 60);
     --grey_4: rgb(28, 28, 28);
     --grey_5: rgb(16, 16, 16);
 
-    --enphasis_1: rgb(162, 255, 175);
-    --enphasis_2: rgb(171, 255, 182);
+    --enphasis_1: rgb(170, 254, 255);
 }
 
 .center {
@@ -48,3 +45,19 @@
     justify-content: center;
     align-items: center;
 }
+
+.fadeOut {
+    transform: scale(10%);
+    opacity: 0;
+    transition: var(--normal_transition);
+}
+
+.rotate_0 {
+    transform: rotate(0deg);
+/*     box-shadow: 5px 5px 20px rgb(28, 28, 28);
+ */}
+
+.rotate_90 {
+    transform: rotate(90deg);
+/*     box-shadow: -5px 5px 20px rgb(28, 28, 28);
+ */}

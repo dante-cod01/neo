@@ -70,7 +70,7 @@ const drawDynamicList = async (box) => {
         back_selected_2: cssHelper.getVar("light_4"),
         color_selected_2: cssHelper.getVar("grey_5"),
 
-        pointer_back: cssHelper.getVar("enphasis_2"), 
+        pointer_back: cssHelper.getVar("enphasis_1"), 
         pointer_color: cssHelper.getVar("grey_5"),
 
         back: "transparent",

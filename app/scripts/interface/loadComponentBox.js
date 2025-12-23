@@ -9,12 +9,12 @@ const drawComponentBox = async (box) => {
     const css = {
         box_width: "100%",
         box_height: "100%",
-        box_back: "grey",
+        box_back: "green",
         box_shadow: "5px 5px 20px rgb(28, 28, 28)",
         main_transition: cssHelper.getVar("normal_transition")
     }
 
-    const componentBox = element.add(component.tag, box, "componentBox", "componentBox")
+    const componentBox = element.add(component.tag, box, "componentBox  rotate_0", "componentBox")
     componentBox.eventDom = document
     componentBox.eventName = "componentBox"
     componentBox.css = css

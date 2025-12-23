@@ -1,20 +1,25 @@
-import { viewControl } from "./interface/controls/boxControls.js"
+const topBarEvents = async () => {
 
-const topBarEvents = () => {
+    const viewChangerListener = (controls) => {
+        document.addEventListener("viewChanger", (e) => {
+            controls.viewControl(e.detail)
+        })
+    }
+
     document.addEventListener("backChanger", (e) => {
         const inputIndex = Number(e.detail.input)
-
-        console.log(inputIndex)
     })
 
-    document.addEventListener("viewChanger", (e) => {
-        const value = Number(e.detail.input)
-        viewControl(value)
+    document.addEventListener("viewChanger", async (e) => {
+        if (e.detail === "ready") {
+            const boxControl = await import("./interface/controls/boxControls.js")
+            viewChangerListener(boxControl)
+        }
     })
 }
 
 const panelEvents = () => {
-    const openPanels = {left: true, right: true}
+    const openPanels = { left: true, right: true }
 
     document.addEventListener("panel", (e) => {
         const topBar = document.getElementById("topBar")

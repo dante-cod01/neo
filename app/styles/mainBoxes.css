@@ -7,8 +7,8 @@ body {
     width: 100vw;
     height: 100vh;
     background: grey;
-    background: url("https://wallpapers.com/images/hd/scenic-view-of-faroe-islands-jdj06pr46tgkob59.jpg");
-
+/*     background: url("https://wallpapers.com/images/hd/scenic-view-of-faroe-islands-jdj06pr46tgkob59.jpg");
+ */
     .panelMenu {
         position: absolute;
         top: var(--body_padding);

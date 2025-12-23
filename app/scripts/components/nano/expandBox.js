@@ -17,6 +17,7 @@ export class ExpandBox extends HTMLElement {
             box_border: "none",
             box_radius: "none",
             box_shadow: "none",
+            box_rotate: "none",
             main_transition: "none"
         }
 
@@ -56,9 +57,13 @@ export class ExpandBox extends HTMLElement {
                 width: 100%;
                 height: 100%;
                 background: var(--box_back);
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
                 border: var(--box_border);
                 border-radius: var(--box_radius);
                 box-shadow: var(--box_shadow);
+                transform: rotate(var(--box_rotate));
                 transition: var(--normal_transition);
             }
         `
