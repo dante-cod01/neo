@@ -6,16 +6,17 @@ const topBarEvents = async () => {
         })
     }
 
-    document.addEventListener("backChanger", (e) => {
-        const inputIndex = Number(e.detail.input)
-    })
-
     document.addEventListener("viewChanger", async (e) => {
         if (e.detail === "ready") {
             const boxControl = await import("./interface/controls/boxControls.js")
             viewChangerListener(boxControl)
         }
     })
+
+    document.addEventListener("backChanger", (e) => {
+        const inputIndex = Number(e.detail.input)
+    })
+
 }
 
 const panelEvents = () => {

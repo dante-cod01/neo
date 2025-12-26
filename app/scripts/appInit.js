@@ -2,16 +2,23 @@ import { loadListeners } from "./eventsBus.js"
 
 const loadStyles = async () => {
     const path = [
-        { rel: "stylesheet", href: "app/styles/globalConf.css" },
-        { rel: "stylesheet", href: "app/styles/mainBoxes.css" }
+        { id: "globalConf", rel: "stylesheet", href: "app/styles/globalConf.css" },
+        { id: "mainBoxes", rel: "stylesheet", href: "app/styles/mainBoxes.css" }
     ]
+
     return new Promise(resolve => {
-        Object.entries(path).forEach((item, num) => {
+        let cssLoaded = 0
+
+        path.forEach((style, num) => {
             const link = document.createElement("link")
-            link.setAttribute("rel", item[1].rel)
-            link.setAttribute("href", item[1].href)
             document.head.appendChild(link)
-            link.onload = () => { if (num === path.length - 1) resolve() }
+
+            Object.entries(style).forEach(([key, value]) => { link.setAttribute(key, value) })
+
+            link.onload = () => {
+                cssLoaded++
+                cssLoaded === path.length && resolve()
+            }
         })
     })
 }

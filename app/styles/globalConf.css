@@ -17,6 +17,12 @@
     --bar_height: 32px;
     --bar_left: calc(var(--panel_width) + var(--body_padding) * 2 + 40px);
 
+    --componentBox_rotate: 0deg;
+    --componentBox_radius: 0;
+    --componentBox_scale: 1;
+    --componentBox_opacity: 1;
+    --componentBox_transition: 600ms;
+    
     --normal_transition: 600ms ease-in-out;
 
     /* colors */
@@ -40,24 +46,25 @@
     --enphasis_1: rgb(170, 254, 255);
 }
 
+.max {
+    width: 100%;
+    height: 100%;
+}
+
 .center {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.fadeOut {
-    transform: scale(10%);
-    opacity: 0;
-    transition: var(--normal_transition);
+.componentTransform {
+    transform: rotate(var(--componentBox_rotate)) scale(var(--componentBox_scale));
 }
 
-.rotate_0 {
-    transform: rotate(0deg);
-/*     box-shadow: 5px 5px 20px rgb(28, 28, 28);
- */}
+.componentOpacity {
+    opacity: var(--componentBox_opacity);
+}
 
-.rotate_90 {
-    transform: rotate(90deg);
-/*     box-shadow: -5px 5px 20px rgb(28, 28, 28);
- */}
+.componentTransition {
+    transition: var(--componentBox_transition);
+}
