@@ -19,22 +19,22 @@ export class RadioGroup extends HTMLElement {
         }
 
         this.defaultCss = {
-            box_width: "fit-content",
-            box_height: "fit-content",
+            box_width: "100%",
+            box_height: "100%",
             box_back: "none",
             box_radius: "none",
 
-            option_width: "fit-content",
-            option_height: "fit-content",
+            option_width: "100%",
+            option_height: "100%",
             option_hover_color: "none",
             option_hover_back: "none",
             option_checked_color: "none",
             option_checked_back: "none",
 
-            iconBox_size: "fit-content",
+            iconBox_size: "100%",
             iconBox_margin: "none",
 
-            icon_size: "20px",
+            iconBox_size: "20px",
             icon_fontSize: "initial",
             icon_font: "initial",
             icon_color: "initial",
@@ -95,12 +95,13 @@ export class RadioGroup extends HTMLElement {
 
                     .iconBox {
                         width: var(--iconBox_size);
+                        height: var(--iconBox_size);
                         aspect-ratio: 1/1;
                         margin: var(--iconBox_margin);
 
                         .icon {
-                            width: var(--icon_size);
-                            height: var(--icon_size);
+                            width: 100%;
+                            height: 100%;
                             border: var(--icon_border);
                             border-radius: var(--icon_radius);
                             background: var(--icon_back);

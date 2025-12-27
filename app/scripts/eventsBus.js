@@ -16,7 +16,6 @@ const topBarEvents = async () => {
     document.addEventListener("backChanger", (e) => {
         const inputIndex = Number(e.detail.input)
     })
-
 }
 
 const panelEvents = () => {
@@ -26,7 +25,7 @@ const panelEvents = () => {
         const topBar = document.getElementById("topBar")
         const panel = e.detail.panel
         const type = e.detail.type
-        const value = Number(e.detail.value)
+        const value = e.detail.value
 
         if (type === "open_W") {
             openPanels[panel] = value

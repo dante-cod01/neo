@@ -116,7 +116,7 @@ export const viewControl = async (e) => {
     }
 
     if (index === "fullscreen") {
-        const manualDelay = 500 /* event & check status */
+        const manualDelay = 500 /* event & check */
         await fadeOut()
         await fullMode(manualDelay)
         await fadeIn()
