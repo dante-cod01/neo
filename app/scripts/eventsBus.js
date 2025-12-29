@@ -1,43 +1,41 @@
-const topBarEvents = async () => {
+/* let panels = await import("./interface/controls/panelsControls.js")
+ */
 
-    const viewChangerListener = (controls) => {
-        document.addEventListener("viewChanger", (e) => {
-            controls.viewControl(e.detail)
-        })
-    }
+const topBarEvents = async (logic) => {
 
     document.addEventListener("viewChanger", async (e) => {
-        if (e.detail === "ready") {
-            const boxControl = await import("./interface/controls/boxControls.js")
-            viewChangerListener(boxControl)
-        }
+        if (e.detail === "ready") logic["view"] = await import("./interface/controls/boxControls.js") 
+        if (e.detail !== "ready") logic.view.control(e.detail)
     })
 
-    document.addEventListener("backChanger", (e) => {
-        const inputIndex = Number(e.detail.input)
+    document.addEventListener("backChanger", async (e) => {
+        if (e.detail === "ready") logic["back"] = await import("./interface/controls/backControls.js")
+        if (e.detail !== "ready") logic.back.control(e.detail)
     })
 }
 
-const panelEvents = () => {
+const panelEvents = async () => {
     const openPanels = { left: true, right: true }
 
     document.addEventListener("panel", (e) => {
-        const topBar = document.getElementById("topBar")
         const panel = e.detail.panel
-        const type = e.detail.type
+        const eventType = e.detail.type
         const value = e.detail.value
 
-        if (type === "open_W") {
+        panels.control(openPanels, panel, eventType, value)
+/*         if (type === "open_W") {
             openPanels[panel] = value
             if (openPanels.left === true && openPanels.right === true) topBar.expand()
             if (openPanels.left === true && openPanels.right === false) topBar.expand("right")
             if (openPanels.left === false && openPanels.right === true) topBar.expand("left")
             if (openPanels.left === false && openPanels.right === false) topBar.expand("both")
         }
-    })
+ */    })
 }
 
 export const loadListeners = async () => {
-    panelEvents()
-    topBarEvents()
+    const logic = {}
+
+/*     await panelEvents(logic, ready)
+ */    await topBarEvents(logic)
 }

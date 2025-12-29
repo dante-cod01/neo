@@ -159,7 +159,7 @@ const drawPanelsControls = async (box) => {
         horizontal: true
     }
 
-    const panelsControls = element.add(checkersGroup.tag, box, "", "panelsControls")
+    const panelsControls = element.add(checkersGroup.tag, box, "", "panelControls")
     panelsControls.data = data
     panelsControls.links = links
     panelsControls.css = css

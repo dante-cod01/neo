@@ -40,10 +40,10 @@ const loadInterface = async () => {
 }
 
 const main = async () => {
+    await loadListeners()
 
     await loadStyles()
     await loadInterface()
-    loadListeners()
 
 }
 

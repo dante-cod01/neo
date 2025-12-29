@@ -3,7 +3,7 @@ import { drawComponentBox } from "./../../interface/loadComponentBox.js"
 
 /* default view */
 const componentContainer = document.getElementById("componentContainer")
-let componentBox = document.getElementById("componentBox")
+let componentBox = null
 const viewChanger = document.getElementById("topBar").shadowRoot.getElementById("viewChanger")
 const time = cssHelper.convertTransition(getComputedStyle(document.documentElement).getPropertyValue("--componentBox_transition"))
 
@@ -87,13 +87,14 @@ const fadeIn = async () => {
     await new Promise(resolve => setTimeout(resolve, time))
 }
 
-export const viewControl = async (e) => {
+export const control = async (e) => {
     const index = e.detail.id
     index === "computer" && (view = "computer")
     index === "tablet" && (view = "tablet")
     index === "mobile" && (view = "mobile")
     index === "rotate" && (rotateInput = e.detail.checked)
     index === "fullscreen" && (full = full === true ? false : true)
+    componentBox === null && (componentBox = document.getElementById("componentBox"))
 
     if (index === "rotate") {
         rotateInput ? await applyRotate(true) : await applyRotate(false)

@@ -301,6 +301,7 @@ export class PanelBox extends HTMLElement {
         this.#applyConf()
         this.#getNodes()
         this.#addReactivity()
+        this.base.sendEvent(this.eventDom, this.eventName, "ready")
     }
 }
 

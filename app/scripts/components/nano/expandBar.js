@@ -100,7 +100,7 @@ export class ExpandBar extends HTMLElement {
         const colorLayer = this.dom.querySelector(".colorLayer")
         colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)
-console.log("now")
+
         if (mode === "left") colorLayer.classList.add("openLeft")
         if (mode === "right") colorLayer.classList.add("openRight")
         if (mode === "both") { colorLayer.classList.add("bothOpen"); this.#newRadius(true, colorLayer) }

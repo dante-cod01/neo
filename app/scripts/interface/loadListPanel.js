@@ -43,8 +43,7 @@ const drawPanelBox = async (box) => {
     panelBox.logic = logic
     panelBox.links = links
     panelBox.eventDom = document
-    panelBox.eventName = "panel"
-    panelBox.id = "left"
+    panelBox.eventName = "listPanel"
     panelBox.addDependency(new dependency())
     return panelBox
 }
