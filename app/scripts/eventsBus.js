@@ -1,41 +1,43 @@
-/* let panels = await import("./interface/controls/panelsControls.js")
- */
+const register = async (eventName, url, logic, components) => {
+    if (!logic[eventName]) {
+        logic[eventName] = "true - waiting import"
+        logic[eventName] = await import(url)
+        components[eventName] = true
+    } else {
+        return
+    }
+}
 
-const topBarEvents = async (logic) => {
+const topBarEvents = async (logic, components) => {
 
     document.addEventListener("viewChanger", async (e) => {
-        if (e.detail === "ready") logic["view"] = await import("./interface/controls/viewsControl.js") 
+        e.detail === "ready" && register("viewChanger", "./interface/controls/viewsControl.js", logic, components)
         if (e.detail !== "ready") logic.view.control(e.detail)
     })
 
     document.addEventListener("backChanger", async (e) => {
-        if (e.detail === "ready") logic["back"] = await import("./interface/controls/backControls.js")
+        e.detail === "ready" && register("backChanger", "./interface/controls/backControl.js", logic, components)
         if (e.detail !== "ready") logic.back.control(e.detail)
     })
 }
 
-const panelEvents = async () => {
-    const openPanels = { left: true, right: true }
+const panelEvents = async (logic, components) => {
+    const openPanels = { menuPanel: true, configPanel: true }
 
-    document.addEventListener("panel", (e) => {
-        const panel = e.detail.panel
-        const eventType = e.detail.type
-        const value = e.detail.value
+    const action = async (e) => {
+        if (e.detail === "ready") register("panel", "./interface/controls/panelsControl.js", logic, components)
+        if (e.detail !== "ready") logic.panel.control(openPanels, e.detail.panel, e.detail.type, e.detail.value)
+    }
 
-        panels.control(openPanels, panel, eventType, value)
-/*         if (type === "open_W") {
-            openPanels[panel] = value
-            if (openPanels.left === true && openPanels.right === true) topBar.expand()
-            if (openPanels.left === true && openPanels.right === false) topBar.expand("right")
-            if (openPanels.left === false && openPanels.right === true) topBar.expand("left")
-            if (openPanels.left === false && openPanels.right === false) topBar.expand("both")
-        }
- */    })
+    document.addEventListener("menuPanel", async (e) => { action(e) })
+    document.addEventListener("configPanel", async (e) => { action(e) })
 }
 
-export const loadListeners = async () => {
+export const loadListeners = () => {
     const logic = {}
+    const components = {}
 
-/*     await panelEvents(logic, ready)
- */    await topBarEvents(logic)
+    topBarEvents(logic, components)
+    panelEvents(logic, components)
+
 }

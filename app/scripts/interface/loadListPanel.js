@@ -43,7 +43,8 @@ const drawPanelBox = async (box) => {
     panelBox.logic = logic
     panelBox.links = links
     panelBox.eventDom = document
-    panelBox.eventName = "listPanel"
+    panelBox.eventName = "menuPanel"
+    panelBox.id = "menuPanel"
     panelBox.addDependency(new dependency())
     return panelBox
 }
@@ -69,7 +70,7 @@ const drawDynamicList = async (box) => {
         back_selected_2: cssHelper.getVar("light_4"),
         color_selected_2: cssHelper.getVar("grey_5"),
 
-        pointer_back: cssHelper.getVar("enphasis_1"), 
+        pointer_back: cssHelper.getVar("enphasis_1"),
         pointer_color: cssHelper.getVar("grey_5"),
 
         back: "transparent",
