@@ -2,8 +2,13 @@ import * as element from "../modules/element.js"
 import * as cssHelper from "../modules/css.js"
 
 const drawComponentContainer = async (box) => {
-    const componentContainer = element.add("div", box, "max center", "componentContainer")
+    const componentContainer = element.add("div", box, "componentContainer max center relative", "componentContainer")
     return componentContainer
+}
+
+const drawBacksLayers = (box) => {
+    const backLayer = element.add("div", box, "backLayer absolute max")
+    const blurLayer = element.add("div", box, "blurLayer absolute max")
 }
 
 export const drawComponentBox = async (box, width, height) => {
@@ -14,8 +19,6 @@ export const drawComponentBox = async (box, width, height) => {
     const css = {
         box_width: width,
         box_height: height,
-        box_back: "green",
-        box_shadow: "5px 5px 20px rgb(28, 28, 28)",
         main_transition: cssHelper.getVar("normal_transition")
     }
 
@@ -24,12 +27,12 @@ export const drawComponentBox = async (box, width, height) => {
     componentBox.eventName = "componentBox"
     componentBox.css = css
     componentBox.addDependency(new dependency())
-
-/*     await new Promise(resolve => setTimeout(resolve, 2000))
- */    return componentBox
+    return componentBox
 }
+
 
 export const init = async (box) => {
     const container = await drawComponentContainer(box)
-    const componentBox = await drawComponentBox(componentContainer, "100%", "100%")
+    const backsLayer = drawBacksLayers(container)
+    const componentBox = await drawComponentBox(container, "100%", "100%")
 } 

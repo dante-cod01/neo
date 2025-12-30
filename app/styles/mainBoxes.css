@@ -3,12 +3,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 100vw;
     height: 100vh;
     background: grey;
-/*     background: url("https://wallpapers.com/images/hd/scenic-view-of-faroe-islands-jdj06pr46tgkob59.jpg");
- */
+
     .panelMenu {
         position: absolute;
         top: var(--body_padding);
@@ -29,5 +27,28 @@ body {
     .topBar {
         top: var(--body_padding);
         left: var(--bar_left);
+    }
+
+    .componentContainer {
+        width: var(--componentContainer_width);
+        height: var(--componentContainer_height);
+        box-shadow: 5px 5px 20px rgb(28, 28, 28);
+        border-radius: var(--componentContainer_radius);
+        overflow: hidden;
+        transition: var(--normal_transition);
+
+        .backLayer {
+            background: var(--componentBox_back);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: var(--componentBox_position);
+            opacity: var(--blurLayer_opacity);
+            transition: var(--normal_transition);
+        }
+
+        .blurLayer {
+            backdrop-filter: blur(var(--blurLayer_filter));
+            transition: var(--normal_transition);
+        }
     }
 }

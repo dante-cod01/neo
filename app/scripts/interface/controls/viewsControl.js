@@ -1,5 +1,5 @@
-import * as cssHelper from "./../../modules/css.js"
-import { drawComponentBox } from "./../../interface/loadComponentBox.js"
+import * as cssHelper from "../../modules/css.js"
+import { drawComponentBox } from "../loadComponentBox.js"
 
 /* default view */
 const componentContainer = document.getElementById("componentContainer")
@@ -15,28 +15,34 @@ const calcBox = () => {
     let width
     let height
     let radius
+    let position
 
     if (view === "computer") {
-        width = Math.floor(window.innerWidth) + "px"
-        height = window.innerHeight + "px"
+        width = "110%"
+        height = "110%"
         radius = "0"
+        position = "center"
     }
     if (view === "tablet") {
         height = Math.floor(window.innerHeight * 0.8) + "px"
         width = Math.floor((window.innerHeight * 0.8) * 16 / 9) + "px"
         radius = "16px"
+        position = "bottom"
     }
     if (view === "mobile") {
         height = Math.floor(window.innerHeight * 0.8) + "px"
         width = Math.floor((window.innerHeight * 0.8) * 8 / 16) + "px"
         radius = "16px"
+        position = "left"
     }
-    return { "width": width, "height": height, "radius": radius }
+    return { "width": width, "height": height, "radius": radius, "position": position }
 }
 
 const applyView = async (calculedView) => {
-    componentBox.updateProp("box_width", calculedView.width)
-    componentBox.updateProp("box_height", calculedView.height)
+    document.documentElement.style.setProperty("--componentContainer_width", calculedView.width)
+    document.documentElement.style.setProperty("--componentContainer_height", calculedView.height)
+    document.documentElement.style.setProperty("--componentContainer_radius", calculedView.radius)
+    document.documentElement.style.setProperty("--componentContainer_position", calculedView.position)
     componentBox.updateProp("box_radius", calculedView.radius)
     await new Promise(resolve => setTimeout(resolve, time))
 }

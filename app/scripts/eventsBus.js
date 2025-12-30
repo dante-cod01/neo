@@ -4,7 +4,7 @@
 const topBarEvents = async (logic) => {
 
     document.addEventListener("viewChanger", async (e) => {
-        if (e.detail === "ready") logic["view"] = await import("./interface/controls/boxControls.js") 
+        if (e.detail === "ready") logic["view"] = await import("./interface/controls/viewsControl.js") 
         if (e.detail !== "ready") logic.view.control(e.detail)
     })
 
