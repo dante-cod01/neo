@@ -100,7 +100,6 @@ export class ExpandBar extends HTMLElement {
     async expand(mode = null) {
         const colorLayer = this.dom.querySelector(".colorLayer")
         const time = this.base.convertTransition(this.css.transition)
-        console.log(time)
 
         colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)

@@ -1,7 +1,7 @@
 const topBarEvents = async (modules, openPanels) => {
 
     document.addEventListener("panelsChanger", async (e) => {
-        e.detail.input && modules.panelsChanger.control(true, e.detail.input.id)
+        e.detail.input && modules.panelsChanger.control("delegate", openPanels, e.detail)
     })
 
     document.addEventListener("backChanger", async (e) => {
@@ -13,34 +13,31 @@ const topBarEvents = async (modules, openPanels) => {
     })
 }
 
-/* const panelEvents = async (modules, openPanels) => {
+const panelEvents = async (modules, openPanels) => {
     const action = async (e) => {
-        e.detail.panel && modules.panels.control(openPanels, e.detail, "panel")
+        e.detail.panel && modules.panelsChanger.control("direct", openPanels, e.detail)
     }
 
     document.addEventListener("menuPanel", async (e) => { action(e) })
     document.addEventListener("configPanel", async (e) => { action(e) })
 }
- */
 
-const registerModules = async (modules, components) => {
+const registerModules = async (components) => {
+    const modules = {}
     await Promise.all(components.map(async (item) => { modules[item.component] = await import(item.module) }))
+    return modules
 }
 
-const loadListeners = async (modules, components) => {
-    await registerModules(modules, components)
-    topBarEvents(modules, components)
-}
-
-export const init = () => {
+export const init = async () => {
     let components = [
         { component: "panelsChanger", loaded: false, module: "./interface/controls/panelsControl.js" },
         { component: "backChanger", loaded: false, module: "./interface/controls/backControl.js" },
         { component: "viewChanger", loaded: false, module: "./interface/controls/viewsControl.js" },
     ]
-    const modules = {}
-    const openPanels = { menuPanel: true, configPanel: true }
 
-    loadListeners(modules, components)
-    console.log(modules)
+    const openPanels = { menuPanel: true, configPanel: true }
+    const modules = await registerModules(components)
+
+    topBarEvents(modules, openPanels)
+    panelEvents(modules, openPanels)
 }

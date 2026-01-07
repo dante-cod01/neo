@@ -249,7 +249,8 @@ export class RadioGroup extends HTMLElement {
                     item.checked && (radio.checked = true)
                 }
                 if (itemBox === "checkbox") {
-                    this.base.addInput(item.box, option, item.id, "", "hiddenInput absolute enabledPointer")
+                    const checkbox = this.base.addInput(item.box, option, item.id, "", "hiddenInput absolute enabledPointer")
+                    item.checked && (checkbox.checked = true)
                 }
                 if (item.disabled) {
                     const input = option.querySelector("input")
@@ -277,7 +278,7 @@ export class RadioGroup extends HTMLElement {
         const inputs = this.#drawInputs()
         this.#applyEvents(inputs)
         this.inputs = this.#publicInputs()
-        this.base.sendEvent(this.eventDom, this.eventName, {ready: true})
+        this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 
     disableInput = (input, disable) => {
