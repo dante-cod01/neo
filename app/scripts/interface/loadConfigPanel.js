@@ -38,13 +38,12 @@ const drawPanelBox = async (box) => {
         icon: "tune"
     }
 
-    const panelBox = element.add(component.tag, box, "panelMenu panelRight")
+    const panelBox = element.add(component.tag, box, "panelMenu panelRight", "configPanel")
     panelBox.css = css
     panelBox.logic = logic
     panelBox.links = links
     panelBox.eventDom = document
-    panelBox.eventName = "configPanel"
-    panelBox.id = "configPanel"
+    panelBox.eventName = panelBox.id
     panelBox.addDependency(new dependency())
     return panelBox
 }

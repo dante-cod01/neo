@@ -16,20 +16,17 @@
     --bar_width: calc(100% - var(--bar_left) * 2);
     --bar_height: 32px;
     --bar_left: calc(var(--panel_width) + var(--body_padding) * 2 + 40px);
-
+    
     --componentContainer_width: 100%;
     --componentContainer_height: 100%;
     --componentContainer_radius: 0;
+    --componentContainer_transition: 500ms;
+    --componentContainer_scale: 1;
+    --componentContainer_opacity: 1;
 
-    --componentBox_rotate: 0deg;
-    --componentBox_scale: 1;
-    --componentBox_opacity: 1;
-    --componentBox_back: url("./../src/images/backs/iain-macrae-iYuFgG2WXbU-unsplash.jpg");
-    --componentBox_position: center;
-    --componentBox_transition: 600ms;
-
-    --blurLayer_filter: 0;
-    --blurLayer_opacity: 1;
+    --backLayer_back: url("./../src/images/backs/iain-macrae-iYuFgG2WXbU-unsplash.jpg");
+    --backLayer_blur: 0;
+    --backLayer_opacity: 1;
     --normal_transition: 600ms ease-in-out;
 
     /* colors */
@@ -70,16 +67,4 @@
 
 .relative {
     position: relative;
-}
-
-.componentTransform {
-    transform: rotate(var(--componentBox_rotate)) scale(var(--componentBox_scale));
-}
-
-.componentOpacity {
-    opacity: var(--componentBox_opacity);
-}
-
-.componentTransition {
-    transition: var(--componentBox_transition);
 }

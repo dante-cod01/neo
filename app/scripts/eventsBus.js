@@ -1,43 +1,46 @@
-const register = async (eventName, url, logic, components) => {
-    if (!logic[eventName]) {
-        logic[eventName] = "true - waiting import"
-        logic[eventName] = await import(url)
-        components[eventName] = true
-    } else {
-        return
-    }
-}
+const topBarEvents = async (modules, openPanels) => {
 
-const topBarEvents = async (logic, components) => {
-
-    document.addEventListener("viewChanger", async (e) => {
-        e.detail === "ready" && register("viewChanger", "./interface/controls/viewsControl.js", logic, components)
-        if (e.detail !== "ready") logic.view.control(e.detail)
+    document.addEventListener("panelsChanger", async (e) => {
+        e.detail.input && modules.panelsChanger.control(true, e.detail.input.id)
     })
 
     document.addEventListener("backChanger", async (e) => {
-        e.detail === "ready" && register("backChanger", "./interface/controls/backControl.js", logic, components)
-        if (e.detail !== "ready") logic.back.control(e.detail)
+        e.detail.input && modules.backChanger.control(e.detail.input)
+    })
+
+    document.addEventListener("viewChanger", async (e) => {
+        e.detail.input && modules.viewChanger.control(e.detail.input.id)
     })
 }
 
-const panelEvents = async (logic, components) => {
-    const openPanels = { menuPanel: true, configPanel: true }
-
+/* const panelEvents = async (modules, openPanels) => {
     const action = async (e) => {
-        if (e.detail === "ready") register("panel", "./interface/controls/panelsControl.js", logic, components)
-        if (e.detail !== "ready") logic.panel.control(openPanels, e.detail.panel, e.detail.type, e.detail.value)
+        e.detail.panel && modules.panels.control(openPanels, e.detail, "panel")
     }
 
     document.addEventListener("menuPanel", async (e) => { action(e) })
     document.addEventListener("configPanel", async (e) => { action(e) })
 }
+ */
 
-export const loadListeners = () => {
-    const logic = {}
-    const components = {}
+const registerModules = async (modules, components) => {
+    await Promise.all(components.map(async (item) => { modules[item.component] = await import(item.module) }))
+}
 
-    topBarEvents(logic, components)
-    panelEvents(logic, components)
+const loadListeners = async (modules, components) => {
+    await registerModules(modules, components)
+    topBarEvents(modules, components)
+}
 
+export const init = () => {
+    let components = [
+        { component: "panelsChanger", loaded: false, module: "./interface/controls/panelsControl.js" },
+        { component: "backChanger", loaded: false, module: "./interface/controls/backControl.js" },
+        { component: "viewChanger", loaded: false, module: "./interface/controls/viewsControl.js" },
+    ]
+    const modules = {}
+    const openPanels = { menuPanel: true, configPanel: true }
+
+    loadListeners(modules, components)
+    console.log(modules)
 }

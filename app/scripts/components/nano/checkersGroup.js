@@ -263,7 +263,7 @@ export class RadioGroup extends HTMLElement {
     #applyEvents = (inputs) => {
         inputs.forEach(item => {
             item.addEventListener("change", (e) => {
-                this.base.sendEvent(this.eventDom, this.eventName, { detail: e.target })
+                this.base.sendEvent(this.eventDom, this.eventName, { input: e.target })
             })
         })
     }
@@ -277,7 +277,7 @@ export class RadioGroup extends HTMLElement {
         const inputs = this.#drawInputs()
         this.#applyEvents(inputs)
         this.inputs = this.#publicInputs()
-        this.base.sendEvent(this.eventDom, this.eventName, "ready")
+        this.base.sendEvent(this.eventDom, this.eventName, {ready: true})
     }
 
     disableInput = (input, disable) => {

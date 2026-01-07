@@ -73,6 +73,7 @@ export class ExpandBar extends HTMLElement {
         this.base.sendEvent(this.eventDom, this.eventName, "preLoaded")
         this.#configure()
         this.#draw()
+        this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 
     #newRadius = (boolean, box) => {
@@ -96,14 +97,18 @@ export class ExpandBar extends HTMLElement {
         this.nodes = this.base.getNodes(this.dom)
     }
 
-    expand(mode = null) {
+    async expand(mode = null) {
         const colorLayer = this.dom.querySelector(".colorLayer")
+        const time = this.base.convertTransition(this.css.transition)
+        console.log(time)
+
         colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)
 
         if (mode === "left") colorLayer.classList.add("openLeft")
         if (mode === "right") colorLayer.classList.add("openRight")
         if (mode === "both") { colorLayer.classList.add("bothOpen"); this.#newRadius(true, colorLayer) }
+        await new Promise(resolve => setTimeout(resolve, time))
     }
 }
 customElements.define(tag, ExpandBar)

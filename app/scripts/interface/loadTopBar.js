@@ -25,6 +25,49 @@ const drawTopBar = async (box) => {
     return topBar
 }
 
+const drawPanelsControls = async (box) => {
+    /* panels control */
+    const links = [
+        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
+    ]
+
+    const data = [
+        { box: "space", size: "5px" },
+        { box: "checkbox", id: "menuPanel", type: "material", icon: "arrow_menu_close" },
+        { box: "checkbox", id: "configPanel", type: "material", icon: "arrow_menu_open" },
+        { box: "radio", id: "bothPanels", name: "panels", type: "material", icon: "crop_landscape", checked: true },
+        { box: "space", size: "5px" },
+    ]
+
+    const css = {
+        box_width: "auto",
+        box_height: `calc(${cssHelper.getVar("bar_height")} - 8px)`,
+        box_back: cssHelper.getVar("dark_2"),
+        box_radius: "6px",
+
+        option_width: "28px",
+        option_height: "100%",
+        option_hover_color: cssHelper.getVar("light_1"),
+        option_checked_color: cssHelper.getVar("enphasis_1"),
+
+        material_fontSize: "16px",
+        material_color: cssHelper.getVar("light_3"),
+    }
+
+    const logic = {
+        horizontal: true
+    }
+
+    const panelsControls = element.add(checkersGroup.tag, box, "", "panelsChanger")
+    panelsControls.data = data
+    panelsControls.links = links
+    panelsControls.css = css
+    panelsControls.logic = logic
+    panelsControls.eventDom = document
+    panelsControls.eventName = panelsControls.id
+    panelsControls.addDependency(new dependency())
+}
+
 const drawBackChanger = async (box) => {
     /* backs changer */
     const links = [
@@ -106,9 +149,9 @@ const drawViewChanger = async (box) => {
         option_checked_color: cssHelper.getVar("enphasis_1"),
 
         material_size: cssHelper.getVar("bar_height"),
-        material_color: cssHelper.getVar("light_4"),
+        material_color: cssHelper.getVar("light_3"),
         material_fontSize: "16px",
-        material_disabled: cssHelper.getVar("grey_2")
+        material_disabled: cssHelper.getVar("light_5")
     }
 
     const logic = {
@@ -126,54 +169,11 @@ const drawViewChanger = async (box) => {
     return viewChanger
 }
 
-const drawPanelsControls = async (box) => {
-    /* panels control */
-    const links = [
-        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
-    ]
-
-    const data = [
-        { box: "space", size: "5px" },
-        { box: "radio", id: "computer", name: "view", type: "material", icon: "arrow_menu_close" },
-        { box: "radio", id: "mobile", name: "view", type: "material", icon: "arrow_menu_open" },
-        { box: "radio", id: "tablet", name: "view", type: "material", icon: "crop_landscape", checked: true },
-        { box: "space", size: "5px" },
-    ]
-
-    const css = {
-        box_width: "auto",
-        box_height: `calc(${cssHelper.getVar("bar_height")} - 8px)`,
-        box_back: cssHelper.getVar("dark_2"),
-        box_radius: "6px",
-
-        option_width: "28px",
-        option_height: "100%",
-        option_hover_color: cssHelper.getVar("light_1"),
-        option_checked_color: cssHelper.getVar("enphasis_1"),
-
-        material_fontSize: "16px",
-        material_color: cssHelper.getVar("light_4"),
-    }
-
-    const logic = {
-        horizontal: true
-    }
-
-    const panelsControls = element.add(checkersGroup.tag, box, "", "panelControls")
-    panelsControls.data = data
-    panelsControls.links = links
-    panelsControls.css = css
-    panelsControls.logic = logic
-    panelsControls.eventDom = document
-    panelsControls.eventName = panelsControls.id
-    panelsControls.addDependency(new dependency())
-}
-
 export const init = async (box) => {
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const topBar = await drawTopBar(box, dependency)
+    const panelControls = await drawPanelsControls(topBar.nodes.node_0, dependency)
     const backChanger = await drawBackChanger(topBar.nodes.node_1, dependency)
     const viewChanger = await drawViewChanger(topBar.nodes.node_2, dependency)
-    const panelControls = await drawPanelsControls(topBar.nodes.node_0, dependency)
 }

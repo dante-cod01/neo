@@ -85,7 +85,7 @@ export class ExpandBox extends HTMLElement {
     init = () => {
         this.#configure()
         this.#draw()
-        this.base.sendEvent(this.eventDom, this.eventName, "ready")
+        this.base.sendEvent(this.eventDom, this.eventName, {ready: true})
     }
 }
 customElements.define(tag, ExpandBox)

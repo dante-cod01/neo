@@ -232,54 +232,58 @@ export class PanelBox extends HTMLElement {
     #addReactivity = () => {
         const toogleButtom = this.dom.querySelector("#toogleButtom")
         toogleButtom.addEventListener("change", (e) => {
-            this.#tooglePanel(e.target)
+            this.tooglePanel(e.target.checked)
         })
     }
 
-    #tooglePanel = async (target) => target.checked ? this.open(target) : this.close(target)
-
-    async open(input) {
-        input.disabled = true
+    tooglePanel = async (boolean) => {
         const topBack = this.dom.querySelector(".topBack")
         const title = this.dom.querySelector(".title")
         const time = this.base.convertTransition(this.css.box_transition)
 
-        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: true })
+        if (boolean === true) {
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_W", value: true })
+            await this.#open_W(topBack, time)
+
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_H", value: true })
+            await this.#open_H(title, time)
+        } else {
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_H", value: false })
+            await this.#close_H(title, time)
+
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_W", value: false })
+            await this.#close_W(topBack, title, time)
+        }
+    }
+
+    #open_W = async (topBack, time) => {
         topBack.classList.remove("opacity_50")
         this.container.classList.remove("radius_half")
         this.classList.remove("topBar_height_width")
         await this.base.wait(time / 2)
+    }
 
-        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: true })
+    #open_H = async (title, time) => {
         title.classList.remove("displayNone")
         title.offsetWidth /* hack css */
         title.classList.remove("opacity_0")
         await this.base.wait(time / 3)
         this.classList.remove("topBar_height_height")
         await this.base.wait(time)
-
-        input.disabled = false
     }
 
-    async close(input) {
-        input.disabled = true
-        const topBack = this.dom.querySelector(".topBack")
-        const title = this.dom.querySelector(".title")
-        const time = this.base.convertTransition(this.css.box_transition)
-
-        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_H", value: false })
+    #close_H = async (title, time) => {
         this.classList.add("topBar_height_height")
         title.classList.add("opacity_0")
         await this.base.wait(time)
+    }
 
-        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "open_W", value: false })
+    #close_W = async (topBack, title, time) => {
         title.classList.add("displayNone")
         this.classList.add("topBar_height_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
         await this.base.wait(time)
-
-        input.disabled = false
     }
 
     addDependency(dependency) {
@@ -295,13 +299,17 @@ export class PanelBox extends HTMLElement {
         this.base.updateProp(this.css, prop, value, this)
     }
 
+    getToogle = () => {
+        return this.dom.querySelector("#toogleButtom")
+    }
+
     async init() {
         this.#draw()
         this.#getConfig()
         this.#applyConf()
         this.#getNodes()
         this.#addReactivity()
-        this.base.sendEvent(this.eventDom, this.eventName, "ready")
+        this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 }
 

@@ -20,7 +20,7 @@ const drawPanelBox = async (box) => {
         box_transition: cssHelper.getVar("normal_transition"),
         topBar_height: cssHelper.getVar("bar_height"),
         topBar_back: cssHelper.getVar("dark_2"),
-        content_back: cssHelper.getVar("dark_4"),
+        content_back: cssHelper.getVar("dark_3"),
         title_font: "Anta",
         title_fontSize: "14px",
         title_color: cssHelper.getVar("light_2"),
@@ -38,13 +38,12 @@ const drawPanelBox = async (box) => {
         icon: "menu"
     }
 
-    const panelBox = element.add(component.tag, box, "panelMenu panelLeft")
+    const panelBox = element.add(component.tag, box, "panelMenu panelLeft", "menuPanel")
     panelBox.css = css
     panelBox.logic = logic
     panelBox.links = links
     panelBox.eventDom = document
-    panelBox.eventName = "menuPanel"
-    panelBox.id = "menuPanel"
+    panelBox.eventName = panelBox.id
     panelBox.addDependency(new dependency())
     return panelBox
 }
@@ -80,16 +79,16 @@ const drawDynamicList = async (box) => {
         title_height: "24px",
         title_font: "Anta",
         title_fontSize: "12px",
-        title_color: cssHelper.getVar("light_4"),
+        title_color: cssHelper.getVar("light_3"),
         li_height: "24px",
         transition: "400ms ease-in-out",
     }
 
-    const dynamicList = element.add(component.tag, box)
+    const dynamicList = element.add(component.tag, box, "", "listMenu")
     dynamicList.css = css
     dynamicList.links = links
     dynamicList.eventDom = document
-    dynamicList.eventName = "listMenu"
+    dynamicList.eventName = dynamicList.id
     dynamicList.data = dataList
     dynamicList.addDependency(new dependency())
     return dynamicList

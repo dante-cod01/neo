@@ -32,23 +32,25 @@ body {
     .componentContainer {
         width: var(--componentContainer_width);
         height: var(--componentContainer_height);
-        box-shadow: 5px 5px 20px rgb(28, 28, 28);
         border-radius: var(--componentContainer_radius);
+        box-shadow: 5px 5px 20px rgb(28, 28, 28);
+        opacity: var(--componentContainer_opacity);
+        transform: scale(var(--componentContainer_scale));
         overflow: hidden;
-        transition: var(--normal_transition);
+        transition: var(--componentContainer_transition);
 
         .backLayer {
-            background: var(--componentBox_back);
+            background: var(--backLayer_back);
             background-size: cover;
             background-repeat: no-repeat;
-            background-position: var(--componentBox_position);
-            opacity: var(--blurLayer_opacity);
-            transition: var(--normal_transition);
+            background-position: center;
+            opacity: var(--backLayer_opacity);
+            transition: var(--componentContainer_transition);
         }
 
         .blurLayer {
             backdrop-filter: blur(var(--blurLayer_filter));
-            transition: var(--normal_transition);
+            transition: var(--componentContainer_transition);
         }
     }
 }

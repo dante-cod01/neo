@@ -283,6 +283,7 @@ export class DynamicList extends HTMLElement {
         this.#drawList(this.data)
         this.#dynamicExpandControl()
         this.#addEvents(this.data)
+        this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 }
 

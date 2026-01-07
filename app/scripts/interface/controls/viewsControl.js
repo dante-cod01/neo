@@ -1,61 +1,43 @@
 import * as cssHelper from "../../modules/css.js"
-import { drawComponentBox } from "../loadComponentBox.js"
 
 /* default view */
-const componentContainer = document.getElementById("componentContainer")
-let componentBox = null
-const viewChanger = document.getElementById("topBar").shadowRoot.getElementById("viewChanger")
-const time = cssHelper.convertTransition(getComputedStyle(document.documentElement).getPropertyValue("--componentBox_transition"))
-
-let view = "computer"
-let rotateInput = false
-let full = false
-
-const calcBox = () => {
+const calcBox = async (conf) => {
     let width
     let height
     let radius
-    let position
 
-    if (view === "computer") {
-        width = "110%"
-        height = "110%"
+    if (conf.view === "computer") {
+        width = "100%"
+        height = "100%"
         radius = "0"
-        position = "center"
     }
-    if (view === "tablet") {
+    if (conf.view === "tablet") {
         height = Math.floor(window.innerHeight * 0.8) + "px"
         width = Math.floor((window.innerHeight * 0.8) * 16 / 9) + "px"
         radius = "16px"
-        position = "bottom"
     }
-    if (view === "mobile") {
-        height = Math.floor(window.innerHeight * 0.8) + "px"
-        width = Math.floor((window.innerHeight * 0.8) * 8 / 16) + "px"
+    if (conf.view === "mobile") {
+        height = conf.rotate
+            ? Math.floor((window.innerHeight * 0.8) * 8 / 16) + "px"
+            : Math.floor(window.innerHeight * 0.8) + "px"
+        width = conf.rotate
+            ? Math.floor(window.innerHeight * 0.8) + "px"
+            : Math.floor((window.innerHeight * 0.8) * 8 / 16) + "px"
         radius = "16px"
-        position = "left"
     }
-    return { "width": width, "height": height, "radius": radius, "position": position }
+    return { "width": width, "height": height, "radius": radius }
 }
 
-const applyView = async (calculedView) => {
-    document.documentElement.style.setProperty("--componentContainer_width", calculedView.width)
-    document.documentElement.style.setProperty("--componentContainer_height", calculedView.height)
-    document.documentElement.style.setProperty("--componentContainer_radius", calculedView.radius)
-    document.documentElement.style.setProperty("--componentContainer_position", calculedView.position)
-    componentBox.updateProp("box_radius", calculedView.radius)
-    await new Promise(resolve => setTimeout(resolve, time))
+const applyView = (calc) => {
+    document.documentElement.style.setProperty("--componentContainer_width", calc.width)
+    document.documentElement.style.setProperty("--componentContainer_height", calc.height)
+    document.documentElement.style.setProperty("--componentContainer_radius", calc.radius)
 }
 
-const applyRotate = async (boolean) => {
-    cssHelper.changeVar("componentBox_rotate", boolean ? "90deg" : "0deg", document.documentElement.style)
-    await new Promise(resolve => setTimeout(resolve, time))
-}
-
-const disableRotateInput = (disable) => {
-    disable
-        ? viewChanger.disableInput(viewChanger.inputs[3], true)
-        : viewChanger.disableInput(viewChanger.inputs[3], false)
+const activeRotateInput = (boolean) => {
+    boolean
+        ? viewChanger.disableInput(viewChanger.inputs[3], false)
+        : viewChanger.disableInput(viewChanger.inputs[3], true)
 }
 
 const detectFullMode = () => {
@@ -63,69 +45,54 @@ const detectFullMode = () => {
 }
 
 const fullMode = async (delay) => {
+    console.log(window.innerHeight)
     detectFullMode()
         ? document.exitFullscreen()
         : document.documentElement.requestFullscreen()
     await new Promise(resolve => setTimeout(resolve, delay))
+    console.log(window.innerHeight)
+
 }
 
 const fadeOut = async () => {
-    cssHelper.changeVar("componentBox_scale", "0.1", document.documentElement.style)
-    cssHelper.changeVar("componentBox_opacity", "0", document.documentElement.style)
+    cssHelper.changeVar("componentContainer_scale", "0.1", document.documentElement.style)
+    cssHelper.changeVar("componentContainer_opacity", "0", document.documentElement.style)
     await new Promise(resolve => setTimeout(resolve, time))
-    componentBox.remove()
 }
 
 const fadeIn = async () => {
-    const calculedBox = calcBox()
-    const width = calculedBox.width
-    const height = calculedBox.height
-    const radius = calculedBox.radius
+    cssHelper.changeVar("componentContainer_scale", "2", document.documentElement.style)
+    cssHelper.changeVar("componentContainer_transition", "0s", document.documentElement.style)
+    await new Promise(resolve => setTimeout(resolve, 100))
 
-    cssHelper.changeVar("componentBox_scale", "2", document.documentElement.style)
-    cssHelper.changeVar("componentBox_opacity", "0", document.documentElement.style)
-    componentBox = await drawComponentBox(componentContainer, width, height)
-    componentBox.updateProp("box_radius", radius)
-    await new Promise(resolve => setTimeout(resolve, 10))
-
-    cssHelper.changeVar("componentBox_scale", "1", document.documentElement.style)
-    cssHelper.changeVar("componentBox_opacity", "1", document.documentElement.style)
+    cssHelper.changeVar("componentContainer_scale", "1", document.documentElement.style)
+    cssHelper.changeVar("componentContainer_opacity", "1", document.documentElement.style)
+    cssHelper.changeVar("componentContainer_transition", `${time}ms`, document.documentElement.style)
     await new Promise(resolve => setTimeout(resolve, time))
 }
 
-export const control = async (e) => {
-    const index = e.detail.id
-    index === "computer" && (view = "computer")
-    index === "tablet" && (view = "tablet")
-    index === "mobile" && (view = "mobile")
-    index === "rotate" && (rotateInput = e.detail.checked)
-    index === "fullscreen" && (full = full === true ? false : true)
-    componentBox === null && (componentBox = document.getElementById("componentBox"))
+const alertEvent = (par) => {
+    par === "delete" && document.dispatchEvent(new CustomEvent("viewsControl", { detail: "delete" }))
+    par === "reload" && document.dispatchEvent(new CustomEvent("viewsControl", { detail: "reload" }))
+}
 
-    if (index === "rotate") {
-        rotateInput ? await applyRotate(true) : await applyRotate(false)
-    }
+const viewChanger = document.getElementById("topBar").shadowRoot.getElementById("viewChanger")
+const time = cssHelper.convertTransition(getComputedStyle(document.documentElement).getPropertyValue("--componentContainer_transition"))
+let conf = { view: "computer", rotate: false }
 
-    if (index === "computer" || index === "tablet" || index === "mobile") {
+export const control = async (inputIndex) => {
+    inputIndex === "computer" && (conf.view = "computer")
+    inputIndex === "tablet" && (conf.view = "tablet")
+    inputIndex === "mobile" && (conf.view = "mobile")
+    inputIndex === "rotate" && (conf.rotate = viewChanger.inputs[3].checked)
 
-        if (index === "computer" || index === "tablet") {
-            disableRotateInput(true)
-            rotateInput && await applyRotate(false)
-            await applyView(calcBox())
-        }
+    if (conf.view === "computer" || conf.view === "tablet") activeRotateInput(false)
+    if (conf.view === "mobile") activeRotateInput(true)
 
-
-        if (index === "mobile") {
-            await applyView(calcBox())
-            disableRotateInput(false)
-            rotateInput ? await applyRotate(true) : await applyRotate(false)
-        }
-    }
-
-    if (index === "fullscreen") {
-        const manualDelay = 500 /* event & check */
-        await fadeOut()
-        await fullMode(manualDelay)
-        await fadeIn()
-    }
+    await fadeOut()
+    alertEvent("delete")
+    inputIndex === "fullscreen" && await fullMode(1000)/* manual time - need refactor */
+    applyView(await calcBox(conf))
+    await fadeIn()
+    alertEvent("reload")
 }
