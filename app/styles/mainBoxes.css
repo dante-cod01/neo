@@ -20,12 +20,13 @@ body {
         right: var(--body_padding);
     }
 
-    .bars {
-        position: absolute;
-    }
-
     .topBar {
         top: var(--body_padding);
+        left: var(--bar_left);
+    }
+
+    .infoBar {
+        bottom: var(--body_padding);
         left: var(--bar_left);
     }
 

@@ -16,7 +16,7 @@ const drawTopBar = async (box) => {
         transition: cssHelper.getVar("normal_transition")
     }
 
-    const topBar = element.add(expandBar.tag, box, "bars topBar", "topBar")
+    const topBar = element.add(expandBar.tag, box, "absolute topBar", "topBar")
     topBar.css = css
     topBar.eventDom = document
     topBar.eventName = topBar.id

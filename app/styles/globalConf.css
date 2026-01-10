@@ -7,6 +7,8 @@
 
 :root {
     --body_padding: 5px;
+    --interface_blur: 6px;
+    --componentTitles_fontFamily: "Anta";
     --panel_width: 200px;
     --panel_height: calc(100% - var(--body_padding) * 2);
 

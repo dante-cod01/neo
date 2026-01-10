@@ -15,7 +15,7 @@ const drawPanelBox = async (box) => {
         box_width: cssHelper.getVar("panel_width"),
         box_height: cssHelper.getVar("panel_height"),
         box_radius: "6px",
-        box_blur: "blur(2px)",
+        box_blur: cssHelper.getVar("interface_blur"),
         box_transition: cssHelper.getVar("normal_transition"),
         topBar_height: cssHelper.getVar("bar_height"),
         topBar_back: cssHelper.getVar("dark_2"),

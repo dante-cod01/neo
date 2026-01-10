@@ -1,25 +1,31 @@
-const topBarEvents = async (modules, openPanels) => {
+const topBarEvents = (modules, openPanels) => {
 
-    document.addEventListener("panelsChanger", async (e) => {
+    document.addEventListener("panelsChanger", (e) => {
         e.detail.input && modules.panelsChanger.control("delegate", openPanels, e.detail)
     })
 
-    document.addEventListener("backChanger", async (e) => {
+    document.addEventListener("backChanger", (e) => {
         e.detail.input && modules.backChanger.control(e.detail.input)
     })
 
-    document.addEventListener("viewChanger", async (e) => {
+    document.addEventListener("viewChanger", (e) => {
         e.detail.input && modules.viewChanger.control(e.detail.input.id)
     })
 }
 
-const panelEvents = async (modules, openPanels) => {
-    const action = async (e) => {
+const panelEvents = (modules, openPanels) => {
+    const action = (e) => {
         e.detail.panel && modules.panelsChanger.control("direct", openPanels, e.detail)
     }
 
-    document.addEventListener("menuPanel", async (e) => { action(e) })
-    document.addEventListener("configPanel", async (e) => { action(e) })
+    document.addEventListener("menuPanel", (e) => { action(e) })
+    document.addEventListener("configPanel", (e) => { action(e) })
+}
+
+const listEvents = (modules, lastComponent) => {
+    document.addEventListener("listMenu", (e) => {
+        e.detail.conf && modules.listMenu.control(e.detail.conf, lastComponent)
+    }) 
 }
 
 const registerModules = async (components) => {
@@ -30,6 +36,7 @@ const registerModules = async (components) => {
 
 export const init = async () => {
     let components = [
+        { component: "listMenu", loaded: false, module: "./interface/controls/listMenuControl.js" },
         { component: "panelsChanger", loaded: false, module: "./interface/controls/panelsControl.js" },
         { component: "backChanger", loaded: false, module: "./interface/controls/backControl.js" },
         { component: "viewChanger", loaded: false, module: "./interface/controls/viewsControl.js" },
@@ -37,7 +44,9 @@ export const init = async () => {
 
     const openPanels = { menuPanel: true, configPanel: true }
     const modules = await registerModules(components)
+    const lastComponent = {}
 
+    listEvents(modules, lastComponent)
     topBarEvents(modules, openPanels)
     panelEvents(modules, openPanels)
 }

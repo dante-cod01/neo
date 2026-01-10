@@ -18,7 +18,7 @@ export class PanelBox extends HTMLElement {
         this.defaultCss = {
             box_width: "300px",
             box_height: "100%",
-            box_blur: "blur(none)",
+            box_blur: "none",
             box_transition: "2s ease-in-out",
             box_radius: "20px",
             topBar_back: "red",
@@ -80,7 +80,7 @@ export class PanelBox extends HTMLElement {
 
             .main {
                 border-radius: var(--box_radius);
-                backdrop-filter: var(--box_blur);
+                backdrop-filter: blur(var(--box_blur));
                 overFlow: hidden;
                 
                 .topBack {

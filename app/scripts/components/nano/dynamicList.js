@@ -246,7 +246,7 @@ export class DynamicList extends HTMLElement {
         })
     }
 
-    #getOptionPars(target) {
+    #getOptionConfig(target) {
         const info = target.getAttribute("info")
         const pars = Object.values(this.data).flat().find(item => item.name === info)
         return pars
@@ -256,8 +256,8 @@ export class DynamicList extends HTMLElement {
         const listRadios = Array.from(this.dom.querySelectorAll("input[name='list']"))
         listRadios.forEach(item => {
             item.addEventListener("change", (e) => {
-                const pars = this.#getOptionPars(e.target)
-                this.base.sendEvent(this.eventDom, this.eventName, { type: "select", value: pars })
+                const conf = this.#getOptionConfig(e.target)
+                this.base.sendEvent(this.eventDom, this.eventName, { "conf": conf })
             })
         })
     }

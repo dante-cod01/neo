@@ -16,6 +16,7 @@ export class ExpandBar extends HTMLElement {
             box_width_max: "100px",
             box_back: "red",
             box_radius: "0px",
+            box_blur: "none",
             transition: "1s"
         }
     }
@@ -40,11 +41,11 @@ export class ExpandBar extends HTMLElement {
                 display: flex;
                 width: var(--box_width);
                 height: var(--box_height);
-
-                --radiusMax: none;
+                transition: var(--transition);
             }
 
             .main {
+                backdrop-filter: blur(var(--box_blur));
                 .colorLayer {background: var(--box_back);}
                 .nodesLayer {top: 0; display: flex; justify-content: space-between; width: calc(100% - 40px); margin: 0 20px;}
             }
@@ -95,6 +96,10 @@ export class ExpandBar extends HTMLElement {
             node.setAttribute("node", "node_" + i)
         }
         this.nodes = this.base.getNodes(this.dom)
+    }
+
+    updateProp(prop, value) {
+        this.base.updateProp(this.css, prop, value, this)
     }
 
     async expand(mode = null) {

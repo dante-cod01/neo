@@ -14,7 +14,7 @@ const changeBlur = async (blur, opacity) => {
 }
 
 const animationBack = async (input) => {
-    await changeBlur("120px", 0)
+    await changeBlur("50px", 0)
     changeBack(input)
     await changeBlur("0px", 1)
 }

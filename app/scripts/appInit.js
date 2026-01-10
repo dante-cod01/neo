@@ -12,7 +12,8 @@ const loadInterface = async (modules) => {
     modules.mainBox.init(document.body)
     modules.listMenuPanel.init(document.body)
     modules.configMenuPanel.init(document.body)
-    modules.topPanel.init(document.body)
+    modules.topBar.init(document.body)
+    modules.infoBar.init(document.body)
 }
 
 const loadBusEvent = (modules) => {
@@ -24,15 +25,15 @@ const main = async () => {
         eventBus: "./eventsBus.js",
         styles: "./interface/loadStylesSheets.js",
         mainBox: "./interface/loadComponentBox.js",
-        topPanel: "./interface/loadTopBar.js",
+        topBar: "./interface/loadTopBar.js",
         listMenuPanel: "./interface/loadListPanel.js",
         configMenuPanel: "./interface/loadconfigPanel.js",
+        infoBar: "./interface/loadINfoBar.js"
     }
 
     const modules = await loadModules(loads)
     await loadCss(modules)
     await loadInterface(modules)
-
     loadBusEvent(modules)
 }
 
