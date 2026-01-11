@@ -9,15 +9,24 @@ const loadCss = async (modules) => {
 }
 
 const loadInterface = async (modules) => {
-    modules.mainBox.init(document.body)
-    modules.listMenuPanel.init(document.body)
-    modules.configMenuPanel.init(document.body)
-    modules.topBar.init(document.body)
-    modules.infoBar.init(document.body)
+    await modules.mainBox.init(document.body)
+    await modules.info.init(document.body)
+    await modules.listMenuPanel.init(document.body)
+    await modules.configMenuPanel.init(document.body)
+    await modules.topBar.init(document.body)
 }
 
-const loadBusEvent = (modules) => {
+const loadBusEvent = async (modules) => {
     modules.eventBus.init()
+}
+
+const defaultComponent = async () => {
+    const listItems = document.getElementById("menuPanel").nodes.node_0.children[0]
+    listItems.items.section_0.sectionInput.checked = true
+    listItems.items.section_0.sectionInput.dispatchEvent(new CustomEvent("change"))
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    listItems.items.section_0.itemsInput[0].checked = true
+    listItems.items.section_0.itemsInput[0].dispatchEvent(new CustomEvent("change"))
 }
 
 const main = async () => {
@@ -28,13 +37,15 @@ const main = async () => {
         topBar: "./interface/loadTopBar.js",
         listMenuPanel: "./interface/loadListPanel.js",
         configMenuPanel: "./interface/loadconfigPanel.js",
-        infoBar: "./interface/loadINfoBar.js"
+        info: "./interface/loadComponentsInfo.js"
     }
 
     const modules = await loadModules(loads)
     await loadCss(modules)
     await loadInterface(modules)
-    loadBusEvent(modules)
+    await loadBusEvent(modules)
+    await new Promise(resolve => { setTimeout(resolve, 1000) })
+    defaultComponent()
 }
 
 main()

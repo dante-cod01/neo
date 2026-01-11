@@ -25,9 +25,24 @@ body {
         left: var(--bar_left);
     }
 
-    .infoBar {
+    .infoContainer {
         bottom: var(--body_padding);
         left: var(--bar_left);
+        width: 40px;
+        height: 80px;
+        border: 1px solid red;
+        border-radius: 8px; 
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-width: 0;
+        border-right-width: 0;
+        opacity: 1;
+
+        .infoText {
+            width: auto;
+            height: auto;
+            border: 1px solid blue;
+        }
     }
 
     .componentContainer {

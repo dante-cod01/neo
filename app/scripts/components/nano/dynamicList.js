@@ -12,6 +12,7 @@ export class DynamicList extends HTMLElement {
         this.id
         this.eventDom
         this.eventName
+        this.items = {}
 
         this.defaultCss = {
             back: "red",
@@ -223,6 +224,16 @@ export class DynamicList extends HTMLElement {
         })
     }
 
+    #listItems = () => {
+        const sections = Array.from(this.dom.querySelectorAll(".componentSections"))
+        sections.forEach((section, sectionIndex) => {
+            const newSection = this.items["section_" + sectionIndex] = {}
+            newSection["sectionInput"] = section.querySelector("[name='section']")
+            const items = Array.from(section.querySelectorAll("input[name='list']"))
+            newSection["itemsInput"] = items
+        })
+    }
+
     #dynamicExpandControl() {
         const sections = Array.from(this.dom.querySelectorAll(".componentSections"))
 
@@ -281,6 +292,7 @@ export class DynamicList extends HTMLElement {
         this.#getLinks()
         this.#draw()
         this.#drawList(this.data)
+        this.#listItems()
         this.#dynamicExpandControl()
         this.#addEvents(this.data)
         this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
