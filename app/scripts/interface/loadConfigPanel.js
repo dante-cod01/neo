@@ -7,8 +7,8 @@ const drawPanelBox = async (box) => {
     const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const links = [
-        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
-        { type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
+        { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
+        { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
     ]
 
     const css = {

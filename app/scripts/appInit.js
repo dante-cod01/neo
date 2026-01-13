@@ -37,7 +37,7 @@ const main = async () => {
         topBar: "./interface/loadTopBar.js",
         listMenuPanel: "./interface/loadListPanel.js",
         configMenuPanel: "./interface/loadconfigPanel.js",
-        info: "./interface/loadComponentsInfo.js"
+        info: "./interface/loadInfo.js"
     }
 
     const modules = await loadModules(loads)

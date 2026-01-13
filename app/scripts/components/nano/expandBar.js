@@ -71,7 +71,6 @@ export class ExpandBar extends HTMLElement {
     }
 
     #init() {
-        this.base.sendEvent(this.eventDom, this.eventName, "preLoaded")
         this.#configure()
         this.#draw()
         this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
@@ -82,6 +81,8 @@ export class ExpandBar extends HTMLElement {
     }
 
     addDependency(dependency) {
+        if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
+        if (!this.eventName) { (console.log({ eventName: this.eventName }, "not configured")); return }
         if (!this.base) {
             this.base = dependency
             this.#init()

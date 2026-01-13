@@ -21,10 +21,6 @@ export class ExpandBox extends HTMLElement {
             main_transition: "none"
         }
 
-        this.defaultLogic = {
-
-        }
-
         this.dom = this.attachShadow({ mode: "open" })
     }
 

@@ -29,5 +29,4 @@ export const init = async (box) => {
     const backLayer = element.add("div", container, "backLayer absolute max")
     const blurLayer = element.add("div", container, "blurLayer absolute max")
     const componentBox = await drawComponentBox(container)
-    return container
 } 

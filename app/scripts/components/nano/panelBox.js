@@ -176,7 +176,7 @@ export class PanelBox extends HTMLElement {
         this.logic = this.logic ? this.base.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
     }
 
-    #getLinks = () => {
+    #addLinks = () => {
         if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
@@ -217,7 +217,7 @@ export class PanelBox extends HTMLElement {
     }
 
     #applyConf = () => {
-        this.#getLinks()
+        this.#addLinks()
         this.#addCloseButtom(this.logic.buttom)
         this.#addTitle(this.logic.title)
         this.#configureSide()

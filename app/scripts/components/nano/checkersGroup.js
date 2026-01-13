@@ -184,13 +184,13 @@ export class RadioGroup extends HTMLElement {
         this.logic.horizontal && this.container.classList.add("horizontal")
     }
 
-    #applyFonts = () => {
+    #addLinks = () => {
         if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
     #applyConf = () => {
         this.#applyOrientation()
-        this.#applyFonts()
+        this.#addLinks()
     }
 
     #addSpace = (size, num) => {

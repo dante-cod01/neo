@@ -28,7 +28,7 @@ const drawTopBar = async (box) => {
 const drawPanelsControls = async (box) => {
     /* panels control */
     const links = [
-        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
+        { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
     ]
 
     const data = [
@@ -71,11 +71,11 @@ const drawPanelsControls = async (box) => {
 const drawBackChanger = async (box) => {
     /* backs changer */
     const links = [
-        { type: "font", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
+        { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
     ]
 
     const data = [
-        { box: "radio", id: "1", name: "back", type: "text", icon: "1", checked: true },
+        { box: "radio", id: "1", name: "back", type: "text", icon: "1" },
         { box: "radio", id: "2", name: "back", type: "text", icon: "2" },
         { box: "radio", id: "3", name: "back", type: "text", icon: "3" },
         { box: "radio", id: "4", name: "back", type: "text", icon: "4" },
@@ -123,7 +123,7 @@ const drawBackChanger = async (box) => {
 const drawViewChanger = async (box) => {
     /* views changer */
     const links = [
-        { type: "font", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
+        { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
     ]
 
     const data = [

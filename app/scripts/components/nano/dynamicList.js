@@ -189,7 +189,7 @@ export class DynamicList extends HTMLElement {
         this.base.cssVar(this.css, this)
     }
 
-    #getLinks = () => {
+    #addLinks = () => {
         if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
@@ -259,8 +259,10 @@ export class DynamicList extends HTMLElement {
 
     #getOptionConfig(target) {
         const info = target.getAttribute("info")
-        const pars = Object.values(this.data).flat().find(item => item.name === info)
-        return pars
+        const detectedInfo = Object.entries(this.data).find(([key, value]) => value.some(value => value.name === info))
+        const sectionType = detectedInfo[0]
+        const infoConfig = Object.values(this.data).flat().find(item => item.name === info)
+        return {section: sectionType, config: infoConfig}
     }
 
     #addEvents() {
@@ -289,7 +291,7 @@ export class DynamicList extends HTMLElement {
 
     async init() {
         this.#configure()
-        this.#getLinks()
+        this.#addLinks()
         this.#draw()
         this.#drawList(this.data)
         this.#listItems()
