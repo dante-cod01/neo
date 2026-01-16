@@ -22,14 +22,19 @@
     --componentContainer_width: 100%;
     --componentContainer_height: 100%;
     --componentContainer_radius: 0;
-    --componentContainer_transition: 500ms;
     --componentContainer_scale: 1;
     --componentContainer_opacity: 1;
 
     --backLayer_back: url("./../src/images/backs/iain-macrae-iYuFgG2WXbU-unsplash.jpg");
     --backLayer_blur: 0;
     --backLayer_opacity: 1;
+
+    --relativeInfoBox_width: 0;
+    --relativeInfoBox_opacity: 0;
+    
     --normal_transition: 600ms ease-in-out;
+    --componentContainer_transition: 500ms ease-in-out;
+    --info_transition: 800ms ease-in-out;
 
     /* colors */
     --light_1: white;

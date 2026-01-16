@@ -10,20 +10,22 @@ export class FlashText extends HTMLElement {
         this.links
         this.eventDom
         this.eventName
+        this.width
 
         this.defaultCss = {
+            back: "none",
             font_family: "initial",
             font_size: "initial",
             font_style: "initial",
             font_color: "initial",
             text_opacity: "1",
-            textOpacity_before: "1",
-            textOpacity_after: "1",
             textFilter_before: "none",
             textFilter_after: "none",
-            text_indent: "0px",
+            text_mix: "none",
             text_weight: "none",
-            textBox_right: "0px",
+            text_padding: "0px",
+            moveTo: "0%",
+            moveFrom: "100%",
             transition: "0"
         }
 
@@ -46,7 +48,7 @@ export class FlashText extends HTMLElement {
     }
 
     #draw = () => {
-        this.container = this.base.add("div", this.dom, "main verticalCenter opacityBefore")
+        this.container = this.base.add("div", this.dom, "main verticalCenter")
         const style = this.base.add("style", this.dom)
         style.textContent = `
             * {
@@ -55,49 +57,50 @@ export class FlashText extends HTMLElement {
                 box-sizing: border-box;
             }
 
-            .main {
-                white-space: pre;
+            :host {
+                display: flex;
                 width: 100%;
                 height: 100%;
-                margin-left: 20px;
-                transition: var(--transition);
+                border: 1px solid red;
+                --textBox_width: 0;
+            }
+
+            .main {
+                white-space: pre;
+                padding: var(--box_padding);
 
                 .textBox {
                     position: relative;
                     width: fit-content;
-                    height: fit-content;
+                    height: 100%;
                     font-family: var(--font_family);
                     font-size: var(--font_size);
                     font-weight: var(--text_weight);
                     font-style: var(--font_style);
                     color: var(--font_color);
-                    text-indent: var(--text_indent);
+                    background: var(--back);
+                    padding: var(--text_padding);
+                    mix-blend-mode: var(--text_mix);
                     transition: var(--transition);
                 }
             }
 
             .verticalCenter { display: flex; align-items: center; }
 
-            .posBefore { right: calc(var(--textBox_right) - var(--text_indent)); }
-            .posAfter { right: 0; }
+            .posBeforeLeft { left: var(--moveFrom); }
+            .posAfterLeft { left: 0; }
 
-            .opacityBefore { opacity: var(--textOpacity_before); }
-            .opacityAfter { opacity: var(--textOpacity_after); }
+            .posBeforeRight { left: var(--moveFrom); }
+            .posAfterRight { left: calc(100% - var(--textBox_width)); }
+
+            .opacityBefore { opacity: 0; }
+            .opacityAfter { opacity: 1; }
 
             .filterBefore { filter: var(--textFilter_before); }
             .filterAfter { filter: var(--textFilter_after); }
+
+            .erase {  opacity: 0; filter: blur(30px); transform: translateY(-40px); }
         `
-    }
-
-    #flash = async (text) => {
-        const main = this.dom.querySelector(".main")
-
-        const textBox = this.base.add("div", main, "textBox verticalCenter posBefore filterBefore")
-        textBox.textContent = this.logic.upperCase ? text.toUpperCase() : text
-        await new Promise(resolve => setTimeout(resolve, 10))
-        main.classList.replace("opacityBefore", "opacityAfter")
-        textBox.classList.replace("posBefore", "posAfter")
-        textBox.classList.replace("filterBefore", "filterAfter")
     }
 
     #init = async () => {
@@ -116,8 +119,39 @@ export class FlashText extends HTMLElement {
         }
     }
 
-    updateText = async (text) => {
-        this.#flash(text)
+    erase = async () => {
+        const time = 600
+        const initialTransition = this.css.transition
+        const main = this.dom.querySelector(".main")
+        const textBox = this.dom.querySelector(".textBox")
+        textBox.classList.add("erase")
+        this.style.setProperty("--transition", `${time}ms ease-in`)
+        await this.base.waiting(time)
+        main.innerHTML = ""
+        this.style.setProperty("--transition", initialTransition)
+    }
+
+    write = async (text, animation) => {
+        const textBox = this.base.add("div", this.container, "textBox verticalCenter filterBefore opacityBefore")
+
+        if (animation === "move") {
+            this.css.moveTo === "left"
+                ? textBox.classList.add("posBeforeLeft")
+                : textBox.classList.add("posBeforeRight")
+
+            textBox.textContent = this.logic.upperCase ? text.toUpperCase() : text.toLowerCase()
+            this.width = textBox.offsetWidth + "px"
+            this.style.setProperty("--textBox_width", this.width)
+            return textBox
+        }
+    }
+
+    animate = async (textBox) => {
+        textBox.classList.replace("opacityBefore", "opacityAfter")
+        textBox.classList.replace("filterBefore", "filterAfter")
+        if (textBox.classList.contains("posBeforeLeft")) textBox.classList.replace("posBeforeLeft", "posAfterLeft")
+        if (textBox.classList.contains("posBeforeRight")) textBox.classList.replace("posBeforeRight", "posAfterRight")
+        await this.base.waiting(this.base.convertTransition(this.css.transition))
     }
 }
 customElements.define(tag, FlashText)

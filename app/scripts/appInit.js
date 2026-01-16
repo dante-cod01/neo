@@ -14,19 +14,10 @@ const loadInterface = async (modules) => {
     await modules.listMenuPanel.init(document.body)
     await modules.configMenuPanel.init(document.body)
     await modules.topBar.init(document.body)
-}
+    }
 
 const loadBusEvent = async (modules) => {
     modules.eventBus.init()
-}
-
-const defaultComponent = async () => {
-    const listItems = document.getElementById("menuPanel").nodes.node_0.children[0]
-    listItems.items.section_0.sectionInput.checked = true
-    listItems.items.section_0.sectionInput.dispatchEvent(new CustomEvent("change"))
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    listItems.items.section_0.itemsInput[0].checked = true
-    listItems.items.section_0.itemsInput[0].dispatchEvent(new CustomEvent("change"))
 }
 
 const main = async () => {
@@ -37,7 +28,8 @@ const main = async () => {
         topBar: "./interface/loadTopBar.js",
         listMenuPanel: "./interface/loadListPanel.js",
         configMenuPanel: "./interface/loadconfigPanel.js",
-        info: "./interface/loadInfo.js"
+        info: "./interface/loadInfo.js",
+        /* auto start mode */
     }
 
     const modules = await loadModules(loads)
@@ -45,7 +37,7 @@ const main = async () => {
     await loadInterface(modules)
     await loadBusEvent(modules)
     await new Promise(resolve => { setTimeout(resolve, 1000) })
-    defaultComponent()
+    await import ("./interface/loadAutoStart.js")
 }
 
 main()

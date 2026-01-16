@@ -1,5 +1,5 @@
 {
-    "back": [
+    "background": [
         {"name": "Component 1", "tag": "tag1", "path": "path1"},
         {"name": "title 2", "tag": "tag2", "path": "path2"},
         {"name": "title 3", "tag": "tag3", "path": "path3"},

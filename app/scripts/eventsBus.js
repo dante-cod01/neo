@@ -36,7 +36,7 @@ const registerModules = async (components) => {
 
 export const init = async () => {
     let components = [
-        { component: "listMenu", loaded: false, module: "./interface/controls/listMenuControl.js" },
+        { component: "listMenu", loaded: false, module: "./interface/controls/infoControl.js" },
         { component: "panelsChanger", loaded: false, module: "./interface/controls/panelsControl.js" },
         { component: "backChanger", loaded: false, module: "./interface/controls/backControl.js" },
         { component: "viewChanger", loaded: false, module: "./interface/controls/viewsControl.js" },

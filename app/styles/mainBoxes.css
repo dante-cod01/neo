@@ -26,35 +26,33 @@ body {
     }
 
     .infoContainer {
+        display: flex;
         bottom: var(--body_padding);
         left: var(--bar_left);
-        width: 500px;
-/*         height: var(--bar_height);
- */        height: 50px;
-        border: 1px solid red;
+        width: var(--relativeInfoBox_width);
+        height: 55px;
+        border: 1px double rgba(255, 255, 255, 0.2);
         border-radius: 8px;
         border-top-left-radius: 0;
         border-bottom-right-radius: 0;
         border-top-width: 0;
         border-right-width: 0;
-        opacity: 1;
-/*         overflow: hidden;
- */
+/*         opacity: var(--relativeInfoBox_opacity);
+ */        transition: var(--info_transition);
+
         .relativeInfoBox {
-            position: relative;
             width: 100%;
             height: 100%;
-
+            transition: var(--info_transition);
+/*             border: 1px solid rgb(0, 34, 128);
+ */
             .infoSectionBox {
-                width: 400px;
+                width: 100%;
                 height: 100%;
-                bottom: 16px;
             }
 
             .infoNameBox {
-                width: 400px;
-                height: 40px;
-                bottom: -8px;
+                bottom: 18px;
             }
         }
     }
