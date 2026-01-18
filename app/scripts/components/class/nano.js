@@ -1,5 +1,6 @@
-export class ComponentBase {
+export class Nano {
 
+    /* CHECK CONFIG */
     #convertToObj(defaultObj) {
         let newObj = {}
         Object.entries(defaultObj).forEach(([key, value]) => {
@@ -37,23 +38,7 @@ export class ComponentBase {
         return out
     }
 
-    cssVar(obj, dom) {
-        Object.entries(obj).forEach(([key, value]) => {
-            dom.style.setProperty(`--${key}`, value)
-        })
-    }
-
-    updateProp(css, prop, value, dom) {
-        const valid = this.isValidProp(prop, css)
-        if (valid) {
-            css[prop] = value
-            this.cssVar({ [prop]: value }, dom)
-        } else {
-            console.log({ prop }, "not valid")
-        }
-    }
-
-    /* nano */
+    /* CONFIGURE DOM */
     add(tag, box, classN = null, id = null) {
         const element = document.createElement(tag)
         classN && (element.className = classN)
@@ -62,7 +47,7 @@ export class ComponentBase {
         return element
     }
 
-    addLinks(dom, links) {
+    addFonts(dom, links) {
         if (!links) return
         const loadedLinks = Array.from(document.head.querySelectorAll("link"))
 
@@ -90,42 +75,6 @@ export class ComponentBase {
         classNames && (input.className = classNames)
         box.appendChild(input)
         return input
-    }
-
-    getParentInfo(element) {
-        const props = getComputedStyle(element)
-        let info = {}
-        info["width"] = props.width
-        info["height"] = props.height
-        return info
-    }
-
-    convertTransition(transition) {
-        const stringTime = transition.split(" ")[0]
-        return stringTime.endsWith("ms")
-            ? parseFloat(stringTime)
-            : parseFloat(stringTime) * 1000
-    }
-
-    async wait(time_ms) {
-        await new Promise(resolve => setTimeout(resolve, time_ms))
-    }
-
-    async waiting(time) {
-        await new Promise(resolve => setTimeout(resolve, time))
-    }
-
-    setAttr(item, object) {
-        Object.entries(object).forEach(([key, value]) => {
-            item.setAttribute(key, value)
-        })
-    }
-
-    getNodes = (dom) => {
-        const nodes = Array.from(dom.querySelectorAll("[node]"))
-        let obj = {}
-        nodes.forEach(item => { obj[item.getAttribute("node")] = item })
-        return obj
     }
 
     sendEvent(dom, eventName, detail) {

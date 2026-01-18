@@ -14,7 +14,7 @@ const loadInterface = async (modules) => {
     await modules.listMenuPanel.init(document.body)
     await modules.configMenuPanel.init(document.body)
     await modules.topBar.init(document.body)
-    }
+}
 
 const loadBusEvent = async (modules) => {
     modules.eventBus.init()
@@ -29,15 +29,14 @@ const main = async () => {
         listMenuPanel: "./interface/loadListPanel.js",
         configMenuPanel: "./interface/loadconfigPanel.js",
         info: "./interface/loadInfo.js",
-        /* auto start mode */
     }
 
     const modules = await loadModules(loads)
     await loadCss(modules)
     await loadInterface(modules)
     await loadBusEvent(modules)
-    await new Promise(resolve => { setTimeout(resolve, 1000) })
-    await import ("./interface/loadAutoStart.js")
+    /* auto start mode from appConfig*/
+    await import("./interface/loadAutoStart.js")
 }
 
 main()

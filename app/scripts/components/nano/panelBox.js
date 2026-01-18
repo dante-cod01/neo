@@ -62,8 +62,8 @@ export class PanelBox extends HTMLElement {
                     </div>
                 </div>
             </section> 
-            <section class="listContainer" node="node_0"></section>
-            <section class="bottomBar displayNone" node="node_1"></section>
+            <section class="listContainer center" node="node_0"></section>
+            <section class="bottomBar center displayNone" node="node_1"></section>
         `
 
         style.textContent = `

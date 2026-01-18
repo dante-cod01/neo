@@ -106,7 +106,7 @@ export class FlashText extends HTMLElement {
     #init = async () => {
         this.#configure()
         this.#addLinks()
-        this.#draw()
+        await this.#draw()
         this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 
