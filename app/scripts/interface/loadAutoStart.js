@@ -4,7 +4,7 @@ import * as cssHelper from "./../modules/css.js"
 
 const drawAutoStart = async () => {
     const component = await import("../components/nano/inputs/switch_01.js")
-    const dependency = (await import("../components/class/nano.js")).Nano
+    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const fonts = [
         { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
@@ -25,9 +25,9 @@ const drawAutoStart = async () => {
         pointer_height: "14px",
         pointer_back_off: cssHelper.getVar("light_5"),
         pointer_back_on: "white",
-        pointer_border_off: "6px solid transparent",
-        pointer_border_on: `6px solid tomato`,
-        pointer_filter: "blur(3px)",
+        pointer_border_off: "5px solid transparent",
+        pointer_border_on: `5px solid ${cssHelper.getVar("enphasis_1")}`,
+        pointer_filter: "blur(2px)",
         pointer_radius: "4px",
 
         icon_size: "20px",
@@ -56,8 +56,8 @@ const drawAutoStart = async () => {
     autoStartToogle.css = css
     autoStartToogle.logic = logic
     autoStartToogle.fonts = fonts
-    autoStartToogle.eventDom = "not-used"
-    autoStartToogle.eventName = "not-used"
+    autoStartToogle.eventDom = document
+    autoStartToogle.eventName = "autoStart"
     autoStartToogle.addDependency(new dependency())
     return autoStartToogle
 }
@@ -66,13 +66,19 @@ const saveModeStatus = (boolean) => {
     localStorage.setItem("appAutoLoad", JSON.stringify(boolean))
 }
 
-const listenAutoStart = (input) => {
-    input.addEventListener("change", (e) => {
-        if (e.target.checked) {
+const eventListener = (autoStart) => {
+    const time = cssHelper.convertTransition(autoStart.css.transition)
+
+    document.addEventListener("autoStart", async (e) => {
+        if (e.detail.value) {
+            await new Promise(resolve => setTimeout(resolve, time * 3))
             startAutoMode()
             saveModeStatus(true)
         } else {
+            console.log(e.target)
             saveModeStatus(false)
+            await new Promise(resolve => setTimeout(resolve, time * 3))
+            location.reload()
         }
     })
 }
@@ -89,7 +95,7 @@ const startAutoMode = async () => {
 const init = async () => {
     if (appConfig.autoLoad) {
         const autoStart = await drawAutoStart()
-        listenAutoStart(autoStart.input)
+        eventListener(autoStart)
         const loadConfig = JSON.parse(localStorage.getItem("appAutoLoad"))
         if (loadConfig) {
             await new Promise(resolve => setTimeout(resolve, 1000))

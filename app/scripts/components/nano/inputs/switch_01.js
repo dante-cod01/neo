@@ -165,11 +165,12 @@ export class CheckBox_1 extends HTMLElement {
     }
 
     #init = async () => {
-        this.based.addFonts(this.dom, this.fonts)
+        this.based.addLinks(this.dom, this.fonts)
         this.#configure()
         await this.#draw()
         this.#drawAll()
         this.input = this.dom.querySelector("input")
+        this.loadEvents()
     }
 
     #configure = () => {
@@ -219,6 +220,12 @@ export class CheckBox_1 extends HTMLElement {
         const ckeckbox = this.based.addInput("checkbox", this.container, "checkbox", "", "inputHidden absolute max")
     }
 
+    loadEvents = () => {
+        this.input.addEventListener("change", (e) => {
+            this.based.sendEvent(this.eventDom, this.eventName, {value: e.target.checked})
+        })
+    }
+
     inputChecked = (boolean) => {
         this.input.checked = boolean
     }
@@ -228,7 +235,7 @@ export class CheckBox_1 extends HTMLElement {
         if (!this.eventName) { (console.log({ eventName: this.eventName }, "not configured")); return }
         if (!this.based) {
             this.based = dependency
-            return await this.#init()
+            await this.#init()
         }
     }
 }

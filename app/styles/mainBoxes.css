@@ -25,36 +25,9 @@ body {
         left: var(--bar_left);
     }
 
-    .infoContainer {
-        display: flex;
+    .infoSection {
         bottom: var(--body_padding);
         left: var(--bar_left);
-        width: var(--relativeInfoBox_width);
-        height: 55px;
-        border: 1px double rgba(255, 255, 255, 0.2);
-        border-radius: 8px;
-        border-top-left-radius: 0;
-        border-bottom-right-radius: 0;
-        border-top-width: 0;
-        border-right-width: 0;
-/*         opacity: var(--relativeInfoBox_opacity);
- */        transition: var(--info_transition);
-
-        .relativeInfoBox {
-            width: 100%;
-            height: 100%;
-            transition: var(--info_transition);
-/*             border: 1px solid rgb(0, 34, 128);
- */
-            .infoSectionBox {
-                width: 100%;
-                height: 100%;
-            }
-
-            .infoNameBox {
-                bottom: 18px;
-            }
-        }
     }
 
     .componentContainer {

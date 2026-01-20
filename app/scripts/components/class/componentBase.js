@@ -1,5 +1,6 @@
 export class ComponentBase {
 
+    /* CHECK PROPS */
     #convertToObj(defaultObj) {
         let newObj = {}
         Object.entries(defaultObj).forEach(([key, value]) => {
@@ -37,13 +38,14 @@ export class ComponentBase {
         return out
     }
 
+    /* CONFIGURE CSS */
     cssVar(obj, dom) {
         Object.entries(obj).forEach(([key, value]) => {
             dom.style.setProperty(`--${key}`, value)
         })
     }
 
-    updateProp(css, prop, value, dom) {
+    updateVar(css, prop, value, dom) {
         const valid = this.isValidProp(prop, css)
         if (valid) {
             css[prop] = value
@@ -53,7 +55,7 @@ export class ComponentBase {
         }
     }
 
-    /* nano */
+    /* CONFIGURE DOM */
     add(tag, box, classN = null, id = null) {
         const element = document.createElement(tag)
         classN && (element.className = classN)
@@ -92,6 +94,12 @@ export class ComponentBase {
         return input
     }
 
+    /* EVENTS */
+    sendEvent(dom, eventName, detail) {
+        dom.dispatchEvent(new CustomEvent(eventName, { "detail": detail }))
+    }
+
+    /* UTILS */
     getParentInfo(element) {
         const props = getComputedStyle(element)
         let info = {}
@@ -126,9 +134,5 @@ export class ComponentBase {
         let obj = {}
         nodes.forEach(item => { obj[item.getAttribute("node")] = item })
         return obj
-    }
-
-    sendEvent(dom, eventName, detail) {
-        dom.dispatchEvent(new CustomEvent(eventName, { "detail": detail }))
     }
 }
