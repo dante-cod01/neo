@@ -10,36 +10,42 @@ const drawText = async (box) => {
         { type: "font", name: "Zen+Dots", href: "https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" },
     ]
 
-    const css = {
+    const conf = {
         box_width: "300px",
         box_height: "100px",
+        box_position: "left",
+        box_back: cssHelper.getVar("dark_4"),
+        box_border: "none",
 
-/*         font_family: "Zen Dots",
-        font_size: "24px",
-        font_style: "italic",
-        font_color: "rgba(255, 255, 255, 0.49)",
-        font_weight: "bolder",
-        back: "black",
-        transition: cssHelper.getVar("info_transition")
- */    }
+        0: {
+            textBox_text: "texto 0",
+            textBox_position: "relative",
+            textBox_font: "Zen Dots",
+            textBox_fontSize: "24px",
+            textBox_fontStyle: "italic",
+            textBox_fontWeight: "bolder",
+            textBox_color: "rgba(255, 255, 255, 0.5)",
 
-    const logic = {
+            textBox_border: "1px solid red",
+        },
 
-    }
+        1: {
+            textBox_text: "texto 0",
+            textBox_position: "relative",
+            textBox_font: "Zen Dots",
+            textBox_fontSize: "24px",
+            textBox_fontStyle: "italic",
+            textBox_fontWeight: "bolder",
+            textBox_color: "rgba(255, 255, 255, 0.5)",
 
-    const content = {
-        textBox_text_0: "texto 0",
-/*         textBox_width_0: "100%",
-        textBox_height_0: "100%",
- */        textBox_border_0: "1px solid red",
-         textBox_text_2: "texto 2",
+            textBox_border: "1px solid red",
+        }
+
 
     }
 
     const infoSection = await element.add(component.tag, box, "infoSection  absolute", "infoSection")
-    infoSection.css = css
-    infoSection.logic = logic
-    infoSection.content = content
+    infoSection.newConf = conf
     infoSection.links = sectionFont
     infoSection.eventDom = document
     infoSection.eventName = infoSection.id

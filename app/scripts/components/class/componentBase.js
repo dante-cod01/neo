@@ -38,6 +38,42 @@ export class ComponentBase {
         return out
     }
 
+
+    /* check conf */
+
+    validateConfig = (defaultConf, newConf, dom) => {
+        const resumedConf = {}
+
+        const validate = (outputConfig, defaultConf, newConf) => {
+            Object.entries(newConf).forEach(([prop, value]) => {
+                if (!defaultConf[prop] && typeof value !== "object") { console.log(dom, { prop }, "Prop not valid") }
+
+                if (defaultConf[prop]) {
+                    const valueType = Array.isArray(defaultConf[prop]) ? "array" : "string"
+                    const valueValid = valueType === "string" ? true : defaultConf[prop].includes(value)
+                    valueValid ? outputConfig[prop] = value : console.log(dom, { prop }, { value }, "VALUE not valid")
+                }
+            })
+        }
+
+        resumedConf["static"] = {}
+        validate(resumedConf.static, defaultConf, newConf)
+
+        const subConfig = Object.values(newConf).filter(item => typeof item === "object")
+        Object.entries(subConfig).forEach(([key, value]) => {
+            resumedConf[key] = {}
+            validate(resumedConf[key], defaultConf, value)
+        })
+        return resumedConf
+    }
+
+    cssVar2(groupName, object, dom) {
+        Object.entries(object).forEach(([key, value]) => {
+            dom.style.setProperty(`--${key}_${groupName}`, value)
+        })
+    }
+
+
     /* CONFIGURE CSS */
     cssVar(obj, dom) {
         Object.entries(obj).forEach(([key, value]) => {

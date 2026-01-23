@@ -13,34 +13,32 @@ export class FlashText extends HTMLElement {
         this.eventName
         this.width
 
-        this.defaultCss = {
+        this.defaultConf = {
             box_width: "fit-content",
             box_height: "fit-content",
+            box_position: ["left", "right"],
+            box_back: "none",
+            box_border: "none",
 
-            textBox_width: "fit-content",
-            textBox_height: "fit-content",
-            textBox_border: "none",
+            textBox_text: "text not defined",
+            textBox_position: ["absolute", "relative"],
+            textBox_font: "initial",
+            textBox_fontSize: "initial",
+            textBox_fontStyle: "initial",
+            textBox_fontWeight: "initial",
+            textBox_color: "none",
 
-/*             back: "none",
-            font_family: "initial",
-            font_size: "initial",
-            font_style: "initial",
-            font_color: "initial",
-            font_weight: "none",
-            transition: "0"
- */        }
-
-        this.defaultLogic = {
-
+            textBox_border: "1px solid red"
         }
 
         this.dom = this.attachShadow({ mode: "open" })
     }
 
     #draw = () => {
-        this.container = this.base.add("div", this.dom, "main relative")
-        const style = this.base.add("style", this.dom)
-        style.textContent = `
+        const def = this.defaultConf
+        this.container = this.base.add("div", this.dom, "main relative center")
+        this.newStyle = this.base.add("style", this.dom)
+        this.newStyle.textContent = `
             * {
                 margin: 0;
                 padding: 0;
@@ -49,8 +47,8 @@ export class FlashText extends HTMLElement {
 
             :host {
                 display: flex;
-                width: var(--box_width);
-                height: var(--box_height);
+                width: var(--box_width_static, ${def.box_width});
+                height: var(--box_height_static, ${def.box_height});
                 border: 1px solid green;
             }
 
@@ -58,20 +56,22 @@ export class FlashText extends HTMLElement {
                 width: 100%;
                 height: 100%;
                 white-space: pre;
-                background: var(--back);
+                background: var(--box_back_static, ${def.box_back});
             }
 
             .relative { position: relative; }
             .absolute { position: absolute; }
             .center { display: flex; align-items: center; justify-content: center;}
         `
-        return style
     }
 
     #configure = () => {
-        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
-        this.base.cssVar(this.css, this)
-        this.logic = this.logic ? this.base.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
+        this.conf = this.defaultConf ? this.base.validateConfig(this.defaultConf, this.newConf, this) : this.defaultConf
+        console.log(this.conf)
+        Object.entries(this.conf).forEach(([key, value]) => {
+            this.base.cssVar2(key, value, this)
+        })
+        this.conf.static["boxes_num"] = Object.keys(this.conf).filter(key => key !== "static").length
     }
 
     #addLinks = () => {
@@ -79,44 +79,50 @@ export class FlashText extends HTMLElement {
     }
 
     #addTextBoxes = () => {
-        let indexCount = []
-        Object.keys(this.content).forEach(key => {
-            const index = key.split("_").pop()
-            if (!indexCount.includes(index)) indexCount.push(index)
-        })
-        indexCount.forEach(index => {
-            const textBox = this.base.add("div", this.container, `textBox_${index} center absolute`)
-        })
-        return indexCount
+        for (let box = 0; box < this.conf.static.boxes_num; box++) {
+            const textBox = this.base.add("div", this.container, `textBox_${box} center absolute`)
+            this.#addStylePrototype(box + 1)
+            textBox.classList.add(`textBox_${box}`)
+        }
     }
 
-    #identifyContent = (indexCount) => {
+/*     #identifyContent = (indexCount) => {
         let contentProps = {}
         indexCount.forEach(index => {
-            const prop = Object.entries(this.content).filter(([key, value]) => key.includes("_" + index))
+            const prop = Object.entries(this.conf).filter(([key, value]) => key.includes("_" + index))
             contentProps[index] = prop
         })
         return contentProps
     }
-
-    #createCssVars = (style, props) => {
+ */
+/*     #createCssVars = (style, props) => {
         Object.entries(props).forEach(([index, entries]) => {
             entries.forEach(([prop, propValue]) => { this.base.cssVar({ [prop]: propValue }, this) })
 
             this.#applyVars(style, index)
-            this.#addText(this.content[`textBox_text_${index}`], index)
+
+            this.content[`textBox_text_${index}`]
+                ? this.#addText(this.content[`textBox_text_${index}`], index)
+                : this.#addText(this.logic.textBox_text, index)
         })
     }
-
-    #applyVars = (style, index) => {
-        style.textContent += `
+ */
+    #addStylePrototype = (index) => {
+        const def = this.defaultConf
+        this.newStyle.textContent += `
             .textBox_${index} {
-                width: var(--textBox_width_${index}, ${this.defaultCss.textBox_width});
-                height: var(--textBox_height_${index}, ${this.defaultCss.textBox_height});
-                border: var(--textBox_border_${index}, ${this.defaultCss.textBox_border});
+                position: var(--textBox_position_${index}, ${def.textBox_position});
+                width: var(--textBox_width_${index}, ${def.textBox_width});
+                height: var(--textBox_height_${index}, ${def.textBox_height});
+
+                font-family: var(--textBox_font_${index}, ${def.textBox_font});
+
+                border: var(--textBox_border.${index}, ${def.textBox_border});
 
             }
         `
+
+        console.log(this.newStyle)
     }
 
     #addText = (text, index) => { this.dom.querySelector(`.textBox_${index}`).textContent = text }
@@ -124,13 +130,12 @@ export class FlashText extends HTMLElement {
     #init = async () => {
         this.#configure()
         this.#addLinks()
-        const style = this.#draw()
-        console.log(style)
+        this.#draw()
         const indexCount = this.#addTextBoxes()
-        const contentProps = this.#identifyContent(indexCount)
+/*         const contentProps = this.#identifyContent(indexCount)
         this.#createCssVars(style, contentProps)
         this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
-    }
+ */    }
 
     async addDependency(dependency) {
         if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
