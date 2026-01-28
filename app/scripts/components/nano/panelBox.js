@@ -172,7 +172,7 @@ export class PanelBox extends HTMLElement {
 
     #getConfig = () => {
         this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
-        this.base.cssVar(this.css, this)
+        this.base.toCssVar(this.css, this)
         this.logic = this.logic ? this.base.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
     }
 

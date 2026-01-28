@@ -39,56 +39,52 @@ export class ComponentBase {
     }
 
 
-    /* check conf */
-
-    validateConfig = (defaultConf, newConf, dom) => {
-        const resumedConf = {}
-
-        const validate = (outputConfig, defaultConf, newConf) => {
-            Object.entries(newConf).forEach(([prop, value]) => {
-                if (!defaultConf[prop] && typeof value !== "object") { console.log(dom, { prop }, "Prop not valid") }
-
-                if (defaultConf[prop]) {
-                    const valueType = Array.isArray(defaultConf[prop]) ? "array" : "string"
-                    const valueValid = valueType === "string" ? true : defaultConf[prop].includes(value)
-                    valueValid ? outputConfig[prop] = value : console.log(dom, { prop }, { value }, "VALUE not valid")
-                }
-            })
-        }
-
-        resumedConf["static"] = {}
-        validate(resumedConf.static, defaultConf, newConf)
-
-        const subConfig = Object.values(newConf).filter(item => typeof item === "object")
-        Object.entries(subConfig).forEach(([key, value]) => {
-            resumedConf[key] = {}
-            validate(resumedConf[key], defaultConf, value)
+    /* check conf NEW */
+    #resumeValues(defaultObj) {
+        let resumed = {}
+        Object.entries(defaultObj).forEach(([key, value]) => {
+            resumed[key] = Array.isArray(defaultObj[key]) ? defaultObj[key][0] : value
         })
-        return resumedConf
+        return resumed
     }
 
-    cssVar2(groupName, object, dom) {
-        Object.entries(object).forEach(([key, value]) => {
-            dom.style.setProperty(`--${key}_${groupName}`, value)
+    generateConf = (defaultConf, newConf, dom) => {
+        const resumedValues = this.#resumeValues(defaultConf)
+        let validation = true
+        Object.entries(newConf).forEach(([key, value]) => {
+            if (validation) {
+                if (!defaultConf[key]) { console.log([dom], [key], "PROP not valid"); validation = false }
+                if (defaultConf[key] && typeof (value) !== "string") { console.log([dom], [key, value], "VALUE must be string"); validation = false }
+            }
         })
+        Object.entries(newConf).forEach(([key, value]) => {
+            if (typeof (defaultConf[key]) === "string") resumedValues[key] = value
+            if (typeof (defaultConf[key]) === "object") {
+                defaultConf[key].includes(value)
+                    ? resumedValues[key] = value
+                    : console.log([this], [key, value], "VALUE not valid using DEFAULT", [key, resumedValues[key]])
+            }
+        })
+        !validation && console.log(["VALIDATION FAIL"])
+        return resumedValues
     }
 
 
     /* CONFIGURE CSS */
-    cssVar(obj, dom) {
+    toCssVar(obj, dom) { /* old */
         Object.entries(obj).forEach(([key, value]) => {
             dom.style.setProperty(`--${key}`, value)
         })
     }
 
-    updateVar(css, prop, value, dom) {
-        const valid = this.isValidProp(prop, css)
-        if (valid) {
-            css[prop] = value
-            this.cssVar({ [prop]: value }, dom)
-        } else {
-            console.log({ prop }, "not valid")
-        }
+    objToCssVar(obj, dom) { /* new */
+        Object.entries(obj).forEach(([key, value]) => {
+            dom.style.setProperty(`--${key}`, value)
+        })
+    }
+
+    toCssVar2(prop, value, dom) {
+        dom.style.setProperty(`--${prop}`, value)
     }
 
     /* CONFIGURE DOM */
@@ -130,6 +126,12 @@ export class ComponentBase {
         return input
     }
 
+    updateConf(prop, value, dom) {
+        dom.conf[prop] = value
+        dom.base.toCssVar2(prop, value, dom)
+    }
+
+
     /* EVENTS */
     sendEvent(dom, eventName, detail) {
         dom.dispatchEvent(new CustomEvent(eventName, { "detail": detail }))
@@ -151,11 +153,21 @@ export class ComponentBase {
             : parseFloat(stringTime) * 1000
     }
 
-    async wait(time_ms) {
+    transitionTime(transition) { /* new */
+        console.log(transition)
+
+        const strings = transition.split(" ")
+        const stringTime = strings.find(item => /\d/.test(item))
+        return stringTime.endsWith("ms")
+            ? parseFloat(stringTime)
+            : parseFloat(stringTime) * 1000
+    }
+
+    async wait(time_ms) { /* old */
         await new Promise(resolve => setTimeout(resolve, time_ms))
     }
 
-    async waiting(time) {
+    async time(time) { /* new */
         await new Promise(resolve => setTimeout(resolve, time))
     }
 

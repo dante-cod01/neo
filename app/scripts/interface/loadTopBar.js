@@ -12,7 +12,7 @@ const drawTopBar = async (box) => {
         box_height: cssHelper.getVar("bar_height"),
         box_width_max: "130px",
         box_back: cssHelper.getVar("dark_4"),
-        box_radius: "6px",
+        box_radius: cssHelper.getVar("bar_radius"),
         transition: cssHelper.getVar("normal_transition")
     }
 

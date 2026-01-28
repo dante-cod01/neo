@@ -18,6 +18,7 @@
     --bar_width: calc(100% - var(--bar_left) * 2);
     --bar_height: 32px;
     --bar_left: calc(var(--panel_width) + var(--body_padding) * 2 + 40px);
+    --bar_radius: 6px;
     
     --componentContainer_width: 100%;
     --componentContainer_height: 100%;
@@ -29,8 +30,7 @@
     --backLayer_blur: 0;
     --backLayer_opacity: 1;
 
-    --relativeInfoBox_width: 0;
-    --relativeInfoBox_opacity: 0;
+    --info_width: 200px;
     
     --normal_transition: 600ms ease-in-out;
     --componentContainer_transition: 500ms ease-in-out;

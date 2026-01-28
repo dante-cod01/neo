@@ -1,4 +1,4 @@
-export const waiting = async (time) => {
+export const waitTime = async (time) => {
     await new Promise (resolve => setTimeout(resolve, time))
 }
 

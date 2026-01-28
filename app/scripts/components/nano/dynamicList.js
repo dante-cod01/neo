@@ -186,7 +186,7 @@ export class DynamicList extends HTMLElement {
 
     #configure = () => {
         this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
-        this.base.cssVar(this.css, this)
+        this.base.toCssVar(this.css, this)
     }
 
     #addLinks = () => {
@@ -268,9 +268,10 @@ export class DynamicList extends HTMLElement {
     #addEvents() {
         const listRadios = Array.from(this.dom.querySelectorAll("input[name='list']"))
         listRadios.forEach(item => {
-            item.addEventListener("change", (e) => {
-                const conf = this.#getOptionConfig(e.target)
-                this.base.sendEvent(this.eventDom, this.eventName, { "conf": conf })
+            item.addEventListener("change", async (e) => {
+                const target = e.target
+                await new Promise(resolve => setTimeout(resolve, this.base.convertTransition(this.css.transition_fast)))
+                this.base.sendEvent(this.eventDom, this.eventName, { "conf": this.#getOptionConfig(target) })
             })
         })
     }

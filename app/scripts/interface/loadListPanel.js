@@ -26,7 +26,7 @@ const drawPanelBox = async (box) => {
         title_color: cssHelper.getVar("light_2"),
         icon_size: "16px",
         icon_color: cssHelper.getVar("light_2"),
-        bottomBar_height: "34px",
+        bottomBar_height: cssHelper.getVar("bar_height"),
         bottomBar_back: cssHelper.getVar("dark_2"),
     }
 

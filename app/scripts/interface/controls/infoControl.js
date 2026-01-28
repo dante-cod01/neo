@@ -2,21 +2,31 @@ import * as element from "../../modules/element.js"
 import * as cssHelper from "../../modules/css.js"
 import * as utils from "../../modules/utils.js"
 
-const expandInfoBox = async (boolean) => {
-    const time = utils.getTimeById("infoContainer")
-    if (boolean) {
-        cssHelper.changeVar("relativeInfoBox_width", "200px", document.documentElement.style)
-        cssHelper.changeVar("relativeInfoBox_opacity", "1", document.documentElement.style)
-    } else {
-        cssHelper.changeVar("relativeInfoBox_width", "0", document.documentElement.style)
-        cssHelper.changeVar("relativeInfoBox_opacity", "0", document.documentElement.style)
-    }
-    await utils.waiting(time)
+const expandInfoBox = async (boolean, infoBox) => {
+    await infoBox.expand("right", boolean)
+}
+
+const drawInfo = async (info, infoBox) => {
+    const component = document.getElementById("infoBox")
+    const time = cssHelper.convertTransition(getComputedStyle(component).getPropertyValue("transition"))
+    const section = info.section.slice(0, 5).toUpperCase()
+    const name = info.config.name
+
+
 }
 
 export const control = async (info, lastComponent) => {
-    const section = info.section
-    const name = info.name
-
-    lastComponent.tag = info.config.tag
+    const infoBox = document.getElementById("infoBox")
+    if (!lastComponent.tag) {
+        console.log("component null")
+        lastComponent.section = info.section
+        lastComponent.tag = info.config.tag
+        await expandInfoBox(true, infoBox)
+        drawInfo(info, infoBox)
+    } else {
+        console.log("component valid")
+        await expandInfoBox(false, infoBox)
+        await drawInfo(info, infoBox)
+        await expandInfoBox(true, infoBox)
+    }
 }
