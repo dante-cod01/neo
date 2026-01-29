@@ -1,9 +1,8 @@
 import * as element from "../modules/element.js"
 import * as cssHelper from "../modules/css.js"
 
-const drawInfoBox = async (box) => {
+const drawInfoBox = async (box, dependency) => {
     const component = await import("../components/nano/expandBar_new.js")
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     /* section title */
     const sectionFont = [
@@ -12,9 +11,8 @@ const drawInfoBox = async (box) => {
     ]
 
     const conf = {
-        width: "0px",
+        width: "300px",
         height: cssHelper.getVar("bar_height"),
-        width_max: "220px",
         back: cssHelper.getVar("dark_4"),
         radius: cssHelper.getVar("bar_radius"),
         backDrop_filter: "none",
@@ -34,5 +32,7 @@ const drawInfoBox = async (box) => {
 }
 
 export const init = async (box) => {
-    await drawInfoBox(box)
+    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+
+    await drawInfoBox(box, dependency)
 }

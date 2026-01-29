@@ -1,48 +1,51 @@
 const topBarEvents = (modules, openPanels) => {
 
     document.addEventListener("panelsChanger", (e) => {
-        e.detail.input && modules.panelsChanger.control("delegate", openPanels, e.detail)
+/*         modules.panelsChanger.control(openPanels, e.detail)
+ */        modules.barsExpand.control(openPanels, e.detail, )
     })
 
     document.addEventListener("backChanger", (e) => {
-        e.detail.input && modules.backChanger.control(e.detail.input)
+        modules.backChanger.control(e.detail.input)
     })
 
     document.addEventListener("viewChanger", (e) => {
-        e.detail.input && modules.viewChanger.control(e.detail.input.id)
+        modules.viewChanger.control(e.detail.input.id)
     })
 }
 
 const panelEvents = (modules, openPanels) => {
-    const action = (e) => {
-        e.detail.panel && modules.panelsChanger.control("direct", openPanels, e.detail)
-    }
+    document.addEventListener("menuPanel", (e) => {
+        modules.barsExpand.control(openPanels, e.detail)
+    })
 
-    document.addEventListener("menuPanel", (e) => { action(e) })
-    document.addEventListener("configPanel", (e) => { action(e) })
+    document.addEventListener("configPanel", (e) => {
+        modules.barsExpand.control(openPanels, e.detail)
+    })
 }
 
 const listEvents = (modules, lastComponent) => {
     document.addEventListener("listMenu", (e) => {
-        e.detail.conf && modules.infoControl.control(e.detail.conf, lastComponent)
-    }) 
+        modules.infoControl.control(e.detail.conf, lastComponent)
+    })
 }
 
 const registerModules = async (components) => {
     const modules = {}
-    await Promise.all(components.map(async (item) => { modules[item.component] = await import(item.module) }))
+    await Promise.all(components.map(async (item) => { modules[item.module] = await import(item.path) }))
     return modules
 }
 
 export const init = async () => {
     let components = [
-        { component: "infoControl", loaded: false, module: "./interface/controls/infoControl.js" },
-        { component: "panelsChanger", loaded: false, module: "./interface/controls/panelsControl.js" },
-        { component: "backChanger", loaded: false, module: "./interface/controls/backControl.js" },
-        { component: "viewChanger", loaded: false, module: "./interface/controls/viewsControl.js" },
+        { module: "infoControl", path: "./interface/controls/infoControl.js" },
+/*         { module: "panelsChanger", path: "./interface/controls/panelsControl.js" },
+ */        { module: "backChanger", path: "./interface/controls/backControl.js" },
+        { module: "viewChanger", path: "./interface/controls/viewsControl.js" },
+        { module: "barsExpand", path: "./interface/controls/barsControl.js" }
     ]
 
-    const openPanels = { menuPanel: true, configPanel: true }
+    const openPanels = { menuPanel: true, configPanel: true, both: true }
     const modules = await registerModules(components)
     const lastComponent = {}
 

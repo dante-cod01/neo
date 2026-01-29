@@ -4,11 +4,11 @@ const loadModules = async (loads) => {
     return modules
 }
 
-const loadCss = async (modules) => {
+const loadCss = async (modules) => { /* waiting fon style inject */
     await modules.styles.init()
 }
 
-const loadInterface = async (modules) => {
+const loadInterface = async (modules) => { /* waiting for components return */
     await modules.mainBox.init(document.body)
     await modules.info.init(document.body)
     await modules.listMenuPanel.init(document.body)
@@ -27,7 +27,7 @@ const main = async () => {
         mainBox: "./interface/loadComponentBox.js",
         topBar: "./interface/loadTopBar.js",
         listMenuPanel: "./interface/loadListPanel.js",
-        configMenuPanel: "./interface/loadconfigPanel.js",
+        configMenuPanel: "./interface/loadConfigPanel.js",
         info: "./interface/loadInfo.js",
     }
 

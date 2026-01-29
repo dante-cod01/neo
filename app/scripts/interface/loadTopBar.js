@@ -1,23 +1,21 @@
 import * as element from "../modules/element.js"
 import * as cssHelper from "../modules/css.js"
-const expandBar = await import("../components/nano/expandBar.js")
+const expandBar = await import("../components/nano/expandBar_new.js")
 const checkersGroup = await import("../components/nano/checkersGroup.js")
 
-const dependency = (await import("../components/class/componentBase.js")).ComponentBase
-
-const drawTopBar = async (box) => {
+const drawTopBar = async (box, dependency) => {
     /* expand-bar component */
-    const css = {
-        box_width: cssHelper.getVar("bar_width"),
-        box_height: cssHelper.getVar("bar_height"),
-        box_width_max: "130px",
-        box_back: cssHelper.getVar("dark_4"),
-        box_radius: cssHelper.getVar("bar_radius"),
+    const conf = {
+        width: cssHelper.getVar("bar_width"),
+        height: cssHelper.getVar("bar_height"),
+        width_max: "130px",
+        back: cssHelper.getVar("dark_4"),
+        radius: cssHelper.getVar("bar_radius"),
         transition: cssHelper.getVar("normal_transition")
     }
 
     const topBar = element.add(expandBar.tag, box, "absolute topBar", "topBar")
-    topBar.css = css
+    topBar.newConf = conf
     topBar.eventDom = document
     topBar.eventName = topBar.id
     topBar.addDependency(new dependency())
@@ -25,7 +23,7 @@ const drawTopBar = async (box) => {
     return topBar
 }
 
-const drawPanelsControls = async (box) => {
+const drawPanelsControls = async (box, dependency) => {
     /* panels control */
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
@@ -68,7 +66,7 @@ const drawPanelsControls = async (box) => {
     panelsControls.addDependency(new dependency())
 }
 
-const drawBackChanger = async (box) => {
+const drawBackChanger = async (box, dependency) => {
     /* backs changer */
     const links = [
         { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
@@ -120,7 +118,7 @@ const drawBackChanger = async (box) => {
     return backChanger
 }
 
-const drawViewChanger = async (box) => {
+const drawViewChanger = async (box, dependency) => {
     /* views changer */
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },

@@ -7,10 +7,9 @@ const drawComponentContainer = async (box) => {
     return componentContainer
 }
 
-export const drawComponentBox = async (box) => {
+export const drawComponentBox = async (box, dependency) => {
     /* expand-box component */
     const component = await import("../components/nano/expandBox.js")
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const css = {
         main_transition: cssHelper.getVar("normal_transition")
@@ -25,8 +24,10 @@ export const drawComponentBox = async (box) => {
 }
 
 export const init = async (box) => {
+    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+
     const container = await drawComponentContainer(box)
     const backLayer = element.add("div", container, "backLayer absolute max")
     const blurLayer = element.add("div", container, "blurLayer absolute max")
-    const componentBox = await drawComponentBox(container)
+    const componentBox = await drawComponentBox(container, dependency)
 } 

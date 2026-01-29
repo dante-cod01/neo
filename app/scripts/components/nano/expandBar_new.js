@@ -44,15 +44,12 @@ export class ExpandBar extends HTMLElement {
                 width: var(--width);
                 height: var(--height);
                 transition: var(--transition);
-                border: 1px solid red;
             }
 
             .main {
                 backdrop-filter: blur(var(--backDrop_filter));
 
-                .colorLayer {
-                    background: var(--back); border: 1px solid green;
-                }
+                .colorLayer { background: var(--back); }
 
                 .nodesLayer {
                     top: 0; 
@@ -70,7 +67,6 @@ export class ExpandBar extends HTMLElement {
             .transition {transition: var(--transition);}
             /* colorLayer */
             .normalRadius {border-radius: var(--radius);}
-            .leftRadius {border-radius: var(--height);}
             .close {width: 100%; left: 0px;}
             .openLeft {width: calc(100% + var(--width_max)); left: calc(var(--width_max) * -1);}
             .openRight {width: calc(100% + var(--width_max));}
@@ -80,11 +76,10 @@ export class ExpandBar extends HTMLElement {
 
     #configure = () => {
         this.conf = this.newConf ? this.base.generateConf(this.defaultConf, this.newConf, this) : console.log(this, "newConf not defined")
-        console.log(this.conf)
         this.base.objToCssVar(this.conf, this)
     }
 
-    #init() {
+    async #init() {
         this.#configure()
         this.#draw()
         this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
@@ -113,14 +108,15 @@ export class ExpandBar extends HTMLElement {
         this.nodes = this.base.getNodes(this.dom)
     }
 
-    updateConf(prop, value) {
-        this.base.updateConf(prop, value, this)
+    updateProp(prop, value) {
+        this.conf[prop] = value
+        this.base.toCssVar2(prop, value, this)
     }
 
-    async expand(mode, boolean, size = null) {
+    async expand(mode = null, boolean = true, size = null) {
         const colorLayer = this.dom.querySelector(".colorLayer")
         const time = this.base.convertTransition(this.conf.transition)
-        size && this.updateConf("width_max", size)
+        size && this.updateProp("width_max", size)
 
         colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)

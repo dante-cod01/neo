@@ -2,10 +2,9 @@ import * as element from "../modules/element.js"
 import * as json from "../modules/json.js"
 import * as cssHelper from "../modules/css.js"
 
-const drawPanelBox = async (box) => {
+const drawPanelBox = async (box, dependency) => {
     /* panel-box component */
     const component = await import("../components/nano/panelBox.js")
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
 
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
@@ -48,10 +47,9 @@ const drawPanelBox = async (box) => {
     return panelBox
 }
 
-const drawDynamicList = async (box) => {
+const drawDynamicList = async (box, dependency) => {
     /* dynamic-list component */
     const component = await import("../components/nano/dynamicList.js")
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
     const dataList = await json.get("./app/config/components/list.json")
 
     const links = [
@@ -95,6 +93,8 @@ const drawDynamicList = async (box) => {
 }
 
 export const init = async (box) => {
-    const panel = await drawPanelBox(box)
-    const list = await drawDynamicList(panel.nodes.node_0)
+    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+
+    const panel = await drawPanelBox(box, dependency)
+    const list = await drawDynamicList(panel.nodes.node_0, dependency)
 }

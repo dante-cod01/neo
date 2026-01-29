@@ -30,6 +30,10 @@ body {
         left: var(--bar_left);
     }
 
+    .infoBox_leftMax {
+        left: var(--body_padding);
+    }
+
     .componentContainer {
         width: var(--componentContainer_width);
         height: var(--componentContainer_height);

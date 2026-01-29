@@ -299,7 +299,7 @@ export class PanelBox extends HTMLElement {
         this.base.updateProp(this.css, prop, value, this)
     }
 
-    getInputButtom = () => {
+    getInputButtom() {
         return this.dom.querySelector("#toogleButtom")
     }
 
