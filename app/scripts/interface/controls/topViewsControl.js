@@ -71,11 +71,6 @@ const fadeIn = async () => {
     await new Promise(resolve => setTimeout(resolve, time))
 }
 
-const alertEvent = (par) => {
-    par === "delete" && document.dispatchEvent(new CustomEvent("viewsControl", { detail: "delete" }))
-    par === "reload" && document.dispatchEvent(new CustomEvent("viewsControl", { detail: "reload" }))
-}
-
 const viewChanger = document.getElementById("topBar").shadowRoot.getElementById("viewChanger")
 const time = cssHelper.convertTransition(getComputedStyle(document.documentElement).getPropertyValue("--componentContainer_transition"))
 let conf = { view: "computer", rotate: false }
@@ -90,9 +85,7 @@ export const control = async (inputIndex) => {
     if (conf.view === "mobile") activeRotateInput(true)
 
     await fadeOut()
-    alertEvent("delete")
     inputIndex === "fullscreen" && await fullMode(1000)/* manual time - need refactor */
     applyView(await calcBox(conf))
     await fadeIn()
-    alertEvent("reload")
 }

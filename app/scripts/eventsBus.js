@@ -1,8 +1,8 @@
 const topBarEvents = (modules, openPanels) => {
 
-    document.addEventListener("panelsChanger", (e) => {
-/*         modules.panelsChanger.control(openPanels, e.detail)
- */        modules.barsExpand.control(openPanels, e.detail, )
+    document.addEventListener("panelsChanger", async (e) => {
+        modules.panelsChanger.control(openPanels, e.detail)
+        modules.panelsIcons.control(openPanels, e.detail)
     })
 
     document.addEventListener("backChanger", (e) => {
@@ -17,10 +17,12 @@ const topBarEvents = (modules, openPanels) => {
 const panelEvents = (modules, openPanels) => {
     document.addEventListener("menuPanel", (e) => {
         modules.barsExpand.control(openPanels, e.detail)
+        modules.panelsIcons.control(openPanels, e.detail)
     })
 
     document.addEventListener("configPanel", (e) => {
         modules.barsExpand.control(openPanels, e.detail)
+        modules.panelsIcons.control(openPanels, e.detail)
     })
 }
 
@@ -38,14 +40,15 @@ const registerModules = async (components) => {
 
 export const init = async () => {
     let components = [
+        { module: "panelsChanger", path: "./interface/controls/topPanelsControl.js" },
+        { module: "barsExpand", path: "./interface/controls/topBarexpand.js" },
+        { module: "backChanger", path: "./interface/controls/topBackControl.js" },
+        { module: "viewChanger", path: "./interface/controls/topViewsControl.js" },
         { module: "infoControl", path: "./interface/controls/infoControl.js" },
-/*         { module: "panelsChanger", path: "./interface/controls/panelsControl.js" },
- */        { module: "backChanger", path: "./interface/controls/backControl.js" },
-        { module: "viewChanger", path: "./interface/controls/viewsControl.js" },
-        { module: "barsExpand", path: "./interface/controls/barsControl.js" }
+        { module: "panelsIcons", path: "./interface/controls/topPanelsIcons.js" }
     ]
 
-    const openPanels = { menuPanel: true, configPanel: true, both: true }
+    const openPanels = { menuPanel: true, configPanel: true, bothPanels: true }
     const modules = await registerModules(components)
     const lastComponent = {}
 

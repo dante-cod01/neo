@@ -2,7 +2,7 @@ import * as element from "../modules/element.js"
 import * as cssHelper from "../modules/css.js"
 
 const drawInfoBox = async (box, dependency) => {
-    const component = await import("../components/nano/expandBar_new.js")
+    const component = await import("../components/nano/expandBar.js")
 
     /* section title */
     const sectionFont = [

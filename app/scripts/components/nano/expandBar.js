@@ -1,23 +1,25 @@
-export const tag = "expand-bar"
+export const tag = "expand-bar_new"
 export class ExpandBar extends HTMLElement {
     constructor() {
         super()
 
         this.dom = this.attachShadow({ mode: "open" })
-        this.css
+        this.newConf
         this.base
         this.nodes
         this.eventDom
         this.eventName
+        /* internal */
+        this.expands = { left: false, right: false, both: false }
 
-        this.defaultCss = {
-            box_width: "200px",
-            box_height: "200px",
-            box_width_max: "100px",
-            box_back: "red",
-            box_radius: "0px",
-            box_blur: "none",
-            transition: "1s"
+        this.defaultConf = {
+            width: "200px",
+            height: "200px",
+            width_max: "100px",
+            back: "none",
+            radius: "0px",
+            backDrop_filter: "none",
+            transition: "none"
         }
     }
 
@@ -39,15 +41,23 @@ export class ExpandBar extends HTMLElement {
 
             :host {
                 display: flex;
-                width: var(--box_width);
-                height: var(--box_height);
+                width: var(--width);
+                height: var(--height);
                 transition: var(--transition);
             }
 
             .main {
-                backdrop-filter: blur(var(--box_blur));
-                .colorLayer {background: var(--box_back);}
-                .nodesLayer {top: 0; display: flex; justify-content: space-between; width: calc(100% - 40px); margin: 0 20px;}
+                backdrop-filter: blur(var(--backDrop_filter));
+
+                .colorLayer { background: var(--back); }
+
+                .nodesLayer {
+                    top: 0; 
+                    display: flex; 
+                    justify-content: space-between;
+                    width: calc(100% - 40px);
+                    margin: 0 20px;
+                }
             }
 
             .relative {position: relative;}
@@ -56,29 +66,28 @@ export class ExpandBar extends HTMLElement {
             .center {display: flex; justify-content: center; align-items: center;}
             .transition {transition: var(--transition);}
             /* colorLayer */
-            .normalRadius {border-radius: var(--box_radius);}
-            .lateralRadius {border-radius: var(--box_height);}
+            .normalRadius {border-radius: var(--radius);}
             .close {width: 100%; left: 0px;}
-            .openLeft {width: calc(100% + var(--box_width_max)); left: calc(var(--box_width_max) * -1);}
-            .openRight {width: calc(100% + var(--box_width_max));}
-            .bothOpen {width: calc(100% + var(--box_width_max) * 2); left: calc(var(--box_width_max) * -1);}
+            .openLeft {width: calc(100% + var(--width_max)); left: calc(var(--width_max) * -1);}
+            .openRight {width: calc(100% + var(--width_max));}
+            .bothOpen {width: calc(100% + var(--width_max) * 2); left: calc(var(--width_max) * -1);}
         `
     }
 
     #configure = () => {
-        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
-        this.base.toCssVar(this.css, this)
+        this.conf = this.newConf ? this.base.generateConf(this.defaultConf, this.newConf, this) : console.log(this, "newConf not defined")
+        this.base.objToCssVar(this.conf, this)
     }
 
-    #init() {
+    async #init() {
         this.#configure()
         this.#draw()
         this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 
-    #newRadius = (boolean, box) => {
-        boolean ? box.classList.add("lateralRadius") : box.classList.remove("lateralRadius")
-    }
+    #newRadius = (side, box) => {
+/*         side === "left" && box.classList.add("lateralRadius") : box.classList.remove("lateralRadius")
+ */    }
 
     addDependency(dependency) {
         if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
@@ -100,19 +109,29 @@ export class ExpandBar extends HTMLElement {
     }
 
     updateProp(prop, value) {
-        this.base.updateProp(this.css, prop, value, this)
+        this.conf[prop] = value
+        this.base.toCssVar2(prop, value, this)
     }
 
-    async expand(mode = null) {
+    async expand(mode = null, boolean = true) {
         const colorLayer = this.dom.querySelector(".colorLayer")
-        const time = this.base.convertTransition(this.css.transition)
+        const time = this.base.convertTransition(this.conf.transition)
 
         colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)
 
-        if (mode === "left") colorLayer.classList.add("openLeft")
-        if (mode === "right") colorLayer.classList.add("openRight")
-        if (mode === "both") { colorLayer.classList.add("bothOpen"); this.#newRadius(true, colorLayer) }
+        if (mode === "left") {
+            boolean ? colorLayer.classList.add("openLeft") : colorLayer.classList.remove("openLeft")
+            this.#newRadius("left", colorLayer)
+        }
+        if (mode === "right") {
+            boolean ? colorLayer.classList.add("openRight") : colorLayer.classList.remove("openRight")
+            this.#newRadius("right", colorLayer)
+        }
+        if (mode === "both") {
+            colorLayer.classList.add("bothOpen")
+            this.#newRadius("both", colorLayer)
+        }
         await new Promise(resolve => setTimeout(resolve, time))
     }
 }

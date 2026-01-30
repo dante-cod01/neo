@@ -1,6 +1,6 @@
 import * as element from "../modules/element.js"
 import * as cssHelper from "../modules/css.js"
-const expandBar = await import("../components/nano/expandBar_new.js")
+const expandBar = await import("../components/nano/expandBar.js")
 const checkersGroup = await import("../components/nano/checkersGroup.js")
 
 const drawTopBar = async (box, dependency) => {
@@ -8,7 +8,7 @@ const drawTopBar = async (box, dependency) => {
     const conf = {
         width: cssHelper.getVar("bar_width"),
         height: cssHelper.getVar("bar_height"),
-        width_max: "130px",
+        width_max: "180px",
         back: cssHelper.getVar("dark_4"),
         radius: cssHelper.getVar("bar_radius"),
         transition: cssHelper.getVar("normal_transition")

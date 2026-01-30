@@ -1,5 +1,5 @@
-import { backs } from "./../preloadBacks.js"
-import * as cssHelper from "./../../modules/css.js"
+import { backs } from "../preloadBacks.js"
+import * as cssHelper from "../../modules/css.js"
 
 const changeBack = async (back) => {
     const image = backs[back]
