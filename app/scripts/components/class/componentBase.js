@@ -21,7 +21,7 @@ export class ComponentBase {
         return false
     }
 
-    config = (defaultData, newData, type, dom = null) => {
+    config(defaultData, newData, type, dom = null) {
         let out = this.#convertToObj(defaultData)
         if (Object.entries(newData).length) {
             Object.entries(newData).forEach(([key, value]) => {
@@ -48,7 +48,7 @@ export class ComponentBase {
         return resumed
     }
 
-    generateConf = (defaultConf, newConf, dom) => {
+    generateConf(defaultConf, newConf, dom) {
         const resumedValues = this.#resumeValues(defaultConf)
         let validation = true
         Object.entries(newConf).forEach(([key, value]) => {
@@ -116,7 +116,7 @@ export class ComponentBase {
         })
     }
 
-    addInput = (inputType, box, id = null, name = null, classNames = null) => {
+    addInput(inputType, box, id = null, name = null, classNames = null) {
         const input = this.add("input", box)
         input.setAttribute("type", inputType)
         id && (input.id = id)
@@ -146,7 +146,7 @@ export class ComponentBase {
         return info
     }
 
-    convertTransition(transition) {
+    convertTransition(transition) { /* old */
         const stringTime = transition.split(" ")[0]
         return stringTime.endsWith("ms")
             ? parseFloat(stringTime)
@@ -154,13 +154,15 @@ export class ComponentBase {
     }
 
     transitionTime(transition) { /* new */
-        console.log(transition)
-
         const strings = transition.split(" ")
         const stringTime = strings.find(item => /\d/.test(item))
         return stringTime.endsWith("ms")
             ? parseFloat(stringTime)
             : parseFloat(stringTime) * 1000
+    }
+
+    transitionTimeById(id, dom) {
+        return this.transitionTime(dom.querySelector(`#${id}`))
     }
 
     async wait(time_ms) { /* old */
@@ -177,7 +179,7 @@ export class ComponentBase {
         })
     }
 
-    getNodes = (dom) => {
+    getNodes(dom) {
         const nodes = Array.from(dom.querySelectorAll("[node]"))
         let obj = {}
         nodes.forEach(item => { obj[item.getAttribute("node")] = item })

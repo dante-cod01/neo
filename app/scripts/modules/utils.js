@@ -1,5 +1,5 @@
 export const time = async (time) => {
-    await new Promise (resolve => setTimeout(resolve, time))
+    await new Promise(resolve => setTimeout(resolve, time))
 }
 
 export const getTimeById = (id) => {

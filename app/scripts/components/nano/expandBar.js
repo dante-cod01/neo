@@ -1,4 +1,4 @@
-export const tag = "expand-bar_new"
+export const tag = "expand-bar"
 export class ExpandBar extends HTMLElement {
     constructor() {
         super()
@@ -9,17 +9,19 @@ export class ExpandBar extends HTMLElement {
         this.nodes
         this.eventDom
         this.eventName
+        this.nodes
         /* internal */
-        this.expands = { left: false, right: false, both: false }
-
+/*         this.expands = { left: false, right: false, both: false }
+ */
         this.defaultConf = {
-            width: "200px",
-            height: "200px",
-            width_max: "100px",
-            back: "none",
-            radius: "0px",
-            backDrop_filter: "none",
-            transition: "none"
+            box_width: "200px",
+            box_height: "200px",
+            box_width_max: "100px",
+            box_back: "none",
+            box_radius: "0px",
+            box_backDrop_filter: "none",
+            box_transition: "none",
+            box_nodesLayer_padding: "0px"
         }
     }
 
@@ -29,7 +31,7 @@ export class ExpandBar extends HTMLElement {
 
         this.container.innerHTML = `
             <div class="colorLayer relative transition max close normalRadius"></div>
-            <div class="nodesLayer absolute"></div>
+            <div class="nodesLayer absolute max"></div>
         `
 
         style.textContent = `
@@ -41,22 +43,28 @@ export class ExpandBar extends HTMLElement {
 
             :host {
                 display: flex;
-                width: var(--width);
-                height: var(--height);
-                transition: var(--transition);
+                width: var(--box_width);
+                height: var(--box_height);
+                transition: var(--box_transition);
             }
 
             .main {
-                backdrop-filter: blur(var(--backDrop_filter));
+                backdrop-filter: blur(var(--box_backDrop_filter));
 
-                .colorLayer { background: var(--back); }
+                .colorLayer { background: var(--box_back); }
 
                 .nodesLayer {
                     top: 0; 
                     display: flex; 
                     justify-content: space-between;
-                    width: calc(100% - 40px);
-                    margin: 0 20px;
+                    padding: var(--box_nodesLayer_padding);
+
+                    .node { 
+                        display: flex; 
+                        align-items: center;
+                        height: 100%;
+                        white-space: nowrap; 
+                    }
                 }
             }
 
@@ -64,13 +72,13 @@ export class ExpandBar extends HTMLElement {
             .absolute {position: absolute;}
             .max {width: 100%; height: 100%;}
             .center {display: flex; justify-content: center; align-items: center;}
-            .transition {transition: var(--transition);}
+            .transition {transition: var(--box_transition);}
             /* colorLayer */
-            .normalRadius {border-radius: var(--radius);}
-            .close {width: 100%; left: 0px;}
-            .openLeft {width: calc(100% + var(--width_max)); left: calc(var(--width_max) * -1);}
-            .openRight {width: calc(100% + var(--width_max));}
-            .bothOpen {width: calc(100% + var(--width_max) * 2); left: calc(var(--width_max) * -1);}
+            .normalRadius {border-radius: var(--box_radius);}
+            .close {left: 0px;}
+            .openLeft {width: calc(100% + var(--box_width_max)); left: calc(var(--box_width_max) * -1);}
+            .openRight {width: calc(100% + var(--box_width_max));}
+            .bothOpen {width: calc(100% + var(--box_width_max) * 2); left: calc(var(--box_width_max) * -1);}
         `
     }
 
@@ -102,8 +110,8 @@ export class ExpandBar extends HTMLElement {
         const nodesLayer = this.dom.querySelector(".nodesLayer")
 
         for (let i = 0; i < Number(number); i++) {
-            const node = this.base.add("div", nodesLayer, "center")
-            node.setAttribute("node", "node_" + i)
+            const node = this.base.add("div", nodesLayer, "node relative")
+            node.setAttribute("node", "node_" + i )
         }
         this.nodes = this.base.getNodes(this.dom)
     }
@@ -115,7 +123,7 @@ export class ExpandBar extends HTMLElement {
 
     async expand(mode = null, boolean = true) {
         const colorLayer = this.dom.querySelector(".colorLayer")
-        const time = this.base.convertTransition(this.conf.transition)
+        const time = this.base.convertTransition(this.conf.box_transition)
 
         colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)

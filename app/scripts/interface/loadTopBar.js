@@ -1,17 +1,18 @@
 import * as element from "../modules/element.js"
 import * as cssHelper from "../modules/css.js"
-const expandBar = await import("../components/nano/expandBar.js")
-const checkersGroup = await import("../components/nano/checkersGroup.js")
 
 const drawTopBar = async (box, dependency) => {
     /* expand-bar component */
+    const expandBar = await import("../components/nano/expandBar.js")
+
     const conf = {
-        width: cssHelper.getVar("bar_width"),
-        height: cssHelper.getVar("bar_height"),
-        width_max: "180px",
-        back: cssHelper.getVar("dark_4"),
-        radius: cssHelper.getVar("bar_radius"),
-        transition: cssHelper.getVar("normal_transition")
+        box_width: cssHelper.getVar("bar_width"),
+        box_height: cssHelper.getVar("bar_height"),
+        box_width_max: "180px",
+        box_back: cssHelper.getVar("dark_4"),
+        box_radius: cssHelper.getVar("bar_radius"),
+        box_nodesLayer_padding: "0px 20px",
+        box_transition: cssHelper.getVar("normal_transition")
     }
 
     const topBar = element.add(expandBar.tag, box, "absolute topBar", "topBar")
@@ -25,6 +26,8 @@ const drawTopBar = async (box, dependency) => {
 
 const drawPanelsControls = async (box, dependency) => {
     /* panels control */
+    const checkersGroup = await import("../components/nano/checkersGroup.js")
+
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
     ]
@@ -32,7 +35,7 @@ const drawPanelsControls = async (box, dependency) => {
     const data = [
         { box: "space", size: "5px" },
         { box: "checkbox", id: "menuPanel", type: "material", icon: "arrow_menu_close" },
-        { box: "checkbox", id: "configPanel", type: "material", icon: "arrow_menu_open"},
+        { box: "checkbox", id: "configPanel", type: "material", icon: "arrow_menu_open" },
         { box: "checkbox", id: "bothPanels", type: "material", icon: "crop_landscape", checked: true },
         { box: "space", size: "5px" },
     ]
@@ -68,6 +71,8 @@ const drawPanelsControls = async (box, dependency) => {
 
 const drawBackChanger = async (box, dependency) => {
     /* backs changer */
+    const checkersGroup = await import("../components/nano/checkersGroup.js")
+
     const links = [
         { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
     ]
@@ -120,6 +125,8 @@ const drawBackChanger = async (box, dependency) => {
 
 const drawViewChanger = async (box, dependency) => {
     /* views changer */
+    const checkersGroup = await import("../components/nano/checkersGroup.js")
+
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
     ]

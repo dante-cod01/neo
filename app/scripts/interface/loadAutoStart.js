@@ -39,7 +39,7 @@ const drawAutoStart = async () => {
         label_color: cssHelper.getVar("light_5"),
         label_padding: "0 44px 0 0",
         label_hover_color: cssHelper.getVar("light_4"),
-        label_checked_color: cssHelper.getVar("light_2"),
+        label_checked_color: cssHelper.getVar("light_4"),
         transition: "160ms ease-out"
     }
 

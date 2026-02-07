@@ -1,27 +1,21 @@
-console.log("info")
+import * as dom from "../../modules/dom.js"
 
-/* const drawInfo = async (info, infoBox) => {
-    const component = document.getElementById("infoBox")
-    const time = cssHelper.convertTransition(getComputedStyle(component).getPropertyValue("transition"))
-    const section = info.section.slice(0, 5).toUpperCase()
-    const name = info.config.name
-
-
+const animate = async (name) => {
+    const nameBar = dom.id("nameBar")
+    await nameBar.addText(name)
 }
- */
-/* const infoControl = async (info, lastComponent) => {
-    const infoBox = document.getElementById("infoBox")
-    if (!lastComponent.tag) {
-        console.log("component null")
-        lastComponent.section = info.section
-        lastComponent.tag = info.config.tag
-        await expandInfoBox(true, infoBox)
-        drawInfo(info, infoBox)
-    } else {
-        console.log("component valid")
-        await expandInfoBox(false, infoBox)
-        await drawInfo(info, infoBox)
-        await expandInfoBox(true, infoBox)
-    }
+
+const animateRemove = async () => {
+    const nameBar = dom.id("nameBar")
+    await nameBar.removeText()
 }
- */
+
+export const control = async (detail, lastComponent) => {
+    const section = detail.conf.section
+    const name = detail.conf.config.name
+
+    lastComponent.name && await animateRemove()
+    await animate(name)
+
+    lastComponent.name = name
+}

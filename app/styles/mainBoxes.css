@@ -25,13 +25,13 @@ body {
         left: var(--bar_left);
     }
 
-    .infoBox {
+    .nameBar {
         bottom: var(--body_padding);
         left: var(--bar_left);
     }
 
-    .infoBox_leftMax {
-        left: var(--body_padding);
+    .nameBar_left {
+        left: var(--body_padding)
     }
 
     .componentContainer {

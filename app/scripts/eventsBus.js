@@ -28,7 +28,7 @@ const panelEvents = (modules, openPanels) => {
 
 const listEvents = (modules, lastComponent) => {
     document.addEventListener("listMenu", (e) => {
-        modules.infoControl.control(e.detail.conf, lastComponent)
+        modules.infoControl.control(e.detail, lastComponent)
     })
 }
 

@@ -8,6 +8,7 @@
 :root {
     --body_padding: 5px;
     --interface_blur: 6px;
+    --interface_radius: 10px;
     --componentTitles_fontFamily: "Anta";
     --panel_width: 200px;
     --panel_height: calc(100% - var(--body_padding) * 2);
@@ -34,7 +35,7 @@
     
     --normal_transition: 600ms ease-in-out;
     --componentContainer_transition: 500ms ease-in-out;
-    --info_transition: 800ms ease-in-out;
+    --info_transition: 1000ms ease-in-out;
 
     /* colors */
     --light_1: white;
