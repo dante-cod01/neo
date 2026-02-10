@@ -1,17 +1,18 @@
-import * as cssHelper from "../modules/css.js"
+import * as css_helper from "../modules/css.js"
 import * as element from "../modules/element.js"
 
 const drawBottomBar = async (box, dependency) => {
     const component = await import("../components/nano/expandBar.js")
 
     const conf = {
-        box_width: cssHelper.getVar("bar_width"),
-        box_height: cssHelper.getVar("bar_height"),
+        box_width: css_helper.getVar("bar_width"),
+        box_height: css_helper.getVar("bar_height"),
         box_width_max: "180px",
-        box_back: cssHelper.getVar("dark_4"),
-        box_radius: cssHelper.getVar("interface_radius"),
-        box_nodesLayer_padding: "0px 20px 0px 0px",
-        box_transition: cssHelper.getVar("normal_transition")
+        box_back: css_helper.getVar("dark_4"),
+        box_backFilter: `blur(${css_helper.getVar("interface_blur")})`,
+        box_radius: css_helper.getVar("interface_radius"),
+        box_nodesLayer_padding: "0px 20px 0px 20px",
+        box_transition: css_helper.getVar("normal_transition")
     }
 
     const bottomBar = element.add(component.tag, box, "absolute bottomBar", "bottomBar")
@@ -28,10 +29,9 @@ const drawTitlesBox = async (box, dependency) => {
 
     const conf = {
         box_position: "absolute",
-        box_top: `calc(0% - ${cssHelper.getVar("bar_height")}`,
+        box_top: `calc(-50% + ${css_helper.getVar("bar_height")} / 2 )`,
         box_width: "0px",
-        box_height: "100px",
-        box_border: "1px solid red",
+        box_height: "54px",
     }
 
     const titlesBox = element.add(component.tag, box, "titlesBox absolute", "titlesBox")
@@ -52,22 +52,22 @@ const drawSection = async (box, dependency) => {
 
     const conf = {
         box_width: "0px",
-/*         box_height: cssHelper.getVar("bar_height"),
- */        box_height: "fit-content",
-        box_transition: cssHelper.getVar("normal_transition"),
+        box_height: "34px",
+        box_radius: "8px",
+        box_back: css_helper.getVar("light_4"),
+        box_backFilter: `blur(${css_helper.getVar("interface_blur")})`,
+        box_transition: css_helper.getVar("normal_transition"),
 
         textBox_width: "fit-content",
         textBox_height: "100%",
-        textBox_color: cssHelper.getVar("light_4"),
-        textBox_colorEnphasis: "white",
+        textBox_color: css_helper.getVar("dark_2"),
+        textBox_colorEnphasis: "cyan",
         textBox_font: links[0].name,
-        textBox_fontSize: "30px",
-/*         textBox_fontStyle: "italic",
- */        textBox_padding: "0px 20px",
+        textBox_fontSize: "22px",
+        textBox_padding: "0px 20px",
         textBox_textShadow: `0 0 10px cyan`,
-        textBox_filter: "blur(8px)",
-        textBox_scale: "2",
-        textBox_transition: "500ms ease"
+        textBox_scale: "3",
+        textBox_transition: "500ms ease-in",
     }
 
     const logic = {
@@ -88,29 +88,30 @@ const drawName = async (box, dependency) => {
     const component = await import("../components/nano/text/animatedText.js")
 
     const links = [
-        { type: "font", name: "Finger Paint", href: "https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap" },
+        { type: "font", name: "Sour Gummy", href: "https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" },
+        { type: "font", name: "Ubuntu Mono", href: "https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" },
     ]
 
     const conf = {
         box_width: "0px",
-        box_height: "fit-contentd",
-/*         box_back: cssHelper.getVar("dark_4"),
-        box_backFilter: `blur(${cssHelper.getVar("interface_blur")})`,
- */        box_radius: cssHelper.getVar("interface_radius"),
-        box_transition: cssHelper.getVar("normal_transition"),
+        box_height: "20px",
+        box_radius: css_helper.getVar("interface_radius"),
+        box_transition: css_helper.getVar("normal_transition"),
 
-        textBox_width: "fit-content",
+        textBox_width: "100%",
         textBox_height: "100%",
-        textBox_color: cssHelper.getVar("light_4"),
+        textBox_color: css_helper.getVar("light_4"),
         textBox_colorEnphasis: "white",
-        textBox_font: links[0].name,
-        textBox_fontSize: "12px",
-/*         textBox_fontStyle: "italic",
+        textBox_font: links[1].name,
+        textBox_fontSize: "14px",
+        textBox_fontStyle: "italic",
+/*         textBox_fontWeight: "bolder",
  */        textBox_padding: "0px 20px",
-        textBox_textShadow: `0 0 10px cyan`,
-        textBox_filter: "blur(8px)",
-        textBox_scale: "2",
-        textBox_transition: "500ms ease"
+        textBox_textShadow: `0 0 10px white`,
+        textBox_scale: "1",
+        textBox_transition: "500ms ease-in",
+        textBox_side: "center",
+        char_spacing: "1px"
     }
 
     const logic = {

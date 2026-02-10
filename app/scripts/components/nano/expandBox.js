@@ -73,6 +73,8 @@ export class ExpandBox extends HTMLElement {
                 transform: rotate(var(--box_rotate));
                 transition: var(--normal_transition);
             }
+
+            .center { display: flex; align-items: center; justify-content: center; }
         `
     }
 
@@ -94,7 +96,7 @@ export class ExpandBox extends HTMLElement {
         const nodesLayer = this.dom.querySelector(".nodesLayer")
 
         for (let i = 0; i < Number(number); i++) {
-            const node = this.base.add("div", nodesLayer, "node relative")
+            const node = this.base.add("div", nodesLayer, "node relative center")
             node.setAttribute("node", "node_" + i)
         }
         this.nodes = this.base.getNodes(this.dom)

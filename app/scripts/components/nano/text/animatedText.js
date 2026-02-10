@@ -20,8 +20,10 @@ export class FlashText extends HTMLElement {
             box_backFilter: "none",
             box_border: "none",
             box_radius: "0px",
-            box_transition: "0s",
             box_border: "none",
+            box_opacity: "1",
+            box_transition: "0s",
+            box_overflow: ["visible", "hidden"],
 
             textBox_width: "fit-content",
             textBox_height: "fit-content",
@@ -32,15 +34,17 @@ export class FlashText extends HTMLElement {
             textBox_color: "initial",
             textBox_colorEnphasis: "transparent",
             textBox_padding: "0px",
-            textBox_back: "none",
             textBox_transition: "none",
             textBox_textShadow: "none",
             textBox_filter: "none",
-            textBox_scale: "1"
+            textBox_scale: "1",
+            textBox_side: ["left", "center", "right"],
+
+            char_spacing: "0px"
         }
 
         this.defaultLogic = {
-            upperCase: [true, false]
+            upperCase: [true, false],
         }
 
         this.dom = this.attachShadow({ mode: "open" })
@@ -64,18 +68,22 @@ export class FlashText extends HTMLElement {
                 width: var(--box_width);
                 height: var(--box_height);
                 transition: var(--box_transition);
+
                 .main {
                     display: flex;
                     width: 100%;
                     height: 100%;
-                    background: var(--box_back);
                     border: var(--box_border);
                     border-radius: var(--box_radius);
+                    background: var(--box_back);
                     backDrop-filter: var(--box_backFilter);
-                    overflow: hidden;
+                    opacity: var(--box_opacity);
+                    overflow: var(--box_overflow);
+                    transition: var(--box_transition);
 
                     .textBox {
                         display: flex;
+                        justify-content: var(--textBox_side);
                         width: var(--textBox_width);
                         height: var(--textBox_height);
                         padding: var(--textBox_padding);
@@ -83,6 +91,7 @@ export class FlashText extends HTMLElement {
                         .charSpan {
                             width: fit-content;
                             height: 100%;
+                            margin: 0px var(--char_spacing);
                             font-family: var(--textBox_font);
                             font-size: var(--textBox_fontSize);
                             font-weight: var(--textBox_fontWeight);
@@ -139,20 +148,18 @@ export class FlashText extends HTMLElement {
 
     async addText(text) {
         const textBox = this.dom.querySelector(".textBox")
-        const time = this.conf.textBox_transition
-        textBox.innerHTML = ""
 
         Array.from(text).forEach(char => {
             const charSpan = this.base.add("span", textBox, "charSpan center invisible")
             charSpan.innerHTML = char === " " ? "&nbsp;" : this.logic.upperCase ? char.toUpperCase() : char
         })
-        const width = this.dom.querySelector(".textBox").offsetWidth
-        return width
+        this.base.toCssVar2("box_width", this.conf.box_width, this)
+        this.base.toCssVar2("textBox_padding", this.conf.textBox_padding, this)
+        return this.dom.querySelector(".textBox").offsetWidth
     }
 
     async expandBox(boolean, width) {
-        const time = this.base.convertTransition(this.conf.textBox_transition)
-
+        const time = this.base.convertTransition(this.conf.box_transition)
         boolean
             ? this.updateProp("box_width", width)
             : this.updateProp("box_width", "0px")
@@ -161,7 +168,7 @@ export class FlashText extends HTMLElement {
 
     async animateText() {
         const word = Array.from(this.dom.querySelectorAll(".charSpan"))
-        const delay = 80
+        const delay = 50
         let charCount = 0
 
         for (const item of word) {
@@ -171,21 +178,18 @@ export class FlashText extends HTMLElement {
         }
     }
 
-    async animate(width) {
-        await this.expandBox(true, width)
-        await this.animateText()
-    }
-
     async removeText() {
+        const textBox = this.dom.querySelector(".textBox")
         const spans = Array.from(this.container.querySelectorAll(".charSpan"))
-        const time = this.base.convertTransition(this.conf.textBox_transition)
-        const delay = 80
+        const time = this.base.transitionTime(this.conf.textBox_transition)
+        const delay = 20
 
         for (let index = spans.length - 1; index >= 0; index--) {
             spans[index].classList.replace("visible", "invisible")
             spans[index].textContent !== " " && await this.base.time(delay)
         }
-        await this.base.time(time)
+        await this.base.time(this.base.transitionTime(this.conf.textBox_transition))
+        textBox.innerHTML = ""
     }
 
     updateProp(prop, value) {

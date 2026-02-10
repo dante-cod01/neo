@@ -20,7 +20,7 @@ export class ExpandBar extends HTMLElement {
             box_width_max: "100px",
             box_back: "none",
             box_radius: "0px",
-            box_backDrop_filter: "none",
+            box_backFilter: "none",
             box_transition: "none",
             box_nodesLayer_padding: "0px"
         }
@@ -50,7 +50,7 @@ export class ExpandBar extends HTMLElement {
             }
 
             .main {
-                backdrop-filter: blur(var(--box_backDrop_filter));
+                backdrop-filter: var(--box_backFilter);
 
                 .colorLayer { background: var(--box_back); }
 

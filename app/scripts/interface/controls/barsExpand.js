@@ -5,13 +5,15 @@ const barsExpand = async (openPanels) => {
     const topBar = dom_helper.id("topBar")
     const bottomBar = dom_helper.id("bottomBar")
 
+    console.log(openPanels)
+
     if (openPanels.menuPanel === true && openPanels.configPanel === true) {
         topBar.expand()
         bottomBar.expand()
     }
     if (openPanels.menuPanel === true && openPanels.configPanel === false) {
         topBar.expand("right")
-        bottom.expand("right")
+        bottomBar.expand("right")
     }
     if (openPanels.menuPanel === false && openPanels.configPanel === true) {
         topBar.expand("left")
