@@ -5,6 +5,7 @@ export class ExpandBar extends HTMLElement {
 
         this.dom = this.attachShadow({ mode: "open" })
         this.newConf
+        this.customStyle
         this.base
         this.nodes
         this.eventDom
@@ -27,14 +28,14 @@ export class ExpandBar extends HTMLElement {
 
     #draw() {
         this.container = this.base.add("div", this.dom, "main relative max")
-        const style = this.base.add("style", this.dom)
+        this.customStyle = this.base.add("style", this.dom)
 
         this.container.innerHTML = `
             <div class="colorLayer relative transition max close normalRadius"></div>
             <div class="nodesLayer absolute max"></div>
         `
 
-        style.textContent = `
+        this.customStyle.textContent = `
             * {
                 margin: 0;
                 padding: 0;

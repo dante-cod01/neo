@@ -11,14 +11,14 @@ export const drawComponentBox = async (box, dependency) => {
     /* expand-box component */
     const component = await import("../components/nano/expandBox.js")
 
-    const css = {
+    const conf = {
         main_transition: cssHelper.getVar("normal_transition")
     }
 
     const componentBox = element.add(component.tag, box, "componentBox max absolute", "componentBox")
     componentBox.eventDom = document
     componentBox.eventName = componentBox.id
-    componentBox.css = css
+    componentBox.newConf = conf
     componentBox.addDependency(new dependency())
     return componentBox
 }

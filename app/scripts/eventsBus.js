@@ -28,7 +28,7 @@ const panelEvents = (modules, openPanels) => {
 
 const listEvents = (modules, lastComponent) => {
     document.addEventListener("listMenu", (e) => {
-        modules.infoControl.control(e.detail, lastComponent)
+        modules.titlesChanger.control(e.detail, lastComponent)
     })
 }
 
@@ -41,11 +41,12 @@ const registerModules = async (components) => {
 export const init = async () => {
     let components = [
         { module: "panelsChanger", path: "./interface/controls/topPanelsControl.js" },
-        { module: "barsExpand", path: "./interface/controls/topBarexpand.js" },
+        { module: "barsExpand", path: "./interface/controls/barsExpand.js" },
         { module: "backChanger", path: "./interface/controls/topBackControl.js" },
         { module: "viewChanger", path: "./interface/controls/topViewsControl.js" },
-        { module: "infoControl", path: "./interface/controls/infoControl.js" },
-        { module: "panelsIcons", path: "./interface/controls/topPanelsIcons.js" }
+        { module: "panelsIcons", path: "./interface/controls/topPanelsIcons.js" },
+        { module: "titlesChanger", path: "./interface/controls/titlesChanger.js" },
+
     ]
 
     const openPanels = { menuPanel: true, configPanel: true, bothPanels: true }

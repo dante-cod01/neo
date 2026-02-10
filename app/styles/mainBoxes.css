@@ -25,7 +25,12 @@ body {
         left: var(--bar_left);
     }
 
-    .nameBar {
+    .bottomBar {
+        bottom: var(--body_padding);
+        left: var(--bar_left);
+    }
+
+/*     .nameBar {
         bottom: var(--body_padding);
         left: var(--bar_left);
     }
@@ -34,7 +39,7 @@ body {
         left: var(--body_padding)
     }
 
-    .componentContainer {
+ */    .componentContainer {
         width: var(--componentContainer_width);
         height: var(--componentContainer_height);
         border-radius: var(--componentContainer_radius);

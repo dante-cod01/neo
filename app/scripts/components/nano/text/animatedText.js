@@ -10,6 +10,8 @@ export class FlashText extends HTMLElement {
         this.eventName
         this.newConf = {} /* custom Conf */
         this.conf = {} /* final Conf */
+        this.newLogic = {} /*  custom Logic */
+        this.logic = {} /*  final Logic */
 
         this.defaultConf = {
             box_width: "fit-content",
@@ -31,10 +33,14 @@ export class FlashText extends HTMLElement {
             textBox_colorEnphasis: "transparent",
             textBox_padding: "0px",
             textBox_back: "none",
-            textBox_transition: "1s ease-in",
+            textBox_transition: "none",
             textBox_textShadow: "none",
             textBox_filter: "none",
             textBox_scale: "1"
+        }
+
+        this.defaultLogic = {
+            upperCase: [true, false]
         }
 
         this.dom = this.attachShadow({ mode: "open" })
@@ -58,7 +64,6 @@ export class FlashText extends HTMLElement {
                 width: var(--box_width);
                 height: var(--box_height);
                 transition: var(--box_transition);
-
                 .main {
                     display: flex;
                     width: 100%;
@@ -82,8 +87,6 @@ export class FlashText extends HTMLElement {
                             font-size: var(--textBox_fontSize);
                             font-weight: var(--textBox_fontWeight);
                             font-style: var(--textBox_fontStyle);
-                            white-space: pre;
-                            transition: var(--textBox_transition);
                         }
                     }
                     
@@ -98,19 +101,22 @@ export class FlashText extends HTMLElement {
                 color: var(--textBox_colorEnphasis);  
                 text-shadow: var(--textBox_textShadow);
                 filter: var(--textBox_filter);
+                transition: var(--textBox_transition);
             }
 
             .visible { 
                 transform: scale(1); 
                 opacity: 1; 
                 color: var(--textBox_color); 
+                transition: var(--textBox_transition);
             }
         `
     }
 
     #configure = () => {
-        this.conf = this.defaultConf ? this.base.generateConf(this.defaultConf, this.newConf, this) : this.defaultConf
+        this.conf = this.base.generateConf(this.defaultConf, this.newConf, this)
         this.base.objToCssVar(this.conf, this)
+        this.logic = this.base.generateLogic(this.defaultLogic, this.newLogic, this)
     }
 
     #addLinks = () => {
@@ -138,15 +144,13 @@ export class FlashText extends HTMLElement {
 
         Array.from(text).forEach(char => {
             const charSpan = this.base.add("span", textBox, "charSpan center invisible")
-            charSpan.innerHTML = char === " " ? "&nbsp;" : char
+            charSpan.innerHTML = char === " " ? "&nbsp;" : this.logic.upperCase ? char.toUpperCase() : char
         })
-
-        await this.expandBox(true)
-        this.animateText()
+        const width = this.dom.querySelector(".textBox").offsetWidth
+        return width
     }
 
-    async expandBox(boolean) {
-        const width = this.dom.querySelector(".textBox").offsetWidth + "px"
+    async expandBox(boolean, width) {
         const time = this.base.convertTransition(this.conf.textBox_transition)
 
         boolean
@@ -157,25 +161,29 @@ export class FlashText extends HTMLElement {
 
     async animateText() {
         const word = Array.from(this.dom.querySelectorAll(".charSpan"))
-        const delay = 100
+        const delay = 80
         let charCount = 0
 
         for (const item of word) {
             item.classList.replace("invisible", "visible")
             charCount++
-            await this.base.time(delay)
+            item.textContent !== " " && await this.base.time(delay)
         }
     }
 
+    async animate(width) {
+        await this.expandBox(true, width)
+        await this.animateText()
+    }
+
     async removeText() {
-        const textBox = this.dom.querySelector(".textBox")
         const spans = Array.from(this.container.querySelectorAll(".charSpan"))
         const time = this.base.convertTransition(this.conf.textBox_transition)
-        const delay = 100
+        const delay = 80
 
         for (let index = spans.length - 1; index >= 0; index--) {
             spans[index].classList.replace("visible", "invisible")
-            await this.base.time(delay)
+            spans[index].textContent !== " " && await this.base.time(delay)
         }
         await this.base.time(time)
     }

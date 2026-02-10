@@ -5,12 +5,18 @@ export class ExpandBox extends HTMLElement {
 
         this.id
         this.base
-        this.css
-        this.logic
         this.eventDom
         this.eventName
+        this.nodes = {}
+        this.newConf = {} /* custom Conf */
+        this.conf = {} /* final Conf */
+        this.newLogic = {} /*  custom Logic */
+        this.logic = {} /*  final Logic */
 
-        this.defaultCss = {
+        this.defaultConf = {
+            box_position: ["relative", "absolute"],
+            box_top: "0px",
+            box_left: "0px",
             box_width: "100%",
             box_height: "100%",
             box_back: "none",
@@ -21,16 +27,18 @@ export class ExpandBox extends HTMLElement {
             main_transition: "none"
         }
 
+
         this.dom = this.attachShadow({ mode: "open" })
     }
 
     #configure = () => {
-        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
-        this.base.toCssVar(this.css, this)
+        this.conf = this.base.generateConf(this.defaultConf, this.newConf, this)
+        this.base.objToCssVar(this.conf, this)
     }
 
     #draw = () => {
         this.container = this.base.add("div", this.dom, "main")
+        const nodesLayer = this.base.add("div", this.container, "nodesLayer")
         const style = this.base.add("style", this.dom)
         style.textContent = `
             * {
@@ -47,6 +55,9 @@ export class ExpandBox extends HTMLElement {
             }
 
             .main {
+                position: var(--box_position);
+                left: var(--box_left);
+                top: var(--box_top);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -75,13 +86,24 @@ export class ExpandBox extends HTMLElement {
     }
 
     updateProp(prop, value) {
-        this.base.updateProp(this.css, prop, value, this)
+        this.conf[prop] = value
+        this.base.toCssVar2(prop, value, this)
+    }
+
+    addNodes = (number) => {
+        const nodesLayer = this.dom.querySelector(".nodesLayer")
+
+        for (let i = 0; i < Number(number); i++) {
+            const node = this.base.add("div", nodesLayer, "node relative")
+            node.setAttribute("node", "node_" + i)
+        }
+        this.nodes = this.base.getNodes(this.dom)
     }
 
     init = () => {
         this.#configure()
         this.#draw()
-        this.base.sendEvent(this.eventDom, this.eventName, {ready: true})
+        this.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 }
 customElements.define(tag, ExpandBox)

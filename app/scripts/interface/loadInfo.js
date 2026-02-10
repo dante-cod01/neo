@@ -36,6 +36,8 @@ export const drawNameBar = async (box, dependency) => {
     nameBar.eventDom = document
     nameBar.eventName = nameBar.id
     nameBar.addDependency(new dependency())
+    console.log("wwwwwwwwwww")
+    console.log(nameBar.conf.textBox_font)
     return nameBar
 }
 

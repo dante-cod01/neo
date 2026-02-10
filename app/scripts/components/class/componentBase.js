@@ -39,7 +39,7 @@ export class ComponentBase {
     }
 
 
-    /* check conf NEW */
+    /* GENERATE CONF & LOGIC */
     #resumeValues(defaultObj) {
         let resumed = {}
         Object.entries(defaultObj).forEach(([key, value]) => {
@@ -49,24 +49,35 @@ export class ComponentBase {
     }
 
     generateConf(defaultConf, newConf, dom) {
-        const resumedValues = this.#resumeValues(defaultConf)
-        let validation = true
+        const resumedConf = this.#resumeValues(defaultConf)
         Object.entries(newConf).forEach(([key, value]) => {
-            if (validation) {
-                if (!defaultConf[key]) { console.log([dom], [key], "PROP not valid"); validation = false }
-                if (defaultConf[key] && typeof (value) !== "string") { console.log([dom], [key, value], "VALUE must be string"); validation = false }
-            }
+            !defaultConf[key] && console.log([dom], [key], "PROP not valid")
+            if (defaultConf[key] && typeof (value) !== "string") { console.log([dom], "VALUE must be string →", [key, value]) }
         })
         Object.entries(newConf).forEach(([key, value]) => {
-            if (typeof (defaultConf[key]) === "string") resumedValues[key] = value
+            if (typeof (defaultConf[key]) === "string") resumedConf[key] = value
             if (typeof (defaultConf[key]) === "object") {
                 defaultConf[key].includes(value)
-                    ? resumedValues[key] = value
-                    : console.log([this], [key, value], "VALUE not valid using DEFAULT", [key, resumedValues[key]])
+                    ? resumedConf[key] = value
+                    : console.log([this], [key, value], "VALUE not valid using DEFAULT", [key, resumedConf[key]])
             }
         })
-        !validation && console.log(["VALIDATION FAIL"])
-        return resumedValues
+        return resumedConf
+    }
+
+    generateLogic(defaultLogic, newLogic, dom) {
+        const resumedLogic = this.#resumeValues(defaultLogic)
+        Object.keys(newLogic).forEach(key => {
+            if (!defaultLogic[key]) {
+                console.log([dom], [key], "PROP not valid")
+            }
+        })
+        Object.entries(newLogic).forEach(([key, value]) => {
+            defaultLogic[key].includes(value)
+                ? resumedLogic[key] = value
+                : console.log([dom], "\n", "BOOLEAN using default →", [key, resumedLogic[key]])
+        })
+        return resumedLogic
     }
 
 
@@ -96,22 +107,20 @@ export class ComponentBase {
         return element
     }
 
+    #createFontLink(href, dom) {
+        const link = document.createElement("link")
+        link.setAttribute("rel", "stylesheet")
+        link.setAttribute("href", href)
+        dom.appendChild(link)
+    }
+
     addLinks(dom, links) {
         if (!links) return
-        const loadedLinks = Array.from(document.head.querySelectorAll("link"))
 
         links.forEach(item => {
             if (item.type === "font") {
-                const link = document.createElement("link")
-                link.setAttribute("rel", "stylesheet")
-                link.setAttribute("href", item.href)
-                dom.appendChild(link)
-
-                const previousLink = loadedLinks.some(item => item.getAttribute("href") === item.href)
-                if (!previousLink) {
-                    const globalLink = link.cloneNode()
-                    document.head.appendChild(globalLink)
-                }
+                this.#createFontLink(item.href, dom)
+                if (!document.head.querySelector(`link[rel="stylesheet"][href="${item.href}"]`)) this.#createFontLink(item.href, document.head)
             }
         })
     }
