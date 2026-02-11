@@ -23,6 +23,7 @@ const delegateControl = async (input) => {
 }
 
 export const control = async (openPanels, detail) => {
+    console.log(detail)
     if (detail.input) {
         openPanels[detail.input.id] = !detail.input.checked
         delegateControl(detail.input)

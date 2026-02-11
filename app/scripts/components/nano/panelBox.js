@@ -242,16 +242,16 @@ export class PanelBox extends HTMLElement {
         const time = this.base.convertTransition(this.css.box_transition)
 
         if (boolean === true) {
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_W", value: true })
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "hor", value: true })
             await this.#open_W(topBack, time)
 
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_H", value: true })
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "ver", value: true })
             await this.#open_H(title, time)
         } else {
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_H", value: false })
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "ver", value: false })
             await this.#close_H(title, time)
 
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "opened_W", value: false })
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "hor", value: false })
             await this.#close_W(topBack, title, time)
         }
     }
@@ -272,17 +272,17 @@ export class PanelBox extends HTMLElement {
         await this.base.wait(time)
     }
 
-    #close_H = async (title, time) => {
-        this.classList.add("topBar_height_height")
-        title.classList.add("opacity_0")
-        await this.base.wait(time)
-    }
-
     #close_W = async (topBack, title, time) => {
         title.classList.add("displayNone")
         this.classList.add("topBar_height_width")
         this.container.classList.add("radius_half")
         topBack.classList.add("opacity_50")
+        await this.base.wait(time)
+    }
+
+    #close_H = async (title, time) => {
+        this.classList.add("topBar_height_height")
+        title.classList.add("opacity_0")
         await this.base.wait(time)
     }
 

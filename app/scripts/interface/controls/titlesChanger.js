@@ -53,12 +53,25 @@ const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
     await utils_helper.time(css_helper.convertTransition(nameBox.conf.textBox_transition) * 2)
 }
 
-export const control = async (detail, lastComponent) => {
-    const titlesBox = dom_helper.id("titlesBox")
-    const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
-    const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
-    const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
+const moveTitlesBox = async (boolean) => {
+/*     console.log(boolean)
+ */}
 
-    lastComponent.name && await animateRemove(titlesBox, sectionBox, nameBox, customConf)
-    await animate(lastComponent, detail, titlesBox, sectionBox, nameBox, customConf)
+export const control = async (detail, lastComponent) => {
+/*     console.log(detail)
+ */    const titlesBox = dom_helper.id("titlesBox")
+
+    if (detail.conf) { /* titles change */
+        const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
+        const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
+        const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
+
+        lastComponent.name && await animateRemove(titlesBox, sectionBox, nameBox, customConf)
+        await animate(lastComponent, detail, titlesBox, sectionBox, nameBox, customConf)
+    }
+
+    if ("menuPanel" in detail) {
+        const menuPanelState = detail.menuPanel
+        await moveTitlesBox(menuPanelState)
+    }
 }

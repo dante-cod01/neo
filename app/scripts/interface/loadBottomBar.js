@@ -7,7 +7,7 @@ const drawBottomBar = async (box, dependency) => {
     const conf = {
         box_width: css_helper.getVar("bar_width"),
         box_height: css_helper.getVar("bar_height"),
-        box_width_max: "180px",
+        box_width_max: `calc(${css_helper.getVar("panel_width")} + ${css_helper.getVar("bar_margin")})`,
         box_back: css_helper.getVar("dark_4"),
         box_backFilter: `blur(${css_helper.getVar("interface_blur")})`,
         box_radius: css_helper.getVar("interface_radius"),

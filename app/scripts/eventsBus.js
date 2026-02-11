@@ -18,6 +18,7 @@ const panelEvents = (modules, openPanels) => {
     document.addEventListener("menuPanel", (e) => {
         modules.barsExpand.control(openPanels, e.detail)
         modules.panelsIcons.control(openPanels, e.detail)
+        modules.titlesChanger.control(openPanels)
     })
 
     document.addEventListener("configPanel", (e) => {
@@ -49,7 +50,7 @@ export const init = async () => {
 
     ]
 
-    const openPanels = { menuPanel: true, configPanel: true, bothPanels: true }
+    const openPanels = { menuPanel: {hor: true, ver: true}, configPanel: {hor: true, ver: true}, bothPanels: {hor: true, ver: true} }
     const modules = await registerModules(components)
     const lastComponent = {}
 

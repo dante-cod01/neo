@@ -32,11 +32,12 @@ body {
 
     .titlesBox {
         bottom: calc(var(--body_padding) - 8px);
-        left: calc(var(--bar_left) + 20px);
+        left: calc(var(--bar_left) + var(--bar_margin) / 2);
     }
 
     .titlesBox_left {
-        left: var(--body_padding)
+        bottom: calc(var(--body_padding) - 8px);
+        left: calc(var(--body_padding) + var(--bar_margin));
     }
 
     .componentContainer {
