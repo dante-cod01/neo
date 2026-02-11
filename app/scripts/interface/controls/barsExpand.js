@@ -5,8 +5,6 @@ const barsExpand = async (openPanels) => {
     const topBar = dom_helper.id("topBar")
     const bottomBar = dom_helper.id("bottomBar")
 
-    console.log(openPanels)
-
     if (openPanels.menuPanel === true && openPanels.configPanel === true) {
         topBar.expand()
         bottomBar.expand()
@@ -23,6 +21,10 @@ const barsExpand = async (openPanels) => {
         topBar.expand("both")
         bottomBar.expand("both")
     }
+}
+
+const moveTitlesBox = async () => {
+    
 }
 
 export const control = async (openPanels, detail) => {

@@ -21,8 +21,7 @@ const changeComponentConf = (customConf, boolean, sectionBox, nameBox) => {
     }
 }
 
-const animate = async (lastComponent, detail, sectionBox, nameBox, customConf) => {
-    const titlesBox = dom_helper.id("titlesBox", dom_helper.id("bottomBar").nodes.node_0)
+const animate = async (lastComponent, detail, titlesBox, sectionBox, nameBox, customConf) => {
     const sectionText = detail.conf.section
     const nameText = detail.conf.config.name
     lastComponent.name = nameText
@@ -43,27 +42,23 @@ const animate = async (lastComponent, detail, sectionBox, nameBox, customConf) =
     await nameBox.animateText()
 }
 
-const animateRemove = async (sectionBox, nameBox, customConf) => {
-    const titlesBox = dom_helper.id("titlesBox", dom_helper.id("bottomBar").nodes.node_0)
+const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
     /* update this props before */
     sectionBox.updateProp("box_overflow", "hidden")
-
     await sectionBox.removeText()
     await nameBox.removeText()
     titlesBox.updateProp("box_width", "0px")
+    /* update props after */
     changeComponentConf(customConf, false, sectionBox, nameBox)
-
     await utils_helper.time(css_helper.convertTransition(nameBox.conf.textBox_transition) * 2)
-
 }
 
 export const control = async (detail, lastComponent) => {
-    const titlesBox = dom_helper.id("titlesBox", dom_helper.id("bottomBar").nodes.node_0)
+    const titlesBox = dom_helper.id("titlesBox")
     const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
     const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
     const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
 
-    lastComponent.name && await animateRemove(sectionBox, nameBox, customConf)
-    await animate(lastComponent, detail, sectionBox, nameBox, customConf)
-
+    lastComponent.name && await animateRemove(titlesBox, sectionBox, nameBox, customConf)
+    await animate(lastComponent, detail, titlesBox, sectionBox, nameBox, customConf)
 }

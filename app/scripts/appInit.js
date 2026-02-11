@@ -10,11 +10,11 @@ const loadCss = async (modules) => { /* waiting fon style inject */
 
 const loadInterface = async (modules) => { /* waiting for components return */
     await modules.mainBox.init(document.body)
-/*     await modules.info.init(document.body)
- */    await modules.listMenuPanel.init(document.body)
+    await modules.listMenuPanel.init(document.body)
     await modules.configMenuPanel.init(document.body)
     await modules.topBar.init(document.body)
     await modules.bottomBar.init(document.body)
+    await modules.titles.init(document.body)
 }
 
 const loadBusEvent = async (modules) => {
@@ -29,9 +29,9 @@ const main = async () => {
         topBar: "./interface/loadTopBar.js",
         listMenuPanel: "./interface/loadListPanel.js",
         configMenuPanel: "./interface/loadConfigPanel.js",
-        bottomBar: "./interface/loadBottomBar.js"
-/*         info: "./interface/loadInfo.js",
- */    }
+        bottomBar: "./interface/loadBottomBar.js",
+        titles: "./interface/loadTitles.js",
+    }
 
     const modules = await loadModules(loads)
     await loadCss(modules)

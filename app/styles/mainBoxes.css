@@ -30,16 +30,16 @@ body {
         left: var(--bar_left);
     }
 
-/*     .nameBar {
-        bottom: var(--body_padding);
-        left: var(--bar_left);
+    .titlesBox {
+        bottom: calc(var(--body_padding) - 8px);
+        left: calc(var(--bar_left) + 20px);
     }
 
-    .nameBar_left {
+    .titlesBox_left {
         left: var(--body_padding)
     }
 
- */    .componentContainer {
+    .componentContainer {
         width: var(--componentContainer_width);
         height: var(--componentContainer_height);
         border-radius: var(--componentContainer_radius);
