@@ -12,10 +12,10 @@ const drawBottomBar = async (box, dependency) => {
         box_backFilter: `blur(${css_helper.getVar("interface_blur")})`,
         box_radius: css_helper.getVar("interface_radius"),
         box_nodesLayer_padding: "0px 20px 0px 20px",
-        box_transition: css_helper.getVar("normal_transition")
+        box_transition: css_helper.getVar("normal_transition"),
     }
 
-    const bottomBar = element.add(component.tag, box, "absolute bottomBar", "bottomBar")
+    const bottomBar = element.add(component.tag, box, "absolute bottomBar bar", "bottomBar")
     bottomBar.newConf = conf
     bottomBar.eventDom = document
     bottomBar.eventName = bottomBar.id

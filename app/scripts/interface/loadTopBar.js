@@ -12,10 +12,10 @@ const drawTopBar = async (box, dependency) => {
         box_back: cssHelper.getVar("dark_4"),
         box_radius: cssHelper.getVar("interface_radius"),
         box_nodesLayer_padding: "0px 20px",
-        box_transition: cssHelper.getVar("normal_transition")
+        box_transition: cssHelper.getVar("normal_transition"),
     }
 
-    const topBar = element.add(expandBar.tag, box, "absolute topBar", "topBar")
+    const topBar = element.add(expandBar.tag, box, "absolute topBar bar", "topBar")
     topBar.newConf = conf
     topBar.eventDom = document
     topBar.eventName = topBar.id
@@ -36,7 +36,7 @@ const drawPanelsControls = async (box, dependency) => {
         { box: "space", size: "5px" },
         { box: "checkbox", id: "menuPanel", type: "material", icon: "arrow_menu_close" },
         { box: "checkbox", id: "configPanel", type: "material", icon: "arrow_menu_open" },
-        { box: "checkbox", id: "bothPanels", type: "material", icon: "crop_landscape", checked: true },
+        { box: "checkbox", id: "allPanels", type: "material", icon: "crop_landscape", checked: true },
         { box: "space", size: "5px" },
     ]
 
@@ -59,7 +59,7 @@ const drawPanelsControls = async (box, dependency) => {
         horizontal: true
     }
 
-    const panelsControls = element.add(checkersGroup.tag, box, "", "panelsChanger")
+    const panelsControls = element.add(checkersGroup.tag, box, "", "expandIcons")
     panelsControls.data = data
     panelsControls.links = links
     panelsControls.css = css

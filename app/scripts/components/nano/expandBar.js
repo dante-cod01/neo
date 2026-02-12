@@ -12,8 +12,8 @@ export class ExpandBar extends HTMLElement {
         this.eventName
         this.nodes
         /* internal */
-/*         this.expands = { left: false, right: false, both: false }
- */
+        /*         this.expands = { left: false, right: false, all: false }
+         */
         this.defaultConf = {
             box_width: "200px",
             box_height: "200px",
@@ -79,7 +79,7 @@ export class ExpandBar extends HTMLElement {
             .close {left: 0px;}
             .openLeft {width: calc(100% + var(--box_width_max)); left: calc(var(--box_width_max) * -1);}
             .openRight {width: calc(100% + var(--box_width_max));}
-            .bothOpen {width: calc(100% + var(--box_width_max) * 2); left: calc(var(--box_width_max) * -1);}
+            .allOpen {width: calc(100% + var(--box_width_max) * 2); left: calc(var(--box_width_max) * -1);}
         `
     }
 
@@ -112,7 +112,7 @@ export class ExpandBar extends HTMLElement {
 
         for (let i = 0; i < Number(number); i++) {
             const node = this.base.add("div", nodesLayer, "node relative")
-            node.setAttribute("node", "node_" + i )
+            node.setAttribute("node", "node_" + i)
         }
         this.nodes = this.base.getNodes(this.dom)
     }
@@ -122,13 +122,14 @@ export class ExpandBar extends HTMLElement {
         this.base.toCssVar2(prop, value, this)
     }
 
-    async expand(mode = null, boolean = true) {
+    async expand(mode = null, boolean) {
         const colorLayer = this.dom.querySelector(".colorLayer")
         const time = this.base.convertTransition(this.conf.box_transition)
 
-        colorLayer.classList.remove("bothOpen", "openLeft", "openRight")
+        colorLayer.classList.remove("allOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)
 
+        this.base.sendEvent(this.eventDom, this.eventName, { bar: this.eventName, expand: true })
         if (mode === "left") {
             boolean ? colorLayer.classList.add("openLeft") : colorLayer.classList.remove("openLeft")
             this.#newRadius("left", colorLayer)
@@ -137,11 +138,12 @@ export class ExpandBar extends HTMLElement {
             boolean ? colorLayer.classList.add("openRight") : colorLayer.classList.remove("openRight")
             this.#newRadius("right", colorLayer)
         }
-        if (mode === "both") {
-            colorLayer.classList.add("bothOpen")
-            this.#newRadius("both", colorLayer)
+        if (mode === "all") {
+            colorLayer.classList.add("allOpen")
+            this.#newRadius("all", colorLayer)
         }
         await new Promise(resolve => setTimeout(resolve, time))
+        this.base.sendEvent(this.eventDom, this.eventName, {bar: this.eventName, expand: false })
     }
 }
 customElements.define(tag, ExpandBar)

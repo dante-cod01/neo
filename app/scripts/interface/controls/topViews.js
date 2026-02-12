@@ -35,9 +35,7 @@ const applyView = (calc) => {
 }
 
 const activeRotateInput = (boolean) => {
-    boolean
-        ? viewChanger.disableInput(viewChanger.inputs[3], false)
-        : viewChanger.disableInput(viewChanger.inputs[3], true)
+    viewChanger.disableInput(viewChanger.inputs[3], !boolean)
 }
 
 const detectFullMode = () => {
@@ -45,13 +43,10 @@ const detectFullMode = () => {
 }
 
 const fullMode = async (delay) => {
-    console.log(window.innerHeight)
     detectFullMode()
         ? document.exitFullscreen()
         : document.documentElement.requestFullscreen()
     await new Promise(resolve => setTimeout(resolve, delay))
-    console.log(window.innerHeight)
-
 }
 
 const fadeOut = async () => {

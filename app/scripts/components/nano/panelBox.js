@@ -254,6 +254,9 @@ export class PanelBox extends HTMLElement {
             this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "hor", value: false })
             await this.#close_W(topBack, title, time)
         }
+
+        const toogleButtom = this.dom.querySelector("#toogleButtom")
+        toogleButtom.checked = boolean
     }
 
     #open_W = async (topBack, time) => {
@@ -297,10 +300,6 @@ export class PanelBox extends HTMLElement {
 
     updateProp(prop, value) {
         this.base.updateProp(this.css, prop, value, this)
-    }
-
-    getInputButtom() {
-        return this.dom.querySelector("#toogleButtom")
     }
 
     async init() {

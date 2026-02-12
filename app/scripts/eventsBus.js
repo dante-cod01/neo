@@ -1,8 +1,17 @@
-const topBarEvents = (modules, openPanels) => {
+const barsEvents = (modules, bars) => {
+    document.addEventListener("bottomBar", async (e) => {
+        modules.panelsIconsBlock.control(e.detail, bars)
+    })
+    document.addEventListener("topBar", async (e) => {
+        modules.panelsIconsBlock.control(e.detail, bars)
+    })
+}
 
-    document.addEventListener("panelsChanger", async (e) => {
-        modules.panelsChanger.control(openPanels, e.detail)
-        modules.panelsIcons.control(openPanels, e.detail)
+const topBarEvents = (modules, panelsIcons) => {
+
+    document.addEventListener("expandIcons", async (e) => {
+        modules.panelsControl.control(e.detail)
+        modules.panelIconsControl.control(e.detail, panelsIcons)
     })
 
     document.addEventListener("backChanger", (e) => {
@@ -14,23 +23,28 @@ const topBarEvents = (modules, openPanels) => {
     })
 }
 
-const panelEvents = (modules, openPanels) => {
-    document.addEventListener("menuPanel", (e) => {
-        modules.barsExpand.control(openPanels, e.detail)
-        modules.panelsIcons.control(openPanels, e.detail)
+const panelEvents = (modules, panels) => {
+    document.addEventListener("menuPanel", async (e) => {
+        panels[e.detail.panel][e.detail.type] = e.detail.value
+        modules.barsControl.control(e.detail, panels)
+/*         
+        modules.expandIcons.control(e.detail)
         modules.titlesChanger.control(openPanels)
-    })
+ */    })
 
     document.addEventListener("configPanel", (e) => {
-        modules.barsExpand.control(openPanels, e.detail)
-        modules.panelsIcons.control(openPanels, e.detail)
-    })
+        panels[e.detail.panel][e.detail.type] = e.detail.value
+        modules.barsControl.control(e.detail, panels)
+
+/*        
+        modules.expandIcons.control(e.detail)
+ */    })
 }
 
 const listEvents = (modules, lastComponent) => {
     document.addEventListener("listMenu", (e) => {
-        modules.titlesChanger.control(e.detail, lastComponent)
-    })
+/*         modules.titlesChanger.control(e.detail, lastComponent)
+ */    })
 }
 
 const registerModules = async (components) => {
@@ -41,20 +55,25 @@ const registerModules = async (components) => {
 
 export const init = async () => {
     let components = [
-        { module: "panelsChanger", path: "./interface/controls/topPanelsControl.js" },
-        { module: "barsExpand", path: "./interface/controls/barsExpand.js" },
-        { module: "backChanger", path: "./interface/controls/topBackControl.js" },
-        { module: "viewChanger", path: "./interface/controls/topViewsControl.js" },
-        { module: "panelsIcons", path: "./interface/controls/topPanelsIcons.js" },
-        { module: "titlesChanger", path: "./interface/controls/titlesChanger.js" },
+        { module: "barsControl", path: "./interface/controls/barsControl.js" },
+        { module: "panelsControl", path: "./interface/controls/topPanelsToogle.js" },
+        { module: "panelIconsControl", path: "./interface/controls/topPanelsIconsControl.js" },
+        { module: "panelsIconsBlock", path: "./interface/controls/topPanelsIconsBlock.js" },
 
+        { module: "backChanger", path: "./interface/controls/topBackgrounds.js" },
+        { module: "viewChanger", path: "./interface/controls/topViews.js" },
+        /*         { module: "titlesChanger", path: "./interface/controls/titlesChanger.js" },
+         */
     ]
 
-    const openPanels = { menuPanel: {hor: true, ver: true}, configPanel: {hor: true, ver: true}, bothPanels: {hor: true, ver: true} }
+    const panels = { menuPanel: { hor: true, ver: true }, configPanel: { hor: true, ver: true }, allPanels: { hor: true, ver: true } }
+    const panelsIcons = { menuPanel: false, configPanel: false, allPanels: true }
+    const bars = { topBar: { resizing: false }, bottomBar: { resizing: false } }
     const modules = await registerModules(components)
     const lastComponent = {}
 
-    listEvents(modules, lastComponent)
-    topBarEvents(modules, openPanels)
-    panelEvents(modules, openPanels)
+    barsEvents(modules, bars)
+/*     listEvents(modules, lastComponent)
+ */    topBarEvents(modules, panelsIcons)
+    panelEvents(modules, panels)
 }
