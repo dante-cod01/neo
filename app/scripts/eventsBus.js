@@ -1,14 +1,13 @@
-const barsEvents = (modules, bars) => {
+const barsEvents = (modules, barsAnimation, panelsAnimation) => {
     document.addEventListener("bottomBar", async (e) => {
-        modules.panelsIconsBlock.control(e.detail, bars)
+        modules.panelsIconsBlock.control(e.detail, barsAnimation, panelsAnimation)
     })
     document.addEventListener("topBar", async (e) => {
-        modules.panelsIconsBlock.control(e.detail, bars)
+        modules.panelsIconsBlock.control(e.detail, barsAnimation, panelsAnimation)
     })
 }
 
 const topBarEvents = (modules, panelsIcons) => {
-
     document.addEventListener("expandIcons", async (e) => {
         modules.panelsControl.control(e.detail)
         modules.panelIconsControl.control(e.detail, panelsIcons)
@@ -23,22 +22,23 @@ const topBarEvents = (modules, panelsIcons) => {
     })
 }
 
-const panelEvents = (modules, panels) => {
+const panelEvents = (modules, panels, panelsIcons, barsAnimation, panelsAnimation) => {
     document.addEventListener("menuPanel", async (e) => {
+        modules.panelsIconsBlock.control(e.detail, barsAnimation, panelsAnimation)
         panels[e.detail.panel][e.detail.type] = e.detail.value
         modules.barsControl.control(e.detail, panels)
-/*         
-        modules.expandIcons.control(e.detail)
-        modules.titlesChanger.control(openPanels)
- */    })
+        modules.panelIconsControl.control(e.detail, panelsIcons)
+        /*         
+                modules.titlesChanger.control(openPanels)
+         */
+    })
 
     document.addEventListener("configPanel", (e) => {
         panels[e.detail.panel][e.detail.type] = e.detail.value
+        modules.panelsIconsBlock.control(e.detail, barsAnimation, panelsAnimation)
         modules.barsControl.control(e.detail, panels)
-
-/*        
-        modules.expandIcons.control(e.detail)
- */    })
+        modules.panelIconsControl.control(e.detail, panelsIcons)
+    })
 }
 
 const listEvents = (modules, lastComponent) => {
@@ -56,6 +56,7 @@ const registerModules = async (components) => {
 export const init = async () => {
     let components = [
         { module: "barsControl", path: "./interface/controls/barsControl.js" },
+
         { module: "panelsControl", path: "./interface/controls/topPanelsToogle.js" },
         { module: "panelIconsControl", path: "./interface/controls/topPanelsIconsControl.js" },
         { module: "panelsIconsBlock", path: "./interface/controls/topPanelsIconsBlock.js" },
@@ -68,12 +69,13 @@ export const init = async () => {
 
     const panels = { menuPanel: { hor: true, ver: true }, configPanel: { hor: true, ver: true }, allPanels: { hor: true, ver: true } }
     const panelsIcons = { menuPanel: false, configPanel: false, allPanels: true }
-    const bars = { topBar: { resizing: false }, bottomBar: { resizing: false } }
+    const barsAnimation = { topBar: null, bottomBar: null }
+    const panelsAnimation = { menuPanel: null, configPanel: null }
     const modules = await registerModules(components)
     const lastComponent = {}
 
-    barsEvents(modules, bars)
+    barsEvents(modules, barsAnimation, panelsAnimation)
 /*     listEvents(modules, lastComponent)
  */    topBarEvents(modules, panelsIcons)
-    panelEvents(modules, panels)
+    panelEvents(modules, panels, panelsIcons, barsAnimation, panelsAnimation)
 }

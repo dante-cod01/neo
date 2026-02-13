@@ -129,7 +129,7 @@ export class ExpandBar extends HTMLElement {
         colorLayer.classList.remove("allOpen", "openLeft", "openRight")
         this.#newRadius(false, colorLayer)
 
-        this.base.sendEvent(this.eventDom, this.eventName, { bar: this.eventName, expand: true })
+        this.base.sendEvent(this.eventDom, this.eventName, { bar: this.eventName, animation: "init" })
         if (mode === "left") {
             boolean ? colorLayer.classList.add("openLeft") : colorLayer.classList.remove("openLeft")
             this.#newRadius("left", colorLayer)
@@ -143,7 +143,7 @@ export class ExpandBar extends HTMLElement {
             this.#newRadius("all", colorLayer)
         }
         await new Promise(resolve => setTimeout(resolve, time))
-        this.base.sendEvent(this.eventDom, this.eventName, {bar: this.eventName, expand: false })
+        this.base.sendEvent(this.eventDom, this.eventName, {bar: this.eventName, animation: "end" })
     }
 }
 customElements.define(tag, ExpandBar)

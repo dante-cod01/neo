@@ -241,6 +241,8 @@ export class PanelBox extends HTMLElement {
         const title = this.dom.querySelector(".title")
         const time = this.base.convertTransition(this.css.box_transition)
 
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, animation: "init" })
+
         if (boolean === true) {
             this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "hor", value: true })
             await this.#open_W(topBack, time)
@@ -257,6 +259,8 @@ export class PanelBox extends HTMLElement {
 
         const toogleButtom = this.dom.querySelector("#toogleButtom")
         toogleButtom.checked = boolean
+
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, animation: "end" })
     }
 
     #open_W = async (topBack, time) => {

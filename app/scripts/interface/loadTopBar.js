@@ -34,9 +34,9 @@ const drawPanelsControls = async (box, dependency) => {
 
     const data = [
         { box: "space", size: "5px" },
-        { box: "checkbox", id: "menuPanel", type: "material", icon: "arrow_menu_close" },
-        { box: "checkbox", id: "configPanel", type: "material", icon: "arrow_menu_open" },
-        { box: "checkbox", id: "allPanels", type: "material", icon: "crop_landscape", checked: true },
+        { box: "checkbox", id: "menuPanel_input", type: "material", icon: "arrow_menu_close" },
+        { box: "checkbox", id: "configPanel_input", type: "material", icon: "arrow_menu_open" },
+        { box: "checkbox", id: "allPanels_input", type: "material", icon: "crop_landscape", checked: true },
         { box: "space", size: "5px" },
     ]
 

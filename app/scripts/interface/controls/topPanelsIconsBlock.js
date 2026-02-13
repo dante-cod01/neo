@@ -5,8 +5,13 @@ const blockInputs = (boolean) => {
     options.forEach(item => { item.disabled = boolean })
 }
 
-export const control = (detail, bars) => {
-    bars[detail.bar] = detail.expand
-    if (bars.topBar || bars.bottomBar) blockInputs(true)
-    if (!bars.topBar && !bars.bottomBar) blockInputs(false)
+export const control = (detail, bars, panels) => {
+    if (detail.bar && detail.animation) bars[detail.bar] = detail.animation
+    if (detail.panel && detail.animation) panels[detail.panel] = detail.animation
+
+    const barsState = !Object.values(bars).includes("init")
+    const panelsState = !Object.values(panels).includes("init")
+
+    if (!barsState || !panelsState) blockInputs(true)
+    if (barsState && panelsState) blockInputs(false)
 }

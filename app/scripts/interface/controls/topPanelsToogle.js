@@ -4,15 +4,16 @@ const controlPanels = (input) => {
     const menuPanel = dom_helper.id("menuPanel")
     const configPanel = dom_helper.id("configPanel")
 
-    if (input.id === "menuPanel") {
+    if (input.id === "menuPanel_input") {
         menuPanel.tooglePanel(!input.checked)
     }
 
-    if (input.id === "configPanel") {
+    if (input.id === "configPanel_input") {
         configPanel.tooglePanel(!input.checked)
     }
 
-    if (input.id === "allPanels") {
+    if (input.id === "allPanels_input") {
+        console.log(input.checked)
         menuPanel.tooglePanel(input.checked)
         configPanel.tooglePanel(input.checked)
     }
