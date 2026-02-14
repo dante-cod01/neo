@@ -21,17 +21,15 @@ const changeComponentConf = (customConf, boolean, sectionBox, nameBox) => {
     }
 }
 
-const animate = async (lastComponent, detail, titlesBox, sectionBox, nameBox, customConf) => {
+const animate = async (detail, titlesBox, sectionBox, nameBox, customConf) => {
     const sectionText = detail.conf.section
     const nameText = detail.conf.config.name
-    lastComponent.name = nameText
 
     changeComponentConf(customConf, true, sectionBox, nameBox)
     const [width1, width2] = await Promise.all([
         sectionBox.addText(sectionText),
         nameBox.addText(nameText)
     ])
-
     const resizeMax = Math.max(...[width1, width2]) + "px"
     titlesBox.updateProp("box_width", resizeMax)
 
@@ -53,25 +51,25 @@ const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
     await utils_helper.time(css_helper.convertTransition(nameBox.conf.textBox_transition) * 2)
 }
 
-const moveTitlesBox = async (boolean) => {
-/*     console.log(boolean)
- */}
+const moveTitlesBox = async (box) => {
+    const pos = box.classList.contains("titlesBox_left")
+    pos ? box.classList.remove("titlesBox_left") : box.classList.add("titlesBox_left")
+}
 
 export const control = async (detail, lastComponent) => {
-/*     console.log(detail)
- */    const titlesBox = dom_helper.id("titlesBox")
+    const titlesBox = dom_helper.id("titlesBox")
 
-    if (detail.conf) { /* titles change */
+    if ("conf" in detail) {
+        console.log(detail)
         const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
         const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
         const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
 
         lastComponent.name && await animateRemove(titlesBox, sectionBox, nameBox, customConf)
-        await animate(lastComponent, detail, titlesBox, sectionBox, nameBox, customConf)
+        await animate(detail, titlesBox, sectionBox, nameBox, customConf)
+        lastComponent.name = detail.conf.config.name
     }
-
-    if ("menuPanel" in detail) {
-        const menuPanelState = detail.menuPanel
-        await moveTitlesBox(menuPanelState)
+    if ("panel" in detail && "ver" in detail) {
+        await moveTitlesBox(titlesBox)
     }
 }

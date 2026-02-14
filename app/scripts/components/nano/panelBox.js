@@ -14,6 +14,7 @@ export class PanelBox extends HTMLElement {
         this.eventDom
         this.eventName
         this.nodes
+        this.state = { open: true, hor: true, ver: true, animation: false }
 
         this.defaultCss = {
             box_width: "300px",
@@ -241,26 +242,39 @@ export class PanelBox extends HTMLElement {
         const title = this.dom.querySelector(".title")
         const time = this.base.convertTransition(this.css.box_transition)
 
-        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, animation: "init" })
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this, animation: "init" })
 
         if (boolean === true) {
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "hor", value: true })
+            this.state.hor = true
+            this.state.ver = true
+            this.state.open = true
+
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this, hor: true })
             await this.#open_W(topBack, time)
 
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "ver", value: true })
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this, ver: true })
             await this.#open_H(title, time)
+
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this, open: true })
+
         } else {
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "ver", value: false })
+            this.state.hor = false
+            this.state.ver = false
+            this.state.open = false
+
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this, ver: false })
             await this.#close_H(title, time)
 
-            this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, type: "hor", value: false })
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this, hor: false })
             await this.#close_W(topBack, title, time)
+
+            this.base.sendEvent(this.eventDom, this.eventName, { panel: this, open: false })
         }
 
         const toogleButtom = this.dom.querySelector("#toogleButtom")
         toogleButtom.checked = boolean
 
-        this.base.sendEvent(this.eventDom, this.eventName, { panel: this.id, animation: "end" })
+        this.base.sendEvent(this.eventDom, this.eventName, { panel: this, animation: "end" })
     }
 
     #open_W = async (topBack, time) => {

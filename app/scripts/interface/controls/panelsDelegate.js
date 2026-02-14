@@ -1,6 +1,6 @@
 import * as dom_helper from "../../modules/dom.js"
 
-const controlPanels = (input) => {
+const delegate = (input) => {
     const menuPanel = dom_helper.id("menuPanel")
     const configPanel = dom_helper.id("configPanel")
 
@@ -13,12 +13,11 @@ const controlPanels = (input) => {
     }
 
     if (input.id === "allPanels_input") {
-        console.log(input.checked)
         menuPanel.tooglePanel(input.checked)
         configPanel.tooglePanel(input.checked)
     }
 }
 
-export const control = async (detail, panels) => {
-    controlPanels(detail.input)
+export const control = async (detail) => {
+    delegate(detail.input)
 }
