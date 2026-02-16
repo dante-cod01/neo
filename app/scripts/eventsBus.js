@@ -40,6 +40,7 @@ const panelEvents = (modules, panels) => {
 const listEvents = (modules, lastComponent) => {
     document.addEventListener("listMenu", (e) => {
         modules.titlesChanger.control(e.detail, lastComponent)
+        modules.componentChanger.control(e.detail)
     })
 }
 
@@ -61,6 +62,8 @@ export const init = async () => {
         { module: "viewChanger", path: "./interface/controls/topViews.js" },
         /* controls titles */
         { module: "titlesChanger", path: "./interface/controls/titlesChanger.js" },
+        /* components */
+        { module: "componentChanger", path: "./interface/controls/componentChanger.js" }
     ]
 
     const panels = {

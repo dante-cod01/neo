@@ -1,10 +1,10 @@
-import * as appConfig from "./../../config/appConfig.js"
-import * as element from "./../modules/element.js"
-import * as cssHelper from "./../modules/css.js"
+import * as appConfig from "./../../../config/appConfig.js"
+import * as element from "./../../modules/element.js"
+import * as cssHelper from "./../../modules/css.js"
 
 const drawAutoStart = async () => {
-    const component = await import("../components/nano/inputs/switch_01.js")
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+    const component = await import("../../components/comp-classes/nano/inputs/switch_01.js")
+    const dependency = (await import("../../components/comp-dependencies/componentBase.js")).ComponentBase
 
     const fonts = [
         { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },

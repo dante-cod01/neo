@@ -1,8 +1,8 @@
-import * as css_helper from "../modules/css.js"
-import * as element from "../modules/element.js"
+import * as css_helper from "./../../modules/css.js"
+import * as element from "./../../modules/element.js"
 
 const drawBottomBar = async (box, dependency) => {
-    const component = await import("../components/nano/expandBar.js")
+    const component = await import("../../components/comp-classes/nano/expandBar.js")
 
     const conf = {
         box_width: css_helper.getVar("bar_width"),
@@ -26,6 +26,6 @@ const drawBottomBar = async (box, dependency) => {
 
 
 export const init = async (box) => {
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+    const dependency = (await import("../../components/comp-dependencies/componentBase.js")).ComponentBase
     const bottomBar = await drawBottomBar(box, dependency)
 }

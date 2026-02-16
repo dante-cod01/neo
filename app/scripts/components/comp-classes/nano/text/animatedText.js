@@ -122,17 +122,17 @@ export class FlashText extends HTMLElement {
         `
     }
 
-    #configure = () => {
+    #configure() {
         this.conf = this.base.generateConf(this.defaultConf, this.newConf, this)
         this.base.objToCssVar(this.conf, this)
         this.logic = this.base.generateLogic(this.defaultLogic, this.newLogic, this)
     }
 
-    #addLinks = () => {
+    #addLinks() {
         if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
-    #init = () => {
+    #init() {
         this.#addLinks()
         this.#configure()
         this.#draw()

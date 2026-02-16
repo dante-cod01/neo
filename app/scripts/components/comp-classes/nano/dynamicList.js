@@ -117,6 +117,7 @@ export class DynamicList extends HTMLElement {
                                         width: calc(100% - var(--expand_fakePadding) * 2);
                                         height: var(--li_height);
                                         margin-bottom: 2px;
+                                        white-space: nowrap;
 
                                         &:first-of-type {margin-top: calc(var(--expand_fakePadding));}
                                         &:last-of-type {margin-bottom: calc(var(--expand_fakePadding));}

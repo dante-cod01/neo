@@ -1,14 +1,14 @@
-import * as css_helper from "../modules/css.js"
-import * as element from "../modules/element.js"
+import * as css_helper from "./../../modules/css.js"
+import * as element from "./../../modules/element.js"
 
 const drawTitlesBox = async (box, dependency) => {
-    const component = await import("../components/nano/expandBox.js")
+    const component = await import("../../components/comp-classes/nano/expandBox.js")
 
     const conf = {
         box_position: "absolute",
         box_top: `calc(-50% + ${css_helper.getVar("bar_height")} / 2 )`,
         box_width: "0px",
-        box_height: "54px",
+        box_height: "48px",
     }
 
     const titlesBox = element.add(component.tag, box, "titlesBox absolute", "titlesBox")
@@ -21,7 +21,7 @@ const drawTitlesBox = async (box, dependency) => {
 }
 
 const drawSection = async (box, dependency) => {
-    const component = await import("../components/nano/text/animatedText.js")
+    const component = await import("../../components/comp-classes/nano/text/animatedText.js")
 
     const links = [
         { type: "font", name: "Permanent Marker", href: "https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" },
@@ -29,8 +29,8 @@ const drawSection = async (box, dependency) => {
 
     const conf = {
         box_width: "0px",
-        box_height: "34px",
-        box_radius: "8px",
+        box_height: "32px",
+        box_radius: "4px",
         box_back: css_helper.getVar("light_4"),
         box_backFilter: `blur(${css_helper.getVar("interface_blur")})`,
         box_transition: css_helper.getVar("normal_transition"),
@@ -62,11 +62,14 @@ const drawSection = async (box, dependency) => {
 }
 
 const drawName = async (box, dependency) => {
-    const component = await import("../components/nano/text/animatedText.js")
+    const component = await import("../../components/comp-classes/nano/text/animatedText.js")
 
     const links = [
-        { type: "font", name: "Sour Gummy", href: "https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" },
-        { type: "font", name: "Ubuntu Mono", href: "https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" },
+        { type: "font", name: "Orbitron", href: "https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" },
+        { type: "font", name: "Michroma", href: "https://fonts.googleapis.com/css2?family=Michroma&display=swap" },
+        { type: "font", name: "Audiowide", href: "https://fonts.googleapis.com/css2?family=Audiowide&display=swap" },
+        { type: "font", name: "Oxanium", href: "https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap" },
+        { type: "font", name: "Syncopate", href: "https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" },
     ]
 
     const conf = {
@@ -77,18 +80,16 @@ const drawName = async (box, dependency) => {
 
         textBox_width: "100%",
         textBox_height: "100%",
-        textBox_color: css_helper.getVar("light_4"),
+        textBox_color: css_helper.getVar("grey_2"),
         textBox_colorEnphasis: "white",
-        textBox_font: links[1].name,
-        textBox_fontSize: "14px",
-        textBox_fontStyle: "italic",
-/*         textBox_fontWeight: "bolder",
- */        textBox_padding: "0px 20px",
+        textBox_font: links[4].name,
+        textBox_fontSize: "10px",
+        textBox_fontWeight: "bolder",
+        textBox_padding: "0px 20px",
         textBox_textShadow: `0 0 10px white`,
-        textBox_scale: "1",
         textBox_transition: "500ms ease-in",
         textBox_side: "center",
-        char_spacing: "1px"
+        char_spacing: "0px"
     }
 
     const logic = {
@@ -106,7 +107,7 @@ const drawName = async (box, dependency) => {
 }
 
 export const init = async (box) => {
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+    const dependency = (await import("../../components/comp-dependencies/componentBase.js")).ComponentBase
 
     const titlesBox = await drawTitlesBox(box, dependency)
     await drawSection(titlesBox.nodes.node_0, dependency)

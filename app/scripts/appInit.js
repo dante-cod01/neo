@@ -24,13 +24,13 @@ const loadBusEvent = async (modules) => {
 const main = async () => {
     const loads = {
         eventBus: "./eventsBus.js",
-        styles: "./interface/loadStylesSheets.js",
-        mainBox: "./interface/loadComponentBox.js",
-        topBar: "./interface/loadTopBar.js",
-        listMenuPanel: "./interface/loadListPanel.js",
-        configMenuPanel: "./interface/loadConfigPanel.js",
-        bottomBar: "./interface/loadBottomBar.js",
-        titles: "./interface/loadTitles.js",
+        styles: "./interface/loads/loadStylesSheets.js",
+        mainBox: "./interface/loads/loadComponentBox.js",
+        topBar: "./interface/loads/loadTopBar.js",
+        listMenuPanel: "./interface/loads/loadListPanel.js",
+        configMenuPanel: "./interface/loads/loadConfigPanel.js",
+        bottomBar: "./interface/loads/loadBottomBar.js",
+        titles: "./interface/loads/loadTitles.js",
     }
 
     const modules = await loadModules(loads)
@@ -38,7 +38,7 @@ const main = async () => {
     await loadInterface(modules)
     await loadBusEvent(modules)
     /* auto start mode from appConfig*/
-    await import("./interface/loadAutoStart.js")
+    await import("./interface/loads/loadAutoStart.js")
 }
 
 main()

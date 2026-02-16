@@ -1,4 +1,4 @@
-import { backs } from "../preloadBacks.js"
+import { backs } from "./../loads/preloadBacks.js"
 import * as cssHelper from "../../modules/css.js"
 
 const changeBack = async (back) => {

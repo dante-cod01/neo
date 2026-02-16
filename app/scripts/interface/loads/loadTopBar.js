@@ -1,9 +1,9 @@
-import * as element from "../modules/element.js"
-import * as cssHelper from "../modules/css.js"
+import * as element from "./../../modules/element.js"
+import * as cssHelper from "./../../modules/css.js"
 
 const drawTopBar = async (box, dependency) => {
     /* expand-bar component */
-    const expandBar = await import("../components/nano/expandBar.js")
+    const expandBar = await import("../../components/comp-classes/nano/expandBar.js")
 
     const conf = {
         box_width: cssHelper.getVar("bar_width"),
@@ -26,7 +26,7 @@ const drawTopBar = async (box, dependency) => {
 
 const drawPanelsControls = async (box, dependency) => {
     /* panels control */
-    const checkersGroup = await import("../components/nano/checkersGroup.js")
+    const checkersGroup = await import("../../components/comp-classes/nano/checkersGroup.js")
 
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
@@ -71,7 +71,7 @@ const drawPanelsControls = async (box, dependency) => {
 
 const drawBackChanger = async (box, dependency) => {
     /* backs changer */
-    const checkersGroup = await import("../components/nano/checkersGroup.js")
+    const checkersGroup = await import("../../components/comp-classes/nano/checkersGroup.js")
 
     const links = [
         { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
@@ -125,7 +125,7 @@ const drawBackChanger = async (box, dependency) => {
 
 const drawViewChanger = async (box, dependency) => {
     /* views changer */
-    const checkersGroup = await import("../components/nano/checkersGroup.js")
+    const checkersGroup = await import("../../components/comp-classes/nano/checkersGroup.js")
 
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
@@ -175,7 +175,7 @@ const drawViewChanger = async (box, dependency) => {
 }
 
 export const init = async (box) => {
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+    const dependency = (await import("../../components/comp-dependencies/componentBase.js")).ComponentBase
 
     const topBar = await drawTopBar(box, dependency)
     const panelControls = await drawPanelsControls(topBar.nodes.node_0, dependency)

@@ -1,9 +1,9 @@
-import * as element from "../modules/element.js"
-import * as cssHelper from "../modules/css.js"
+import * as element from "./../../modules/element.js"
+import * as cssHelper from "./../../modules/css.js"
 
 const drawPanelBox = async (box, dependency) => {
     /* panel-box component */
-    const component = await import("../components/nano/panelBox.js")
+    const component = await import("../../components/comp-classes/nano/panelBox.js")
 
     const links = [
         { type: "font", name: "Material Symbols Outlined", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" },
@@ -48,7 +48,7 @@ const drawPanelBox = async (box, dependency) => {
 }
 
 export const init = async (box) => {
-    const dependency = (await import("../components/class/componentBase.js")).ComponentBase
+    const dependency = (await import("../../components/comp-dependencies/componentBase.js")).ComponentBase
 
     const panel = await drawPanelBox(box, dependency)
 }

@@ -60,7 +60,6 @@ export const control = async (detail, lastComponent) => {
     const titlesBox = dom_helper.id("titlesBox")
 
     if ("conf" in detail) {
-        console.log(detail)
         const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
         const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
         const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
