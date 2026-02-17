@@ -1,4 +1,4 @@
-export const tag = "multi-text"
+export const tag = "multi-background"
 export class MultiBack extends HTMLElement {
     constructor() {
         super()
@@ -8,17 +8,20 @@ export class MultiBack extends HTMLElement {
         this.links
         this.eventDom
         this.eventName
-        this.newConf = {} /* custom Conf */
-        this.conf = {} /* final Conf */
+        this.newCss = {} /* custom Conf */
+        this.css = {} /* final Conf */
         this.newLogic = {} /*  custom Logic */
         this.logic = {} /*  final Logic */
 
-        this.defaultCSS = {
-
+        this.defaultCss = {
+            box_width: "100%",
+            box_height: "100",
+            box_back: "none"
         }
 
-        this.defaultLOGIC = {
-
+        this.defaultLogic = {
+            direction: ["hor", "ver"],
+            backsNum: "1"
         }
 
         this.dom = this.attachShadow({ mode: "open" })
@@ -31,24 +34,31 @@ export class MultiBack extends HTMLElement {
     }
 
     #configure() {
-        this.conf = this.base.generateConf(this.defaultConf, this.newConf, this)
-        this.base.objToCssVar(this.conf, this)
-        this.logic = this.base.generateLogic(this.defaultLogic, this.newLogic, this)
+        this.css = this.base.generateConf(this.defaultCss, this.newCss, this)
+        this.base.objToCssVar(this.css, this)
+        this.logic = this.base.generateConf(this.defaultLogic, this.newLogic, this)
     }
 
     #draw() {
         this.container = this.base.add("div", this.dom, "main")
-        this.container.innerHTML = `
+        const style = this.base.add("style", this.dom)
+        style.textContent = `
             * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
             }
 
-            .host {
+            :host {
+                display: flex;
                 width: var(--box_width);
                 height: var(--box_height);
-                border: 10px solid red;
+                background: var(--box_back);
+            }
+
+            .main {
+                width: 100%,
+                height: 100%;
             }
         `
     }
@@ -62,4 +72,4 @@ export class MultiBack extends HTMLElement {
     }
 
 }
-customElements.define("muti-back", MultiBack)
+customElements.define(tag, MultiBack)

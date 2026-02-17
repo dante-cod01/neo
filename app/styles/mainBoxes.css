@@ -64,4 +64,13 @@ body {
             transition: var(--componentContainer_transition);
         }
     }
+
+    .componentBox {
+        opacity: 0;
+        transition: var(--componentContainer_transition);
+    }
+
+    .componentBox_visible {
+        opacity: 1;
+    }
 }

@@ -40,7 +40,7 @@ const panelEvents = (modules, panels) => {
 const listEvents = (modules, lastComponent) => {
     document.addEventListener("listMenu", (e) => {
         modules.titlesChanger.control(e.detail, lastComponent)
-        modules.componentChanger.control(e.detail)
+        modules.componentChanger.control(e.detail, lastComponent)
     })
 }
 

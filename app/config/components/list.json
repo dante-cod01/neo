@@ -1,30 +1,116 @@
 {
     "background": [
-        {"name": "Component 1", "tag": "tag1", "path": "path1"},
-        {"name": "title 2", "tag": "tag2", "path": "path2"},
-        {"name": "title 3", "tag": "tag3", "path": "path3"},
-        {"name": "title 4", "tag": "tag4", "path": "path4"},
-        {"name": "title 5", "tag": "tag5", "path": "path5"}
+        {
+            "name": "MultiBackground",
+            "tag": "multi-background",
+            "presetsPath": "/app/scripts/components/comp-presets/multiBack_presets.js",
+            "classPath": "/app/scripts/components/comp-classes/backs/multiBack.js",
+            "dependency": "/app/scripts/components/comp-dependencies/componentBase.js",
+            "dep_name": "ComponentBase"
+        },
+        {
+            "name": "MultiBackground",
+            "tag": "multi-background",
+            "presetsPath": "/app/scripts/components/comp-presets/multiBack_presets.js",
+            "classPath": "/app/scripts/components/comp-classes/backs/multiBack.js",
+            "dependency": "/app/scripts/components/comp-dependencies/componentBase.js",
+            "dep_name": "ComponentBase"
+        },
+        {
+            "name": "title 3",
+            "tag": "tag3",
+            "path": "path3"
+        },
+        {
+            "name": "title 4",
+            "tag": "tag4",
+            "path": "path4"
+        },
+        {
+            "name": "title 5",
+            "tag": "tag5",
+            "path": "path5"
+        }
     ],
     "type 2": [
-        {"name": "title 6", "tag": "tag6", "path": "path6"},
-        {"name": "title 7", "tag": "tag7", "path": "path7"},
-        {"name": "title 8", "tag": "tag8", "path": "path8"},
-        {"name": "title 9", "tag": "tag9", "path": "path9"},
-        {"name": "title 10", "tag": "tag10", "path": "path10"}
+        {
+            "name": "title 6",
+            "tag": "tag6",
+            "path": "path6"
+        },
+        {
+            "name": "title 7",
+            "tag": "tag7",
+            "path": "path7"
+        },
+        {
+            "name": "title 8",
+            "tag": "tag8",
+            "path": "path8"
+        },
+        {
+            "name": "title 9",
+            "tag": "tag9",
+            "path": "path9"
+        },
+        {
+            "name": "title 10",
+            "tag": "tag10",
+            "path": "path10"
+        }
     ],
     "type 3": [
-        {"name": "title 11", "tag": "tag11", "path": "path11"},
-        {"name": "title 12", "tag": "tag12", "path": "path12"},
-        {"name": "title 13", "tag": "tag13", "path": "path13"},
-        {"name": "title 14", "tag": "tag14", "path": "path14"},
-        {"name": "title 15", "tag": "tag15", "path": "path15"}
+        {
+            "name": "title 11",
+            "tag": "tag11",
+            "path": "path11"
+        },
+        {
+            "name": "title 12",
+            "tag": "tag12",
+            "path": "path12"
+        },
+        {
+            "name": "title 13",
+            "tag": "tag13",
+            "path": "path13"
+        },
+        {
+            "name": "title 14",
+            "tag": "tag14",
+            "path": "path14"
+        },
+        {
+            "name": "title 15",
+            "tag": "tag15",
+            "path": "path15"
+        }
     ],
     "type 4": [
-        {"name": "title 16", "tag": "tag16", "path": "path16"},
-        {"name": "title 17", "tag": "tag17", "path": "path17"},
-        {"name": "title 18", "tag": "tag18", "path": "path18"},
-        {"name": "title 19", "tag": "tag19", "path": "path19"},
-        {"name": "title 20", "tag": "tag20", "path": "path20"}
+        {
+            "name": "title 16",
+            "tag": "tag16",
+            "path": "path16"
+        },
+        {
+            "name": "title 17",
+            "tag": "tag17",
+            "path": "path17"
+        },
+        {
+            "name": "title 18",
+            "tag": "tag18",
+            "path": "path18"
+        },
+        {
+            "name": "title 19",
+            "tag": "tag19",
+            "path": "path19"
+        },
+        {
+            "name": "title 20",
+            "tag": "tag20",
+            "path": "path20"
+        }
     ]
 }

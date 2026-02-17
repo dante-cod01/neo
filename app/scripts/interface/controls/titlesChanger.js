@@ -48,7 +48,7 @@ const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
     titlesBox.updateProp("box_width", "0px")
     /* update props after */
     changeComponentConf(customConf, false, sectionBox, nameBox)
-    await utils_helper.time(css_helper.convertTransition(nameBox.conf.textBox_transition) * 2)
+    await utils_helper.pause(css_helper.convertTransition(nameBox.conf.textBox_transition) * 2)
 }
 
 const moveTitlesBox = async (box) => {
