@@ -8,7 +8,6 @@ const barExpand = async (panels, bar, direction) => {
     if (!openMenu && openConfig) bar.expand("left", true)
     if (openMenu && !openConfig) bar.expand("right", true)
     if (!openMenu && !openConfig) bar.expand("all", true)
-    await new Promise(resolve => setTimeout(resolve, 2444))
 }
 
 export const control = async (detail, panels) => {

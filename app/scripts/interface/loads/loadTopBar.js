@@ -1,21 +1,21 @@
-import * as element from "./../../modules/element.js"
-import * as cssHelper from "./../../modules/css.js"
+import * as dom_helper from "./../../modules/dom.js"
+import * as css_helper from "./../../modules/css.js"
 
 const drawTopBar = async (box, dependency) => {
     /* expand-bar component */
     const expandBar = await import("../../components/comp-classes/nano/expandBar.js")
 
     const conf = {
-        box_width: cssHelper.getVar("bar_width"),
-        box_height: cssHelper.getVar("bar_height"),
+        box_width: css_helper.getVar("bar_width"),
+        box_height: css_helper.getVar("bar_height"),
         box_width_max: "180px",
-        box_back: cssHelper.getVar("dark_4"),
-        box_radius: cssHelper.getVar("interface_radius"),
+        box_back: css_helper.getVar("dark_4"),
+        box_radius: css_helper.getVar("interface_radius"),
         box_nodesLayer_padding: "0px 20px",
-        box_transition: cssHelper.getVar("normal_transition"),
+        box_transition: css_helper.getVar("normal_transition"),
     }
 
-    const topBar = element.add(expandBar.tag, box, "absolute topBar bar", "topBar")
+    const topBar = dom_helper.add(expandBar.tag, box, "absolute topBar bar", "topBar")
     topBar.newConf = conf
     topBar.eventDom = document
     topBar.eventName = topBar.id
@@ -42,24 +42,24 @@ const drawPanelsControls = async (box, dependency) => {
 
     const css = {
         box_width: "auto",
-        box_height: `calc(${cssHelper.getVar("bar_height")} - 8px)`,
-        box_back: cssHelper.getVar("dark_2"),
+        box_height: `calc(${css_helper.getVar("bar_height")} - 8px)`,
+        box_back: css_helper.getVar("dark_2"),
         box_radius: "6px",
 
         option_width: "28px",
         option_height: "100%",
-        option_hover_color: cssHelper.getVar("light_1"),
-        option_checked_color: cssHelper.getVar("enphasis_1"),
+        option_hover_color: css_helper.getVar("light_1"),
+        option_checked_color: css_helper.getVar("enphasis_1"),
 
         material_fontSize: "16px",
-        material_color: cssHelper.getVar("light_3"),
+        material_color: css_helper.getVar("light_3"),
     }
 
     const logic = {
         horizontal: true
     }
 
-    const panelsControls = element.add(checkersGroup.tag, box, "", "expandIcons")
+    const panelsControls = dom_helper.add(checkersGroup.tag, box, "", "expandIcons")
     panelsControls.data = data
     panelsControls.links = links
     panelsControls.css = css
@@ -87,24 +87,24 @@ const drawBackChanger = async (box, dependency) => {
 
     const css = {
         box_width: "fit-content",
-        box_height: cssHelper.getVar("bar_height"),
+        box_height: css_helper.getVar("bar_height"),
 
         transition: "140ms ease-in-out",
 
         option_width: "fit-content",
         option_height: "100%",
-        option_hover_color: cssHelper.getVar("dark_1"),
-        option_hover_back: cssHelper.getVar("light_2"),
-        option_checked_color: cssHelper.getVar("dark_1"),
-        option_checked_back: cssHelper.getVar("enphasis_1"),
+        option_hover_color: css_helper.getVar("dark_1"),
+        option_hover_back: css_helper.getVar("light_2"),
+        option_checked_color: css_helper.getVar("dark_1"),
+        option_checked_back: css_helper.getVar("enphasis_1"),
 
         iconBox_size: "20px",
         iconBox_margin: "4px",
         icon_font: "Anta",
-        icon_color: cssHelper.getVar("dark_2"),
-        icon_back: cssHelper.getVar("light_5"),
+        icon_color: css_helper.getVar("dark_2"),
+        icon_back: css_helper.getVar("light_5"),
         icon_radius: "50%",
-        icon_border: `1px solid ${cssHelper.getVar("light_5")}`,
+        icon_border: `1px solid ${css_helper.getVar("light_5")}`,
         icon_fontSize: "10px"
     }
 
@@ -112,7 +112,7 @@ const drawBackChanger = async (box, dependency) => {
         horizontal: true
     }
 
-    const backChanger = element.add(checkersGroup.tag, box, "", "backChanger")
+    const backChanger = dom_helper.add(checkersGroup.tag, box, "", "backChanger")
     backChanger.data = data
     backChanger.links = links
     backChanger.css = css
@@ -144,26 +144,26 @@ const drawViewChanger = async (box, dependency) => {
 
     const css = {
         box_width: "auto",
-        box_height: `calc(${cssHelper.getVar("bar_height")} - 8px)`,
-        box_back: cssHelper.getVar("dark_2"),
+        box_height: `calc(${css_helper.getVar("bar_height")} - 8px)`,
+        box_back: css_helper.getVar("dark_2"),
         box_radius: "6px",
 
         option_width: "28px",
         option_height: "100%",
-        option_hover_color: cssHelper.getVar("light_2"),
-        option_checked_color: cssHelper.getVar("enphasis_1"),
+        option_hover_color: css_helper.getVar("light_2"),
+        option_checked_color: css_helper.getVar("enphasis_1"),
 
-        material_size: cssHelper.getVar("bar_height"),
-        material_color: cssHelper.getVar("light_3"),
+        material_size: css_helper.getVar("bar_height"),
+        material_color: css_helper.getVar("light_3"),
         material_fontSize: "16px",
-        material_disabled: cssHelper.getVar("light_5")
+        material_disabled: css_helper.getVar("light_5")
     }
 
     const logic = {
         horizontal: true
     }
 
-    const viewChanger = element.add(checkersGroup.tag, box, "", "viewChanger")
+    const viewChanger = dom_helper.add(checkersGroup.tag, box, "", "viewChanger")
     viewChanger.data = data
     viewChanger.links = links
     viewChanger.css = css

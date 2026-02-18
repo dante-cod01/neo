@@ -1,5 +1,5 @@
-import * as element from "./../../modules/element.js"
-import * as cssHelper from "./../../modules/css.js"
+import * as dom_helper from "./../../modules/dom.js"
+import * as css_helper from "./../../modules/css.js"
 
 const drawPanelBox = async (box, dependency) => {
     /* panel-box component */
@@ -11,21 +11,21 @@ const drawPanelBox = async (box, dependency) => {
     ]
 
     const css = {
-        box_width: cssHelper.getVar("panel_width"),
-        box_height: cssHelper.getVar("panel_height"),
+        box_width: css_helper.getVar("panel_width"),
+        box_height: css_helper.getVar("panel_height"),
         box_radius: "6px",
-        box_blur: cssHelper.getVar("interface_blur"),
-        box_transition: cssHelper.getVar("normal_transition"),
-        topBar_height: cssHelper.getVar("bar_height"),
-        topBar_back: cssHelper.getVar("dark_2"),
-        content_back: cssHelper.getVar("dark_4"),
+        box_blur: css_helper.getVar("interface_blur"),
+        box_transition: css_helper.getVar("normal_transition"),
+        topBar_height: css_helper.getVar("bar_height"),
+        topBar_back: css_helper.getVar("dark_2"),
+        content_back: css_helper.getVar("dark_4"),
         title_font: "Anta",
         title_fontSize: "14px",
-        title_color: cssHelper.getVar("light_2"),
+        title_color: css_helper.getVar("light_2"),
         icon_size: "16px",
-        icon_color: cssHelper.getVar("light_2"),
+        icon_color: css_helper.getVar("light_2"),
         bottomBar_height: "34px",
-        bottomBar_back: cssHelper.getVar("dark_2"),
+        bottomBar_back: css_helper.getVar("dark_2"),
     }
 
     document.body.style.transition = css.transition
@@ -37,7 +37,7 @@ const drawPanelBox = async (box, dependency) => {
         icon: "tune"
     }
 
-    const panelBox = element.add(component.tag, box, "panelMenu panelRight", "configPanel")
+    const panelBox = dom_helper.add(component.tag, box, "panelMenu panelRight", "configPanel")
     panelBox.css = css
     panelBox.logic = logic
     panelBox.links = links

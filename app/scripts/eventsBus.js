@@ -81,8 +81,8 @@ export const init = async () => {
     ]
 
     const panels = {
-        menuPanel: dom_helper.id("menuPanel"),
-        configPanel: dom_helper.id("configPanel")
+        menuPanel: dom_helper.search("#menuPanel"),
+        configPanel: dom_helper.search("#configPanel")
     }
 
     const modules = await registerModules(components)

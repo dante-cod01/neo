@@ -1,8 +1,9 @@
 import * as appConfig from "./../../../config/appConfig.js"
-import * as element from "./../../modules/element.js"
-import * as cssHelper from "./../../modules/css.js"
+import * as dom_helper from "./../../modules/dom.js"
+import * as css_helper from "./../../modules/css.js"
+import * as utils_helper from "./../../modules/utils.js"
 
-const drawAutoStart = async () => {
+const drawAutoStart = async (box) => {
     const component = await import("../../components/comp-classes/nano/inputs/switch_01.js")
     const dependency = (await import("../../components/comp-dependencies/componentBase.js")).ComponentBase
 
@@ -16,17 +17,17 @@ const drawAutoStart = async () => {
 
         switch_width: "40px",
         switch_height: "16px",
-        switch_back_off: cssHelper.getVar("grey_4"),
-        switch_back_on: cssHelper.getVar("light_4"),
+        switch_back_off: css_helper.getVar("grey_4"),
+        switch_back_on: css_helper.getVar("light_4"),
         switch_radius: "4px",
         switch_shadow: "inset 1px 0 4px black",
 
         pointer_width: "20px",
         pointer_height: "14px",
-        pointer_back_off: cssHelper.getVar("light_5"),
+        pointer_back_off: css_helper.getVar("light_5"),
         pointer_back_on: "white",
         pointer_border_off: "5px solid transparent",
-        pointer_border_on: `5px solid ${cssHelper.getVar("enphasis_1")}`,
+        pointer_border_on: `5px solid ${css_helper.getVar("enphasis_1")}`,
         pointer_filter: "blur(2px)",
         pointer_radius: "4px",
 
@@ -36,10 +37,10 @@ const drawAutoStart = async () => {
         label_font: "Anta",
         label_style: "italic",
         label_size: "12px",
-        label_color: cssHelper.getVar("light_5"),
+        label_color: css_helper.getVar("light_5"),
         label_padding: "0 44px 0 0",
-        label_hover_color: cssHelper.getVar("light_4"),
-        label_checked_color: cssHelper.getVar("light_4"),
+        label_hover_color: css_helper.getVar("light_4"),
+        label_checked_color: css_helper.getVar("light_4"),
         transition: "160ms ease-out"
     }
 
@@ -51,13 +52,12 @@ const drawAutoStart = async () => {
         icon_pos: "left"
     }
 
-    const menuPanel = document.getElementById("menuPanel").nodes.node_1
-    const autoStartToogle = element.add(component.tag, menuPanel, "", "toogleAutoStart")
+    const autoStartToogle = dom_helper.add(component.tag, box, "", "toogleAutoStart")
     autoStartToogle.css = css
     autoStartToogle.logic = logic
     autoStartToogle.fonts = fonts
     autoStartToogle.eventDom = document
-    autoStartToogle.eventName = "autoStart"
+    autoStartToogle.eventName = autoStartToogle.id
     autoStartToogle.addDependency(new dependency())
     return autoStartToogle
 }
@@ -66,42 +66,34 @@ const saveModeStatus = (boolean) => {
     localStorage.setItem("appAutoLoad", JSON.stringify(boolean))
 }
 
-const eventListener = (autoStart) => {
-    const time = cssHelper.convertTransition(autoStart.css.transition)
-
-    document.addEventListener("autoStart", async (e) => {
-        if (e.detail.value) {
-            await new Promise(resolve => setTimeout(resolve, time * 3))
-            startAutoMode()
-            saveModeStatus(true)
-        } else {
-            console.log(e.target)
-            saveModeStatus(false)
-            await new Promise(resolve => setTimeout(resolve, time * 3))
-            location.reload()
-        }
+const eventListener = (menuPanel) => {
+    document.addEventListener("tooglemenuPanel", async (e) => {
+        startAutoMode(autoStart)
+        saveModeStatus(true)
     })
 }
 
-const startAutoMode = async () => {
-    const listItems = document.getElementById("menuPanel").nodes.node_0.children[0]
+const startAutoMode = async (box) => {
+    const listItems = box.nodes.node_0.children[0]
     listItems.items.section_0.sectionInput.checked = true
     listItems.items.section_0.sectionInput.dispatchEvent(new CustomEvent("change"))
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await utils_helper.pause(500)
     listItems.items.section_0.itemsInput[0].checked = true
     listItems.items.section_0.itemsInput[0].dispatchEvent(new CustomEvent("change"))
 }
 
 const init = async () => {
     if (appConfig.autoLoad) {
-        const autoStart = await drawAutoStart()
-        eventListener(autoStart)
+        const menuPanel = dom_helper.search("#menuPanel")
+        const autoStart = await drawAutoStart(menuPanel.nodes.node_1)
         const loadConfig = JSON.parse(localStorage.getItem("appAutoLoad"))
+        eventListener(menuPanel)
+
         if (loadConfig) {
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            await utils_helper.pause(500) /* waiting for active input */
             autoStart.inputChecked(true)
-            await new Promise(resolve => setTimeout(resolve, 500))
-            startAutoMode()
+            await utils_helper.pause(300)
+            startAutoMode(menuPanel)
         }
     }
 }

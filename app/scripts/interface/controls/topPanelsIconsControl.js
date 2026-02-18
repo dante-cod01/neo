@@ -22,6 +22,6 @@ const evalueInputs = (options, panels) => {
 }
 
 export const control = async (detail, panels) => {
-    const panelsOptions = Array.from(dom_helper.id("expandIcons", dom_helper.id("topBar").shadowRoot).shadowRoot.querySelectorAll("input"))
+    const panelsOptions = Array.from(dom_helper.search("#expandIcons", dom_helper.search("#topBar").shadowRoot).shadowRoot.querySelectorAll("input"))
     if (detail.panel && detail.animation === "end") evalueInputs(panelsOptions, panels)
 }

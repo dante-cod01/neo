@@ -1,13 +1,14 @@
-export const id = (par, dom = null) => { /* old */
+/* export const id = (par, dom = null) => {
     console.log("css [id] module old - replace width: [search]")
+    console.trace()
     let result = null
     dom
         ? result = dom.querySelector(`#${par}`)
         : result = document.getElementById(par)
     return result
 }
-
-export const search = (string, dom = null) => { /* new */
+ */
+export const search = (string, dom = null) => {
     const root = dom || document
     
     if (string.startsWith("#")) return root.querySelector(string)

@@ -1,8 +1,8 @@
-import * as element from "./../../modules/element.js"
+import * as dom_helper from "./../../modules/dom.js"
 
 export const init = async (box) => {
-    const container = element.add("div", box, "componentContainer componentTransform max center relative", "componentContainer")
-    const backLayer = element.add("div", container, "backLayer absolute max")
-    const blurLayer = element.add("div", container, "blurLayer absolute max")
-    const componentBox = element.add("div", box, "componentBox max absolute center", "componentBox")
+    const container = dom_helper.add("div", box, "componentContainer componentTransform max center relative", "componentContainer")
+    const backLayer = dom_helper.add("div", container, "backLayer absolute max")
+    const blurLayer = dom_helper.add("div", container, "blurLayer absolute max")
+    const componentBox = dom_helper.add("div", box, "componentBox max absolute center", "componentBox")
 } 

@@ -1,8 +1,8 @@
 import * as dom_helper from "../../modules/dom.js"
 
 const delegate = (input) => {
-    const menuPanel = dom_helper.id("menuPanel")
-    const configPanel = dom_helper.id("configPanel")
+    const menuPanel = dom_helper.search("#menuPanel")
+    const configPanel = dom_helper.search("#configPanel")
 
     if (input.id === "menuPanel_input") {
         menuPanel.tooglePanel(!input.checked)

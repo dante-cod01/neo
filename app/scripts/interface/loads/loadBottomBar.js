@@ -1,5 +1,5 @@
 import * as css_helper from "./../../modules/css.js"
-import * as element from "./../../modules/element.js"
+import * as dom_helper from "./../../modules/dom.js"
 
 const drawBottomBar = async (box, dependency) => {
     const component = await import("../../components/comp-classes/nano/expandBar.js")
@@ -15,7 +15,7 @@ const drawBottomBar = async (box, dependency) => {
         box_transition: css_helper.getVar("normal_transition"),
     }
 
-    const bottomBar = element.add(component.tag, box, "absolute bottomBar bar", "bottomBar")
+    const bottomBar = dom_helper.add(component.tag, box, "absolute bottomBar bar", "bottomBar")
     bottomBar.newConf = conf
     bottomBar.eventDom = document
     bottomBar.eventName = bottomBar.id

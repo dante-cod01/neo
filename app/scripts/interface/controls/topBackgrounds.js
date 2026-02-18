@@ -1,16 +1,17 @@
 import { backs } from "./../loads/preloadBacks.js"
-import * as cssHelper from "../../modules/css.js"
+import * as utils_helper from "../../modules/utils.js"
+import * as css_helper from "../../modules/css.js"
 
 const changeBack = async (back) => {
     const image = backs[back]
-    document.documentElement.style.setProperty("--backLayer_back", `url("${image}")`)
+    css_helper.setVar("backLayer_back", `url("${image}")`, document.documentElement.style)
 }
 
 const changeBlur = async (blur, opacity) => {
-    const time = cssHelper.convertTransition(cssHelper.getVar("normal_transition"))
-    document.documentElement.style.setProperty("--blurLayer_filter", blur)
-    document.documentElement.style.setProperty("--backLayer_opacity", opacity)
-    await new Promise(resolve => setTimeout(resolve, time))
+    const delay = utils_helper.getTimeVarCss("normal_transition")
+    css_helper.setVar("blurLayer_filter", blur, document.documentElement.style)
+    css_helper.setVar("backLayer_opacity", opacity, document.documentElement.style)
+    await utils_helper.pause(delay)
 }
 
 const animationBack = async (input) => {

@@ -1,5 +1,5 @@
 import * as css_helper from "./../../modules/css.js"
-import * as element from "./../../modules/element.js"
+import * as dom_helper from "./../../modules/dom.js"
 
 const drawTitlesBox = async (box, dependency) => {
     const component = await import("../../components/comp-classes/nano/expandBox.js")
@@ -11,7 +11,7 @@ const drawTitlesBox = async (box, dependency) => {
         box_height: "48px",
     }
 
-    const titlesBox = element.add(component.tag, box, "titlesBox absolute", "titlesBox")
+    const titlesBox = dom_helper.add(component.tag, box, "titlesBox absolute", "titlesBox")
     titlesBox.eventDom = document
     titlesBox.eventName = titlesBox.id
     titlesBox.newConf = conf
@@ -51,7 +51,7 @@ const drawSection = async (box, dependency) => {
         upperCase: true
     }
 
-    const sectionComponent = await element.add(component.tag, box, "absolute", "titleSection")
+    const sectionComponent = await dom_helper.add(component.tag, box, "absolute", "titleSection")
     sectionComponent.newConf = conf
     sectionComponent.newLogic = logic
     sectionComponent.links = links
@@ -96,7 +96,7 @@ const drawName = async (box, dependency) => {
         upperCase: false
     }
 
-    const nameBar = await element.add(component.tag, box, "absolute", "titleName")
+    const nameBar = await dom_helper.add(component.tag, box, "absolute", "titleName")
     nameBar.newConf = conf
     nameBar.newLogic = logic
     nameBar.links = links

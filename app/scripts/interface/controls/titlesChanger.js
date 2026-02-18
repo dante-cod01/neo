@@ -1,5 +1,4 @@
 import * as dom_helper from "../../modules/dom.js"
-import * as css_helper from "../../modules/css.js"
 import * as utils_helper from "../../modules/utils.js"
 
 const changeComponentConf = (customConf, boolean, sectionBox, nameBox) => {
@@ -41,6 +40,7 @@ const animate = async (detail, titlesBox, sectionBox, nameBox, customConf) => {
 }
 
 const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
+    const delay = utils_helper.getTime(nameBox.conf.textBox_transition) * 2
     /* update this props before */
     sectionBox.updateProp("box_overflow", "hidden")
     await sectionBox.removeText()
@@ -48,13 +48,13 @@ const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
     titlesBox.updateProp("box_width", "0px")
     /* update props after */
     changeComponentConf(customConf, false, sectionBox, nameBox)
-    await utils_helper.pause(css_helper.convertTransition(nameBox.conf.textBox_transition) * 2)
+    await utils_helper.pause(delay)
 }
 
 export const control = async (actualComponent, lastComponent) => {
-    const titlesBox = dom_helper.id("titlesBox")
-    const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
-    const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
+    const titlesBox = dom_helper.search("#titlesBox")
+    const sectionBox = dom_helper.search("#titleSection", titlesBox.nodes.node_0)
+    const nameBox = dom_helper.search("#titleName", titlesBox.nodes.node_1)
     const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
 
     if (Object.keys(lastComponent).length !== 0) {

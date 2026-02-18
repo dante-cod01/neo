@@ -1,5 +1,4 @@
 import * as dom_helper from "./../../modules/dom.js"
-import * as css_helper from "./../../modules/css.js"
 import * as utils_helper from "./../../modules/utils.js"
 
 const loadComponent = async (par, box) => {
@@ -23,14 +22,14 @@ const loadComponent = async (par, box) => {
 
 const boxVisibility = async (boolean) => {
     const componentBox = dom_helper.search("#componentBox")
-    const delay = css_helper.transitionTime(componentBox)
+    const delay = utils_helper.getTimePropCss(componentBox)
     boolean
         ? componentBox.classList.add("componentBox_visible")
         : componentBox.classList.remove("componentBox_visible")
     await utils_helper.pause(delay)
 }
 
-export const control = async (detail, actualComponent, lastComponent) => {
+export const control = async (detail, actualComponent) => {
     const componentBox = dom_helper.search("#componentBox")
 
     if (detail.title === "titleName" && detail.expand === true) {
