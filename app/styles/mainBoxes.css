@@ -63,14 +63,18 @@ body {
             backdrop-filter: blur(var(--blurLayer_filter));
             transition: var(--componentContainer_transition);
         }
-    }
 
-    .componentBox {
-        opacity: 0;
-        transition: var(--componentContainer_transition);
-    }
+        .lightLayer {
+            background: var(--dark_4);
+        }
 
-    .componentBox_visible {
-        opacity: 1;
+        .componentBox {
+            opacity: 0;
+            transition: var(--componentContainer_transition);
+        }
+
+        .componentBox_visible {
+            opacity: 1;
+        }
     }
 }
