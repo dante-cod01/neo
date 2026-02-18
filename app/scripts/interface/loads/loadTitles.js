@@ -56,7 +56,7 @@ const drawSection = async (box, dependency) => {
     sectionComponent.newLogic = logic
     sectionComponent.links = links
     sectionComponent.eventDom = document
-    sectionComponent.eventname = sectionComponent.id
+    sectionComponent.eventName = sectionComponent.id
     sectionComponent.addDependency(new dependency())
     return sectionComponent
 }

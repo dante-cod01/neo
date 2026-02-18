@@ -160,9 +160,13 @@ export class FlashText extends HTMLElement {
 
     async expandBox(boolean, width) {
         const time = this.base.convertTransition(this.conf.box_transition)
-        boolean
-            ? this.updateProp("box_width", width)
-            : this.updateProp("box_width", "0px")
+        if (boolean) {
+            this.base.sendEvent(this.eventDom, this.eventName, { title: this.id, expand: true })
+            this.updateProp("box_width", width)
+        } else {
+            this.base.sendEvent(this.eventDom, this.eventName, { title: this.id, expand: false })
+            this.updateProp("box_width", "0px")
+        }
         await this.base.time(time)
     }
 
@@ -170,6 +174,7 @@ export class FlashText extends HTMLElement {
         const word = Array.from(this.dom.querySelectorAll(".charSpan"))
         const delay = 50
         let charCount = 0
+        this.base.sendEvent(this.eventDom, this.eventName, { title: this.id, open: true })
 
         for (const item of word) {
             item.classList.replace("invisible", "visible")
@@ -188,6 +193,9 @@ export class FlashText extends HTMLElement {
             spans[index].classList.replace("visible", "invisible")
             spans[index].textContent !== " " && await this.base.time(delay)
         }
+
+        this.base.sendEvent(this.eventDom, this.eventName, { title: this.id, open: false })
+
         await this.base.time(this.base.transitionTime(this.conf.textBox_transition))
         textBox.innerHTML = ""
     }

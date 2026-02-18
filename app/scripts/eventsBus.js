@@ -1,6 +1,6 @@
 import * as dom_helper from "./modules/dom.js"
 
-const barsEvents = (modules, lastComponent) => {
+const barsEvents = (modules) => {
     document.addEventListener("expandIcons", async (e) => {
         modules.panelsDelegate.control(e.detail)
     })
@@ -18,7 +18,7 @@ const panelEvents = (modules, panels) => {
     document.addEventListener("menuPanel", async (e) => {
         if (["hor", "ver"].some(key => key in e.detail)) {
             modules.barsControl.control(e.detail, panels)
-            modules.titlesChanger.control(e.detail, panels)
+            modules.titlesMove.control(e.detail)
         }
         if ("animation" in e.detail) {
             modules.panelsIconsBlock.control(e.detail)
@@ -37,10 +37,20 @@ const panelEvents = (modules, panels) => {
     })
 }
 
-const listEvents = (modules, lastComponent) => {
+const listEvents = (modules, actualComponent, lastComponent) => {
     document.addEventListener("listMenu", (e) => {
-        modules.titlesChanger.control(e.detail, lastComponent)
-        modules.componentChanger.control(e.detail, lastComponent)
+        actualComponent.conf = e.detail.conf
+        modules.titlesChanger.control(actualComponent, lastComponent)
+    })
+}
+
+const titlesEvents = (modules, actualComponent, lastComponent) => {
+    document.addEventListener("titleSection", async (e) => {
+        modules.componentChanger.control(e.detail, actualComponent, lastComponent)
+        lastComponent.conf = e.detail.conf
+    })
+    document.addEventListener("titleName", async (e) => {
+        modules.componentChanger.control(e.detail, actualComponent, lastComponent)
     })
 }
 
@@ -49,6 +59,9 @@ const registerModules = async (components) => {
     await Promise.all(components.map(async (item) => { modules[item.module] = await import(item.path) }))
     return modules
 }
+
+const actualComponent = {}
+const lastComponent = {}
 
 export const init = async () => {
     let components = [
@@ -62,6 +75,7 @@ export const init = async () => {
         { module: "viewChanger", path: "./interface/controls/topViews.js" },
         /* controls titles */
         { module: "titlesChanger", path: "./interface/controls/titlesChanger.js" },
+        { module: "titlesMove", path: "./interface/controls/titlesMove.js" },
         /* components */
         { module: "componentChanger", path: "./interface/controls/componentChanger.js" }
     ]
@@ -72,9 +86,10 @@ export const init = async () => {
     }
 
     const modules = await registerModules(components)
-    const lastComponent = {}
 
-    listEvents(modules, lastComponent)
-    barsEvents(modules, lastComponent)
+    listEvents(modules, actualComponent, lastComponent)
+
+    titlesEvents(modules, actualComponent, lastComponent)
+    barsEvents(modules)
     panelEvents(modules, panels)
 }

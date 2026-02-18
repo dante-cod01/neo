@@ -24,22 +24,21 @@ const loadComponent = async (par, box) => {
 const boxVisibility = async (boolean) => {
     const componentBox = dom_helper.search("#componentBox")
     const delay = css_helper.transitionTime(componentBox)
-
     boolean
         ? componentBox.classList.add("componentBox_visible")
         : componentBox.classList.remove("componentBox_visible")
     await utils_helper.pause(delay)
 }
 
-export const control = async (detail, lastComponent) => {
+export const control = async (detail, actualComponent, lastComponent) => {
     const componentBox = dom_helper.search("#componentBox")
-console.log(detail)
-    if (Object.entries(lastComponent).length === 0) {
-        await loadComponent(detail, componentBox)
+
+    if (detail.title === "titleName" && detail.expand === true) {
+        await loadComponent(actualComponent, componentBox)
         await boxVisibility(true)
-    } else {
+    }
+    if (detail.title === "titleName" && detail.open === false) {
         await boxVisibility(false)
-        await loadComponent(detail, componentBox)
-        await boxVisibility(true)
+        componentBox.innerHTML = ""
     }
 }

@@ -51,24 +51,14 @@ const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
     await utils_helper.pause(css_helper.convertTransition(nameBox.conf.textBox_transition) * 2)
 }
 
-const moveTitlesBox = async (box) => {
-    const pos = box.classList.contains("titlesBox_left")
-    pos ? box.classList.remove("titlesBox_left") : box.classList.add("titlesBox_left")
-}
-
-export const control = async (detail, lastComponent) => {
+export const control = async (actualComponent, lastComponent) => {
     const titlesBox = dom_helper.id("titlesBox")
+    const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
+    const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
+    const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
 
-    if ("conf" in detail) {
-        const sectionBox = dom_helper.id("titleSection", titlesBox.nodes.node_0)
-        const nameBox = dom_helper.id("titleName", titlesBox.nodes.node_1)
-        const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
-
-        lastComponent.name && await animateRemove(titlesBox, sectionBox, nameBox, customConf)
-        await animate(detail, titlesBox, sectionBox, nameBox, customConf)
-        lastComponent.name = detail.conf.config.name
+    if (Object.keys(lastComponent).length !== 0) {
+        await animateRemove(titlesBox, sectionBox, nameBox, customConf)
     }
-    if ("panel" in detail && "ver" in detail) {
-        await moveTitlesBox(titlesBox)
-    }
+    await animate(actualComponent, titlesBox, sectionBox, nameBox, customConf)
 }
