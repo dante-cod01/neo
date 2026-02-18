@@ -67,9 +67,13 @@ const saveModeStatus = (boolean) => {
 }
 
 const eventListener = (menuPanel) => {
-    document.addEventListener("tooglemenuPanel", async (e) => {
-        startAutoMode(autoStart)
-        saveModeStatus(true)
+    document.addEventListener("toogleAutoStart", async (e) => {
+        if (e.detail.value) {
+            startAutoMode(menuPanel)
+            saveModeStatus(true)
+        } else {
+            saveModeStatus(false)
+        }
     })
 }
 
