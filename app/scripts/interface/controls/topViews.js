@@ -58,7 +58,7 @@ const fadeOut = async (delay) => {
 const fadeIn = async (delay) => {
     css_helper.setVar("componentContainer_scale", "2", document.documentElement.style)
     css_helper.setVar("componentContainer_transition", "0s", document.documentElement.style)
-    await utils_helper.pause(10) /* await for vars */
+    await utils_helper.pause(100) /* await for vars */
 
     css_helper.setVar("componentContainer_scale", "1", document.documentElement.style)
     css_helper.setVar("componentContainer_opacity", "1", document.documentElement.style)

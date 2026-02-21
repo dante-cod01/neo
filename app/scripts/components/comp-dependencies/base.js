@@ -1,4 +1,5 @@
-export class ComponentBase {
+export const name = "Base"
+export class Base {
 
     /* CHECK PROPS */
     #convertToObj(defaultObj) {

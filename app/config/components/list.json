@@ -1,20 +1,24 @@
 {
     "background": [
         {
-            "name": "MultiBackground",
-            "tag": "multi-background",
-            "presetsPath": "/app/scripts/components/comp-presets/multiBack_presets.js",
-            "classPath": "/app/scripts/components/comp-classes/backs/multiBack.js",
-            "dependency": "/app/scripts/components/comp-dependencies/componentBase.js",
-            "dep_name": "ComponentBase"
+            "name": "Color bars",
+            "class": "/app/scripts/components/comp-classes/backs/colorBars.js",
+            "presets": "/app/scripts/components/comp-presets/colorBars_presets.js",
+            "dependencies": {
+                "base": "/app/scripts/components/comp-dependencies/base.js",
+                "base1": "/app/scripts/components/comp-dependencies/base.js",
+                "base2": "/app/scripts/components/comp-dependencies/base.js"
+            }
         },
         {
-            "name": "MultiBackground",
-            "tag": "multi-background",
-            "presetsPath": "/app/scripts/components/comp-presets/multiBack_presets.js",
-            "classPath": "/app/scripts/components/comp-classes/backs/multiBack.js",
-            "dependency": "/app/scripts/components/comp-dependencies/componentBase.js",
-            "dep_name": "ComponentBase"
+            "name": "Color bars",
+            "class": "/app/scripts/components/comp-classes/backs/colorBars.js",
+            "presets": "/app/scripts/components/comp-presets/colorBars_presets.js",
+            "dependencies": {
+                "base": "/app/scripts/components/comp-dependencies/base.js",
+                "base1": "/app/scripts/components/comp-dependencies/base.js",
+                "base2": "/app/scripts/components/comp-dependencies/base.js"
+            }
         },
         {
             "name": "title 3",

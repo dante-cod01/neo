@@ -6,6 +6,7 @@ body {
     width: 100vw;
     height: 100vh;
     background: grey;
+    overflow: hidden;
 
     .panelMenu {
         position: absolute;
@@ -44,7 +45,7 @@ body {
         width: var(--componentContainer_width);
         height: var(--componentContainer_height);
         border-radius: var(--componentContainer_radius);
-        box-shadow: 5px 5px 20px rgb(28, 28, 28);
+        box-shadow: 6px 6px 10px rgb(28, 28, 28);
         opacity: var(--componentContainer_opacity);
         transform: scale(var(--componentContainer_scale));
         overflow: hidden;

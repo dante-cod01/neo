@@ -1,10 +1,11 @@
 import * as dom_helper from "./../../modules/dom.js"
 import * as utils_helper from "./../../modules/utils.js"
 
-const loadComponent = async (par, box) => {
-    const loadedClass = par.conf.config.classPath
-    const loadedPresets = par.conf.config.presetsPath
-    const loadedDependency = par.conf.config.dependency
+/* const loadComponent = async (par, box) => {
+    console.log(par)
+    const loadedClass = par.conf.config.class
+    const loadedPresets = par.conf.config.presets
+    const loadedDependency = par.conf.config.dependencies
     const loadedDepName = par.conf.config.dep_name
     const index = "preset_0"
 
@@ -16,8 +17,40 @@ const loadComponent = async (par, box) => {
     component.eventDom = document
     component.eventName = component.id
     compPreset.css && (component.newCss = compPreset.css)
-    compPreset.logic && (component.newLogic = compPreset.Logic)
+    compPreset.logic && (component.newLogic = compPreset.logic)
     component.addDependency(new dependency())
+    compPreset.commands && compPreset.commands.forEach(command => command(component))
+
+}
+ */
+
+const loadDependencies = async (parDependencies) => {
+    const dependencies = {}
+    for (const dependency of Object.entries(parDependencies)) {
+        const parName = dependency[0]
+        const parClass = dependency[1]
+        const importedClass = await import(parClass)
+        const importedName = importedClass.name
+        dependencies[parName] = importedClass[importedName]
+    }
+    return dependencies
+}
+
+const loadComponent = async (par, box) => {
+    console.log(par)
+    const index = "preset_0"
+    const compClass = await import(par.conf.config.class)
+    const dependencies = await loadDependencies(par.conf.config.dependencies)
+
+    const compPreset = (await import(par.conf.config.presets))[index]
+
+    const component = dom_helper.add(compClass.tag, box, "", "componentInBox_" + compClass.tag)
+    component.eventDom = document
+    component.eventName = component.id
+    compPreset.css && (component.newCss = compPreset.css)
+    compPreset.logic && (component.newLogic = compPreset.logic)
+    component.addDependency(dependencies)
+    compPreset.commands && compPreset.commands.forEach(command => command(component))
 }
 
 const boxVisibility = async (boolean) => {
