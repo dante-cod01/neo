@@ -30,6 +30,8 @@
     --backLayer_opacity: 1;
 
     --info_width: 200px;
+
+    --presetsBox_height: 34px;
     
     --normal_transition: 600ms ease-in-out;
     --componentContainer_transition: 500ms ease-in-out;

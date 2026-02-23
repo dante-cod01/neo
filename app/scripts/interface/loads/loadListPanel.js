@@ -50,7 +50,7 @@ const drawPanelBox = async (box, dependency) => {
 const drawDynamicList = async (box, dependency) => {
     /* dynamic-list component */
     const component = await import("../../components/comp-classes/nano/dynamicList.js")
-    const dataList = await json_helper.get("./app/config/components/list.json")
+    const dataList = await json_helper.get("./app/config/allComponents_list.json")
 
     const links = [
         { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },

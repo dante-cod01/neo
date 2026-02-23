@@ -137,8 +137,13 @@ export class Base {
     }
 
     updateConf(prop, value, dom) {
-        dom.conf[prop] = value
-        dom.base.toCssVar2(prop, value, dom)
+        if (prop in dom.css) {
+            dom.css[prop] = value
+            dom.base.toCssVar2(prop, value, dom)
+        }
+        if (prop in dom.logic) {
+            dom.logic[prop] = value
+        }
     }
 
 

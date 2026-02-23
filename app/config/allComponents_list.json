@@ -6,8 +6,7 @@
             "presets": "/app/scripts/components/comp-presets/colorBars_presets.js",
             "dependencies": {
                 "base": "/app/scripts/components/comp-dependencies/base.js",
-                "base1": "/app/scripts/components/comp-dependencies/base.js",
-                "base2": "/app/scripts/components/comp-dependencies/base.js"
+                "colors": "/app/scripts/components/comp-dependencies/colors.js"
             }
         },
         {

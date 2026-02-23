@@ -316,8 +316,8 @@ export class PanelBox extends HTMLElement {
         }
     }
 
-    updateProp(prop, value) {
-        this.base.updateProp(this.css, prop, value, this)
+    updateConf(prop, value) {
+        this.base.updateConf(prop, value, this)
     }
 
     async init() {

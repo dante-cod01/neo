@@ -38,22 +38,30 @@ const panelEvents = (modules, panels) => {
 }
 
 const listEvents = (modules, actualComponent, lastComponent) => {
-    document.addEventListener("listMenu", (e) => {
+    document.addEventListener("listMenu", async (e) => {
         actualComponent.conf = e.detail.conf
         modules.titlesChanger.control(actualComponent, lastComponent)
+        lastComponent.conf = e.detail.conf
+
     })
 }
 
 const titlesEvents = (modules, actualComponent, lastComponent) => {
     document.addEventListener("titleSection", async (e) => {
         modules.componentChanger.control(e.detail, actualComponent, lastComponent)
-        lastComponent.conf = e.detail.conf
+        await modules.drawPresets.control(e.detail, actualComponent, lastComponent)
     })
     document.addEventListener("titleName", async (e) => {
         modules.componentChanger.control(e.detail, actualComponent, lastComponent)
     })
 }
 
+/* const componentEvents = (modules, actualComponent, lastComponent) => {
+    document.addEventListener("componentInBox", (e) => {
+        console.log("component", e.detail)
+    }) 
+}
+ */
 const registerModules = async (components) => {
     const modules = {}
     await Promise.all(components.map(async (item) => { modules[item.module] = await import(item.path) }))
@@ -77,7 +85,8 @@ export const init = async () => {
         { module: "titlesChanger", path: "./interface/controls/titlesChanger.js" },
         { module: "titlesMove", path: "./interface/controls/titlesMove.js" },
         /* components */
-        { module: "componentChanger", path: "./interface/controls/componentChanger.js" }
+        { module: "componentChanger", path: "./interface/controls/componentChanger.js" },
+        { module: "drawPresets", path: "./interface/controls/drawPresets.js" }
     ]
 
     const panels = {
@@ -92,4 +101,5 @@ export const init = async () => {
     titlesEvents(modules, actualComponent, lastComponent)
     barsEvents(modules)
     panelEvents(modules, panels)
-}
+/*     componentEvents(modules, actualComponent, lastComponent)
+ */}

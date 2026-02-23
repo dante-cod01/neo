@@ -24,8 +24,6 @@ const drawPanelBox = async (box, dependency) => {
         title_color: css_helper.getVar("light_2"),
         icon_size: "16px",
         icon_color: css_helper.getVar("light_2"),
-        bottomBar_height: "34px",
-        bottomBar_back: css_helper.getVar("dark_2"),
     }
 
     document.body.style.transition = css.transition
@@ -37,7 +35,7 @@ const drawPanelBox = async (box, dependency) => {
         icon: "tune"
     }
 
-    const panelBox = dom_helper.add(component.tag, box, "panelMenu panelRight", "configPanel")
+    const panelBox = dom_helper.add(component.tag, box, "panelMenu configPanel", "configPanel")
     panelBox.css = css
     panelBox.logic = logic
     panelBox.links = links
@@ -47,8 +45,34 @@ const drawPanelBox = async (box, dependency) => {
     return panelBox
 }
 
-export const init = async (box) => {
-    const dependency = (await import("../../components/comp-dependencies/componentBase.js")).ComponentBase
+const drawPresetsBox = (box, panel) => {
+    const panelSections = dom_helper.add("div", box, "panelSections")
+    const configSection = dom_helper.add("div", panelSections, "configSection", "configSection")
+    const presetsSection = dom_helper.add("div", panelSections, "presetsSection", "presetsSection")
+    const configPanelsNodes = dom_helper.add("style", panel.shadowRoot, "configPanelsNodes")
+    configPanelsNodes.textContent = `
+        .panelSections {
+            width: 100%;
+            height: 100%;
 
+            .configSection, .presetsSection {
+                width: 100%;
+                transition: ${css_helper.getVar("normal_transition")};
+            }
+
+            .configSection { height: 100%; }
+            .presetsSection { height: 0px; }
+            .configSection_reduced { height: calc(100% - ${css_helper.getVar("presetsBox_height")}); }
+            .presetSection_open { 
+                height: ${css_helper.getVar("presetsBox_height")}; 
+                background: ${css_helper.getVar("dark_3")}
+            }
+        }
+    `
+}
+
+export const init = async (box) => {
+    const dependency = (await import("../../components/comp-dependencies/base.js")).Base
     const panel = await drawPanelBox(box, dependency)
+    const sections = drawPresetsBox(panel.nodes.node_0, panel)
 }

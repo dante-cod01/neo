@@ -17,7 +17,7 @@ body {
         left: var(--body_padding);
     }
 
-    .panelRight {
+    .configPanel {
         right: var(--body_padding);
     }
 
