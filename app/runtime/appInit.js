@@ -5,22 +5,26 @@ const loadModules = async (loads) => {
 }
 
 /* interface */
-const loadCss = async (loadedInterface) => { /* waiting fon style inject */
+const loadCss = async (loadedInterface) => {
     await loadedInterface.styles.init()
 }
 
-const loadInterface = async (loadedInterface) => { /* waiting for components return */
-    await loadedInterface.mainBox.init(document.body)
-    await loadedInterface.listMenuPanel.init(document.body)
-    await loadedInterface.configMenuPanel.init(document.body)
-    await loadedInterface.topBar.init(document.body)
-    await loadedInterface.bottomBar.init(document.body)
-    await loadedInterface.titles.init(document.body)
+const loadInterface = async (loadedInterface) => {
+    await Promise.all([
+        loadedInterface.mainBox.init(document.body),
+        loadedInterface.listMenuPanel.init(document.body),
+        loadedInterface.configMenuPanel.init(document.body),
+        loadedInterface.topBar.init(document.body),
+        loadedInterface.bottomBar.init(document.body),
+        loadedInterface.titles.init(document.body)
+    ])
 }
 
 /* runtime */
 const loadBusEvent = async (loadedRuntime) => {
-    loadedRuntime.eventBus.init()
+    await Promise.all([
+        loadedRuntime.eventBus.init()
+    ])
 }
 
 const main = async () => {

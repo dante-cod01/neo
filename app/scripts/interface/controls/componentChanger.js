@@ -2,18 +2,6 @@ import * as dom_helper from "./../../modules/dom.js"
 import * as utils_helper from "./../../modules/utils.js"
 import * as comp_helper from "./../../modules/components.js"
 
-/* const loadDependencies = async (parDependencies) => {
-    const dependencies = {}
-    for (const dependency of Object.entries(parDependencies)) {
-        const className = dependency[0]
-        const classPath = dependency[1]
-
-        console.log(className, classPath)
-        dependencies[className] = (await import(classPath)).default
-    }
-    return dependencies
-}
- */
 const loadComponent = async (par, box) => {
     const compClass = await import(par.conf.config.class)
     const dependencies = par.conf.config.dependencies
@@ -26,16 +14,7 @@ const loadComponent = async (par, box) => {
     preset.logic && (config["logic"] = preset.logic)
     preset.id && (config["id"] = preset.id)
     const component = comp_helper.load(compClass, config, "", dependencies, box )
-
-/*     const component = dom_helper.add(compClass.tag, box, "", "componentInBox")
-    component.eventDom = document
-    component.eventName = component.id
-    compPreset.css && (component.newCss = compPreset.css)
-    compPreset.logic && (component.newLogic = compPreset.logic)
- */
-/*     component.addDependency(dependencies)
-    compPreset.commands && compPreset.commands.forEach(command => command(component))
- */}
+}
 
 const boxVisibility = async (boolean) => {
     const componentBox = dom_helper.search("#componentBox")
@@ -48,7 +27,6 @@ const boxVisibility = async (boolean) => {
 
 export const control = async (boolean, actualComponent) => {
     const componentBox = dom_helper.search("#componentBox")
-    console.log("--", actualComponent)
 
     if (boolean) {
         await loadComponent(actualComponent, componentBox)

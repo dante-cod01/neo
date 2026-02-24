@@ -1,3 +1,24 @@
+import * as dep from "./../../runtime/dependenciesReg.js"
+
+const classInReg = async (name, path) => {
+    const classExits = dep.get(name)
+    if (classExits) {
+        return classExits
+    } else {
+        return await dep.set(name, path)
+    }
+}
+
+const createUniqDep = async (dependencies) => {
+    let uniqueDependency = {}
+    for (const [key, value] of Object.entries(dependencies)) {
+        const depClass = await classInReg(key, value)
+        const instance = new depClass()
+        uniqueDependency[key] = instance
+    }
+    return uniqueDependency
+}
+
 export const load = async (componentClass, conf, cssClass, dependencies, box) => {
     const component = document.createElement(componentClass.tag)
     cssClass.length && cssClass.forEach(item => component.classList.add(item))
@@ -6,17 +27,10 @@ export const load = async (componentClass, conf, cssClass, dependencies, box) =>
     conf.data && (component.data = conf.data)
     conf.css && (component.newCss = conf.css)
     conf.logic && (component.newLogic = conf.logic)
-    conf.id && (component.id = conf.id)
-
-    component.eventDom = conf.events?.dom ? conf.events.dom : document
+    component.id = conf.id
     component.eventName = conf.id
+    component.eventDom = conf.events?.dom ? conf.events.dom : document
 
-    console.log(dependencies)
-    let uniqueDependency = {}
-    /* dependency register in runtime */
-    for (const [key, value] of Object.entries(dependencies)) {
-        const instance = new ((await import(value)).default)()
-        uniqueDependency[key] = instance
-    }
-    console.log(uniqueDependency)
+    component.addDependency(await createUniqDep(dependencies))
+    console.log(component.deps)
 }

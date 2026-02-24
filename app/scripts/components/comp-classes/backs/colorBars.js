@@ -131,11 +131,7 @@ export class ColorsBars extends HTMLElement {
     addDependency(dependencies) {
         if (this.eventDom === undefined) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
-        this.deps = {}
-        Object.entries(dependencies).forEach(([dependency, depClass]) => {
-                console.log(dependency, depClass)
-            this.deps[dependency] = new depClass()
-        })
+        this.deps = dependencies
         this.#init()
     }
 
