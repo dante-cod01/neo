@@ -1,8 +1,8 @@
 import * as dom_helper from "../../modules/dom.js"
 import * as css_helper from "../../modules/css.js"
-import * as comp_helper from "../../modules/components.js"
 import * as checkers from "../../components/comp-classes/nano/inputs/checkersGroup.js"
 import * as dep from "../../components/comp-dependencies/base.js"
+import * as component from "./../../../runtime/componentLoader.js"
 
 const presetsConf = {
     data: [
@@ -42,7 +42,7 @@ const presetsConf = {
 const drawPresets = async (boolean, presetsSection = null, actualComponent = null) => {
     if (boolean) {
         console.log(checkers, checkers.tag, checkers.name)
-        const presets = comp_helper.load(checkers, presetsConf, "", dep, presetsSection)
+        const presets = component.load(checkers, presetsConf, "", dep, presetsSection)
     } else {
         presetsSection.innerHTML = ""
     }

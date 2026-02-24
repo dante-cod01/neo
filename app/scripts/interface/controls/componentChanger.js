@@ -1,6 +1,6 @@
 import * as dom_helper from "./../../modules/dom.js"
 import * as utils_helper from "./../../modules/utils.js"
-import * as comp_helper from "./../../modules/components.js"
+import * as component from "./../../../runtime/componentLoader.js"
 
 const loadComponent = async (par, box) => {
     const compClass = await import(par.conf.config.class)
@@ -13,7 +13,8 @@ const loadComponent = async (par, box) => {
     preset.css && (config["css"] = preset.css)
     preset.logic && (config["logic"] = preset.logic)
     preset.id && (config["id"] = preset.id)
-    const component = comp_helper.load(compClass, config, "", dependencies, box )
+    preset.commands && (config["commands"] = preset.commands)
+    component.load(compClass, config, "", dependencies, box)
 }
 
 const boxVisibility = async (boolean) => {

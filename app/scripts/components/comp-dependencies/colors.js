@@ -7,7 +7,7 @@ export default class Colors {
         return { "h": h, "s": s, "l": l, "a": a }
     }
 
-    paletteHsla(mode, color, num, max, min) {
+    paletteHsla(mode, color, num, max, min, dom) {
         if (!color.toLowerCase().includes("hsla")) {
             console.log([this.id], "Color format error. only HSLA CSS3")
             return
@@ -25,36 +25,43 @@ export default class Colors {
         return palette
     }
 
-    paletteHslaColors(colors, steps) {
+    paletteHslaColors(colors, steps, dom) {
         if (colors.some(color => !color.includes("hsla"))) {
-            console.log([this.id], "Color format error. only HSLA CSS3")
+            console.log([dom.id], "Color format error. only HSLA CSS3")
             return
         }
         if (colors.length < 2) {
-            console.log([this.id], "only can do palette with almost 2 colors")
+            console.log([dom.id], "only can do palette with almost 2 colors")
             return
         }
         if (steps < 1) {
-            console.log([this.id], "need some new color in the middle")
+            console.log([dom.id], "need some new color in the middle")
             return
         }
         const hslaColors = []
         colors.forEach(item => hslaColors.push(this.#analyzeHSLA(item)))
         const palette = []
 
-        hslaColors.forEach((item, index) => {
+        let index = 0
+        for (const item of hslaColors) {
             if (index < hslaColors.length - 1) {
                 const h_dif = hslaColors[index + 1].h - item.h
+                const s_dif = hslaColors[index + 1].s - item.s
+                const l_dif = hslaColors[index + 1].l - item.l
                 const a_dif = hslaColors[index + 1].a - item.a
 
-                for (let i = 0; i <= steps; i++) {
-                    const color = item.h + (h_dif / steps) * i
-                    const alpha = item.a + (a_dif / steps) * i
-                    palette.push(`hsla(${color}, ${item.s}%, ${item.l}%, ${alpha})`)
+                for (let i = 0; i < steps; i++) {
+                    const hsla_h = Math.round(item.h + (h_dif / steps) * i)
+                    const hsla_s = Math.round(item.s + (s_dif / steps) * i)
+                    const hsla_l = Math.round(item.l + (l_dif / steps) * i)
+                    const hsla_a = item.a + (a_dif / steps) * i
+                    palette.push(`hsla(${hsla_h}, ${hsla_s}%, ${hsla_l}%, ${hsla_a})`)
                 }
             }
-        })
+            index++
+        }
         palette.push(hslaColors.at(-1))
+        console.log(palette)
         return palette
     }
 }

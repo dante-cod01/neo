@@ -1,4 +1,4 @@
-import * as dep from "./../../runtime/dependenciesReg.js"
+import * as dep from "./dependenciesReg.js"
 
 const classInReg = async (name, path) => {
     const classExits = dep.get(name)
@@ -32,5 +32,5 @@ export const load = async (componentClass, conf, cssClass, dependencies, box) =>
     component.eventDom = conf.events?.dom ? conf.events.dom : document
 
     component.addDependency(await createUniqDep(dependencies))
-    console.log(component.deps)
+    conf.commands && conf.commands.forEach(command => command(component))
 }

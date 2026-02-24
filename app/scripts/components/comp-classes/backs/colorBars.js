@@ -144,12 +144,12 @@ export class ColorsBars extends HTMLElement {
         if (mode === "palette") {
             const layers = this.#addLayers(num)
             this.#applyDirection(layers)
-            const palette = this.deps.colors.paletteHsla("l", color, num, max, min)
+            const palette = this.deps.colors.paletteHsla("l", color, num, max, min, this)
             this.#addColors("colors", layers, palette)
             this.#progressiveAppear(layers, this.logic.progressive_appear)
         }
         if (mode === "paletteColors") {
-            const paletteColors = this.deps.colors.paletteHslaColors(color, num)
+            const paletteColors = this.deps.colors.paletteHslaColors(color, num, this)
             const layers = this.#addLayers(paletteColors.length - 1)
             this.#applyDirection(layers)
             this.#addColors("colors", layers, paletteColors)
