@@ -1,5 +1,6 @@
-export const tag = "checkers-some......."
-export class RadioGroup extends HTMLElement {
+export const tag = "checkers-group"
+export const name = "CheckersGroup"
+export class CheckersGroup extends HTMLElement {
     constructor() {
         super()
 
@@ -84,9 +85,9 @@ export class RadioGroup extends HTMLElement {
             }
 
             .main {
-                width: 100%;
+/*                 width: 100%;
                 height: 100%;
-                background: var(--box_back);
+ */                background: var(--box_back);
                 border-radius: var(--box_radius);
 
                 .option {
@@ -175,13 +176,16 @@ export class RadioGroup extends HTMLElement {
     }
 
     #configure = () => {
-        this.css = this.css ? this.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
+        console.log(this.base)
+        this.css = this.css ? this.base.generateConf(this.defaultCss, this.css, "css", this) : this.defaultCss
         this.base.toCssVar(this.css, this)
-        this.logic = this.logic ? this.base.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
+        this.logic = this.logic ? this.base.generateConf(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
+        console.log(this.logic)
     }
 
     #applyOrientation = () => {
-        this.logic.horizontal && this.container.classList.add("horizontal")
+        console.log(this.dom.querySelector(".main"), this.logic.horizontal)
+        this.logic.horizontal && this.dom.querySelector(".main").classList.add("horizontal")
     }
 
     #addLinks = () => {
@@ -294,11 +298,10 @@ export class RadioGroup extends HTMLElement {
     }
 
     addDependency(dependency) {
-        if (!this.base) {
             this.base = dependency
+            console.log(dependency, this.base)
             this.#init()
-        }
     }
 }
 
-customElements.define(tag, RadioGroup)
+customElements.define(tag, CheckersGroup)

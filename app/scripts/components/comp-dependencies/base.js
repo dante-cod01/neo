@@ -1,5 +1,4 @@
-export const name = "Base"
-export class Base {
+export default class Base {
 
     /* CHECK PROPS */
     #convertToObj(defaultObj) {

@@ -12,7 +12,6 @@ export const preset_0 = {
         hover: "true",
         progressive_appear: "true"
     },
-
     commands: [
         (component) => {
             const palette = "hsla(189, 100%, 32%, 0.32)"

@@ -1,5 +1,4 @@
-export const name = "Colors"
-export class Colors {
+export default class Colors {
     #analyzeHSLA(color) { /* HSLA CSS3 format */
         const h = parseFloat(color.split("(")[1].split(",")[0])
         const s = parseFloat(color.split(",")[1].split(",")[0])

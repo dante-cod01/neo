@@ -72,7 +72,7 @@ const drawPresetsBox = (box, panel) => {
 }
 
 export const init = async (box) => {
-    const dependency = (await import("../../components/comp-dependencies/base.js")).Base
+    const dependency = (await import("../../components/comp-dependencies/base.js")).default
     const panel = await drawPanelBox(box, dependency)
     const sections = drawPresetsBox(panel.nodes.node_0, panel)
 }

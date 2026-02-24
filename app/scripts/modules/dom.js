@@ -1,13 +1,3 @@
-/* export const id = (par, dom = null) => {
-    console.log("css [id] module old - replace width: [search]")
-    console.trace()
-    let result = null
-    dom
-        ? result = dom.querySelector(`#${par}`)
-        : result = document.getElementById(par)
-    return result
-}
- */
 export const search = (string, dom = null) => {
     const root = dom || document
     
@@ -23,4 +13,10 @@ export const add = (tag, box, classNames = null, idName = null, attr = null, pro
     props && (Object.entries(props).forEach(([key, value]) => newTag[key] = value))
     box.appendChild(newTag)
     return newTag
+}
+
+/* events */
+
+export const event = (name, detail) => {
+    document.dispatchEvent(new CustomEvent(name, {"detail": detail}))
 }

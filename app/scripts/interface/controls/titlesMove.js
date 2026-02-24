@@ -7,5 +7,5 @@ const moveTitlesBox = async (boolean) => {
 
 export const control = async (detail) => {
     detail.ver === false && await moveTitlesBox(true)
-    detail.hor === true && await moveTitlesBox(false)
+    detail.ver === true && await moveTitlesBox(false)
 }

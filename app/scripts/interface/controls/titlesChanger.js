@@ -1,7 +1,7 @@
 import * as dom_helper from "../../modules/dom.js"
 import * as utils_helper from "../../modules/utils.js"
 
-const changeComponentConf = (customConf, boolean, sectionBox, nameBox) => {
+const restoreConf = (customConf, boolean, sectionBox, nameBox) => {
     if (boolean) {
         sectionBox.updateProp("box_width", customConf.section.box_width)
         sectionBox.updateProp("box_opacity", customConf.section.box_opacity)
@@ -24,7 +24,7 @@ const animate = async (detail, titlesBox, sectionBox, nameBox, customConf) => {
     const sectionText = detail.conf.section
     const nameText = detail.conf.config.name
 
-    changeComponentConf(customConf, true, sectionBox, nameBox)
+    restoreConf(customConf, true, sectionBox, nameBox)
     const [width1, width2] = await Promise.all([
         sectionBox.addText(sectionText),
         nameBox.addText(nameText)
@@ -39,26 +39,24 @@ const animate = async (detail, titlesBox, sectionBox, nameBox, customConf) => {
     await nameBox.animateText()
 }
 
-const animateRemove = async (titlesBox, sectionBox, nameBox, customConf) => {
-    const delay = utils_helper.getTime(nameBox.conf.textBox_transition) * 2
+const animateRemove = async (titlesBox, sectionBox, nameBox) => {
     /* update this props before */
     sectionBox.updateProp("box_overflow", "hidden")
     await sectionBox.removeText()
     await nameBox.removeText()
     titlesBox.updateProp("box_width", "0px")
-    /* update props after */
-    changeComponentConf(customConf, false, sectionBox, nameBox)
-    await utils_helper.pause(delay)
+    sectionBox.updateProp("box_width", "0px")
 }
 
-export const control = async (actualComponent, lastComponent) => {
+export const control = async (boolean, actualComponent = null) => {
     const titlesBox = dom_helper.search("#titlesBox")
     const sectionBox = dom_helper.search("#titleSection", titlesBox.nodes.node_0)
     const nameBox = dom_helper.search("#titleName", titlesBox.nodes.node_1)
     const customConf = { "section": { ...sectionBox.conf }, "name": { ...nameBox.conf } }
 
-    if (Object.keys(lastComponent).length !== 0) {
-        await animateRemove(titlesBox, sectionBox, nameBox, customConf)
+    if (boolean) {
+        await animate(actualComponent, titlesBox, sectionBox, nameBox, customConf)
+    } else {
+        await animateRemove(titlesBox, sectionBox, nameBox)
     }
-    await animate(actualComponent, titlesBox, sectionBox, nameBox, customConf)
 }

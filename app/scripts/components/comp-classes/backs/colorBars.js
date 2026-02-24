@@ -133,6 +133,7 @@ export class ColorsBars extends HTMLElement {
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.deps = {}
         Object.entries(dependencies).forEach(([dependency, depClass]) => {
+                console.log(dependency, depClass)
             this.deps[dependency] = new depClass()
         })
         this.#init()
@@ -166,5 +167,8 @@ export class ColorsBars extends HTMLElement {
         }
     }
 
+    disconnectedCallback() {
+        this.deps.base.sendEvent(this.eventDom, this.eventName, { disconnected: true })
+    }
 }
 customElements.define(tag, ColorsBars)

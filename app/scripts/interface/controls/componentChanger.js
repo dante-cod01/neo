@@ -1,32 +1,41 @@
 import * as dom_helper from "./../../modules/dom.js"
 import * as utils_helper from "./../../modules/utils.js"
+import * as comp_helper from "./../../modules/components.js"
 
-const loadDependencies = async (parDependencies) => {
+/* const loadDependencies = async (parDependencies) => {
     const dependencies = {}
     for (const dependency of Object.entries(parDependencies)) {
-        const parName = dependency[0]
-        const parClass = dependency[1]
-        const importedClass = await import(parClass)
-        const importedName = importedClass.name
-        dependencies[parName] = importedClass[importedName]
+        const className = dependency[0]
+        const classPath = dependency[1]
+
+        console.log(className, classPath)
+        dependencies[className] = (await import(classPath)).default
     }
     return dependencies
 }
-
+ */
 const loadComponent = async (par, box) => {
     const compClass = await import(par.conf.config.class)
-    const dependencies = await loadDependencies(par.conf.config.dependencies)
+    const dependencies = par.conf.config.dependencies
     const index = "preset_0"
-    const compPreset = (await import(par.conf.config.presets))[index]
+    const preset = (await import(par.conf.config.presets))[index]
+    const config = {}
 
-    const component = dom_helper.add(compClass.tag, box, "", "componentInBox")
+    preset.data && (config["data"] = preset.data)
+    preset.css && (config["css"] = preset.css)
+    preset.logic && (config["logic"] = preset.logic)
+    preset.id && (config["id"] = preset.id)
+    const component = comp_helper.load(compClass, config, "", dependencies, box )
+
+/*     const component = dom_helper.add(compClass.tag, box, "", "componentInBox")
     component.eventDom = document
     component.eventName = component.id
     compPreset.css && (component.newCss = compPreset.css)
     compPreset.logic && (component.newLogic = compPreset.logic)
-    component.addDependency(dependencies)
+ */
+/*     component.addDependency(dependencies)
     compPreset.commands && compPreset.commands.forEach(command => command(component))
-}
+ */}
 
 const boxVisibility = async (boolean) => {
     const componentBox = dom_helper.search("#componentBox")
@@ -37,14 +46,14 @@ const boxVisibility = async (boolean) => {
     await utils_helper.pause(delay)
 }
 
-export const control = async (detail, actualComponent) => {
+export const control = async (boolean, actualComponent) => {
     const componentBox = dom_helper.search("#componentBox")
+    console.log("--", actualComponent)
 
-    if (detail.title === "titleName" && detail.expand === true) {
+    if (boolean) {
         await loadComponent(actualComponent, componentBox)
         await boxVisibility(true)
-    }
-    if (detail.title === "titleName" && detail.open === false) {
+    } else {
         await boxVisibility(false)
         componentBox.innerHTML = ""
     }
