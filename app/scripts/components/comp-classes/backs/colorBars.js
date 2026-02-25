@@ -93,13 +93,13 @@ export class ColorsBars extends HTMLElement {
             this.style.setProperty("--layerWidth", 100 / layers.length + "%")
             this.style.setProperty("--layerHeight", "100%")
             this.container.classList.add("flex")
-            this.deps.base.toCssVar2("layerMargin", "0px var(--layer_margin)", this)
+            this.deps.base.toCssVar("layerMargin", "0px var(--layer_margin)", this)
         }
         if (this.logic.direction === "ver") {
             this.style.setProperty("--layerWidth", "100%")
             this.style.setProperty("--layerHeight", 100 / layers.length + "%")
             this.container.classList.add("flexVer")
-            this.deps.base.toCssVar2("layerMargin", "var(--layer_margin)", this)
+            this.deps.base.toCssVar("layerMargin", "var(--layer_margin)", this)
         }
     }
 

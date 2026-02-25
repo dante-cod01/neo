@@ -82,20 +82,14 @@ export default class Base {
 
 
     /* CONFIGURE CSS */
-    toCssVar(obj, dom) { /* old */
-        Object.entries(obj).forEach(([key, value]) => {
-            dom.style.setProperty(`--${key}`, value)
-        })
-    }
-
     objToCssVar(obj, dom) { /* new */
         Object.entries(obj).forEach(([key, value]) => {
             dom.style.setProperty(`--${key}`, value)
         })
     }
 
-    toCssVar2(prop, value, dom) {
-        dom.style.setProperty(`--${prop}`, value)
+    toCssVar(cssVar, value, dom) {
+        dom.style.setProperty(`--${cssVar}`, value)
     }
 
     /* CONFIGURE DOM */
@@ -187,15 +181,7 @@ export default class Base {
         return this.transitionTime(dom.querySelector(`#${id}`))
     }
 
-    async wait(time_ms) { /* old */
-        await new Promise(resolve => setTimeout(resolve, time_ms))
-    }
-
-    async time(time) { /* new */
-        await new Promise(resolve => setTimeout(resolve, time))
-    }
-
-    async pause(time) { /* renew */
+    async pause(time) { 
         await new Promise(resolve => setTimeout(resolve, time))
     }
 

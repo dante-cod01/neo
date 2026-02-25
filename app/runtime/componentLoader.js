@@ -19,9 +19,9 @@ const createUniqDep = async (dependencies) => {
     return uniqueDependency
 }
 
-export const load = async (componentClass, conf, cssClass, dependencies, box) => {
+export const load = async (componentClass, conf, cssClass, box) => {
     const component = document.createElement(componentClass.tag)
-    cssClass.length && cssClass.forEach(item => component.classList.add(item))
+    cssClass.length && (component.classList = cssClass)
     box.appendChild(component)
 
     conf.data && (component.data = conf.data)
@@ -29,8 +29,9 @@ export const load = async (componentClass, conf, cssClass, dependencies, box) =>
     conf.logic && (component.newLogic = conf.logic)
     component.id = conf.id
     component.eventName = conf.id
-    component.eventDom = conf.events?.dom ? conf.events.dom : document
+    component.eventDom = document
 
-    component.addDependency(await createUniqDep(dependencies))
+    component.addDependency(await createUniqDep(conf.dependencies))
     conf.commands && conf.commands.forEach(command => command(component))
+    return component
 }

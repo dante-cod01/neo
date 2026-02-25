@@ -14,7 +14,9 @@ const loadComponent = async (par, box) => {
     preset.logic && (config["logic"] = preset.logic)
     preset.id && (config["id"] = preset.id)
     preset.commands && (config["commands"] = preset.commands)
-    component.load(compClass, config, "", dependencies, box)
+    config["dependencies"] = dependencies
+
+    component.load(compClass, config, "", box)
 }
 
 const boxVisibility = async (boolean) => {

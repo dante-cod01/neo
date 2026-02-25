@@ -33,7 +33,7 @@ const main = async () => {
         mainBox: "../scripts/interface/loads/loadComponentBox.js",
         topBar: "../scripts/interface/loads/loadTopBar.js",
         listMenuPanel: "../scripts/interface/loads/loadListPanel.js",
-        configMenuPanel: "../scripts/interface/loads/loadConfigPanel.js",
+        configMenuPanel: "../scripts/interface/loads/loadConfigPanel2.js",
         bottomBar: "../scripts/interface/loads/loadBottomBar.js",
         titles: "../scripts/interface/loads/loadTitles.js"
     }

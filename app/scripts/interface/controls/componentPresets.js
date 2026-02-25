@@ -1,10 +1,10 @@
 import * as dom_helper from "../../modules/dom.js"
 import * as css_helper from "../../modules/css.js"
-import * as checkers from "../../components/comp-classes/nano/inputs/checkersGroup.js"
-import * as dep from "../../components/comp-dependencies/base.js"
-import * as component from "./../../../runtime/componentLoader.js"
+import * as checkers from "../../components/comp-classes/nano/inputs/transparent_ checker.js"
+/* import * as dep from "../../components/comp-dependencies/base.js"
+ */import * as component from "./../../../runtime/componentLoader.js"
 
-const presetsConf = {
+const conf = {
     data: [
         { box: "radio", id: "1", name: "back", type: "text", icon: "1" },
         { box: "radio", id: "2", name: "back", type: "text", icon: "2" },
@@ -14,35 +14,22 @@ const presetsConf = {
     ],
     css: {
         box_width: "100%",
-        box_height: "44px",
-        option_width: "fit-content",
-        option_height: "20px",
-        option_hover_color: css_helper.getVar("dark_1"),
-        option_hover_back: css_helper.getVar("light_2"),
-        option_checked_color: css_helper.getVar("dark_1"),
-        option_checked_back: css_helper.getVar("enphasis_1"),
-
-        iconBox_size: "20px",
-        iconBox_margin: "4px",
-        icon_font: "Anta",
-        icon_color: css_helper.getVar("dark_2"),
-        icon_back: css_helper.getVar("light_5"),
-        icon_radius: "50%",
-        icon_border: `1px solid ${css_helper.getVar("light_5")}`,
-        icon_fontSize: "10px"
+        box_height: "34px",
+        box_back: "rgba(255, 255, 255, 0.25)",
+        box_radius: "6px"
     },
     logic: {
-        horizontal: true
+        horizontal: "true"
     },
     events: { dom: document, name: "componentLoaded" },
-    dep: dep,
+    dependencies: {"base": "../../components/comp-dependencies/componentBase.js"},
     id: "componentPresets"
 }
 
 const drawPresets = async (boolean, presetsSection = null, actualComponent = null) => {
     if (boolean) {
-        console.log(checkers, checkers.tag, checkers.name)
-        const presets = component.load(checkers, presetsConf, "", dep, presetsSection)
+/*         console.log(checkers, checkers.tag, checkers.name)
+ */        const presets = component.load(checkers, conf, "", conf.dependencies, presetsSection)
     } else {
         presetsSection.innerHTML = ""
     }
@@ -64,10 +51,13 @@ export const control = async (boolean, actualComponent) => {
     const presetsSection = dom_helper.search("#presetsSection", configPanel.nodes.node_0)
 
     if (boolean) {
-        drawPresets(true, presetsSection, actualComponent)
+        configPanel.updateConf("bottomBar_height", "222px")
+        configPanel.updateConf("bottomBar_back", "red")
+        console.log(configPanel.css)
+/*         drawPresets(true, presetsSection, actualComponent)
         tooglePresetsBox(true, [configSection, presetsSection])
-    } else {
-        await tooglePresetsBox(false, [configSection, presetsSection])
+ */    } else {
+/*         await tooglePresetsBox(false, [configSection, presetsSection])
         drawPresets(false, presetsSection)
-    }
+ */    }
 }

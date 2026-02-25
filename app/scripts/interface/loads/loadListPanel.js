@@ -37,7 +37,7 @@ const drawPanelBox = async (box, dependency) => {
         icon: "menu"
     }
 
-    const panelBox = dom_helper.add(component.tag, box, "panelMenu panelLeft", "menuPanel")
+    const panelBox = dom_helper.add(component.tag, box, "panel panelLeft", "menuPanel")
     panelBox.css = css
     panelBox.logic = logic
     panelBox.links = links
