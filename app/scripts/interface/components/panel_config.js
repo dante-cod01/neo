@@ -1,6 +1,6 @@
-import * as dom_helper from "./../../modules/dom.js"
-import * as css_helper from "./../../modules/css.js"
-import * as component from "./../../../runtime/componentLoader.js"
+import * as dom_helper from "../../modules/dom.js"
+import * as css_helper from "../../modules/css.js"
+import * as component from "../../../runtime/componentLoader.js"
 
 const drawPanelBox = async (box) => {
     /* panel-box component */
@@ -24,7 +24,7 @@ const drawPanelBox = async (box) => {
 }
 
 const drawTitleBox = async (box) => {
-    const componentClass = await import("../../components/comp-classes/nano/titles/titlebutton.js")
+    const componentClass = await import("../../components/comp-classes/nano/titles/titleIcon.js")
 
     const conf = {
         links: [

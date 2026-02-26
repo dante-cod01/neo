@@ -8,11 +8,10 @@ export class MagicBox extends HTMLElement {
         this.links
         this.eventDom
         this.eventName
-        this.newCss = {} /* custom Conf */
-        this.css = {} /* final Conf */
-        this.newLogic = {} /*  custom Logic */
-        this.logic = {} /*  final Logic */
-        this.customStyle
+        this.newCss         /* custom Conf */
+        this.css            /* final Conf */
+        this.newLogic       /*  custom Logic */
+        this.logic          /*  final Logic */
 
         this.defaultCss = {
             box_width: "100%",
@@ -25,57 +24,9 @@ export class MagicBox extends HTMLElement {
         this.dom = this.attachShadow({ mode: "open" })
     }
 
-    async #init() {
-        this.#configure()
-        this.#draw()
-        if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
-
-/*         await this.deps.base.pause(1000)
-        this.expand(true, "left", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "left")
-
-        await this.deps.base.pause(1000)
-        this.expand(true, "right", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "right")
-
-        await this.deps.base.pause(1000)
-        this.expand(true, "top", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "top")
-
-        await this.deps.base.pause(1000)
-        this.expand(true, "bottom", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "bottom")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "left", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "left")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "right", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "right")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "top", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "top")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "bottom", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "bottom")
- */
-    }
-
     #configure() {
-        this.css = this.deps.base.generateConf(this.defaultCss, this.newCss, this)
+        this.css = this.newCss === "" ? this.defaultCss : this.deps.base.generateConf(this.defaultCss, this.newCss, this)
         this.deps.base.objToCssVar(this.css, this)
-        console.log(this.eventDom, this.eventName)
     }
 
     #draw() {
@@ -120,12 +71,11 @@ export class MagicBox extends HTMLElement {
                 width: 100%;
                 height: 100%;
                 background: var(--box_back);
-                border-radius: var(--box_radius);
 
                 .side {
                     transition: var(--box_transition);
-                    border: 1px solid red;
-                }
+/*                     border: 1px solid red;
+ */                }
 
                 .top {
                     top: var(--top_pos);
@@ -155,6 +105,7 @@ export class MagicBox extends HTMLElement {
                     width: 100%;
                     height: 100%;
                     overflow: hidden;
+                    border-radius: var(--box_radius);
                     border: 1px solid blue;
                 }
             }
@@ -169,7 +120,6 @@ export class MagicBox extends HTMLElement {
         if (this.eventDom === undefined) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.deps = dependencies
-        this.#init()
     }
 
     getNodes() { return Array.from(this.dom.querySelectorAll(".node")) }
@@ -203,6 +153,53 @@ export class MagicBox extends HTMLElement {
         if (orientation === "top" || orientation === "bottom") {
             this.deps.base.toCssVar("host_height", boolean ? length : this.css.box_height, this)
         }
+    }
+
+        async init() {
+        this.#configure()
+        this.#draw()
+        if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
+
+/*         await this.deps.base.pause(1000)
+        this.expand(true, "left", "100px")
+        await this.deps.base.pause(1000)
+        this.expand(false, "left")
+
+        await this.deps.base.pause(1000)
+        this.expand(true, "right", "100px")
+        await this.deps.base.pause(1000)
+        this.expand(false, "right")
+
+        await this.deps.base.pause(1000)
+        this.expand(true, "top", "100px")
+        await this.deps.base.pause(1000)
+        this.expand(false, "top")
+
+        await this.deps.base.pause(1000)
+        this.expand(true, "bottom", "100px")
+        await this.deps.base.pause(1000)
+        this.expand(false, "bottom")
+
+        await this.deps.base.pause(1000)
+        this.contract(true, "left", "100px")
+        await this.deps.base.pause(1000)
+        this.contract(false, "left")
+
+        await this.deps.base.pause(1000)
+        this.contract(true, "right", "100px")
+        await this.deps.base.pause(1000)
+        this.contract(false, "right")
+
+        await this.deps.base.pause(1000)
+        this.contract(true, "top", "100px")
+        await this.deps.base.pause(1000)
+        this.contract(false, "top")
+
+        await this.deps.base.pause(1000)
+        this.contract(true, "bottom", "100px")
+        await this.deps.base.pause(1000)
+        this.contract(false, "bottom")
+ */
     }
 }
 customElements.define(tag, MagicBox)

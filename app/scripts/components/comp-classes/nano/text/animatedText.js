@@ -132,7 +132,8 @@ export class FlashText extends HTMLElement {
         if (this.links && this.links.length) this.base.addLinks(this, this.links)
     }
 
-    #init() {
+     /* public */
+    init() {
         this.#addLinks()
         this.#configure()
         this.#draw()
@@ -143,7 +144,6 @@ export class FlashText extends HTMLElement {
         if (this.eventDom === "undefined") { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === "undefined") { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.base = dependency
-        this.#init()
     }
 
     async addText(text) {

@@ -108,9 +108,7 @@ export default class Base {
         dom.appendChild(link)
     }
 
-    addLinks(dom, links) {
-        if (!links) return
-
+    addLinks(links, dom) {
         links.forEach(item => {
             if (item.type === "font") {
                 this.#createFontLink(item.href, dom)
@@ -138,7 +136,6 @@ export default class Base {
             dom.logic[prop] = value
         }
     }
-
 
     /* EVENTS */
     sendEvent(dom, eventName, detail) {
@@ -181,7 +178,7 @@ export default class Base {
         return this.transitionTime(dom.querySelector(`#${id}`))
     }
 
-    async pause(time) { 
+    async pause(time) {
         await new Promise(resolve => setTimeout(resolve, time))
     }
 

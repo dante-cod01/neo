@@ -33,12 +33,6 @@ export class ColorsBars extends HTMLElement {
     }
 
     /* private methods */
-    #init() {
-        this.#configure()
-        this.#draw()
-        if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
-    }
-
     #configure() {
         this.css = this.deps.base.generateConf(this.defaultCss, this.newCss, this)
         this.deps.base.objToCssVar(this.css, this)
@@ -128,11 +122,16 @@ export class ColorsBars extends HTMLElement {
     }
 
     /* public methods */
+    init() {
+        this.#configure()
+        this.#draw()
+        if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
+    }
+
     addDependency(dependencies) {
         if (this.eventDom === undefined) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.deps = dependencies
-        this.#init()
     }
 
     addBackgrounds(mode, color, num, max, min) {

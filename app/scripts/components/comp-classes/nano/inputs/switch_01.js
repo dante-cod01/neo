@@ -3,7 +3,7 @@ export class CheckBox_1 extends HTMLElement {
     constructor() {
         super()
 
-        this.based
+        this.deps
         this.css
         this.logic
         this.fonts
@@ -61,11 +61,11 @@ export class CheckBox_1 extends HTMLElement {
         this.dom = this.attachShadow({ mode: "open" })
     }
 
-    #draw = async () => {
+    #draw = () => {
         const css = this.css
         const logic = this.logic
-        this.container = this.based.add("div", this.dom, "container center relative")
-        const style = this.based.add("style", this.dom)
+        this.container = this.deps.base.add("div", this.dom, "container center relative")
+        const style = this.deps.base.add("style", this.dom)
         style.textContent = `
             * {
                 margin: 0;
@@ -164,32 +164,23 @@ export class CheckBox_1 extends HTMLElement {
         `
     }
 
-    #init = async () => {
-        this.based.addLinks(this.dom, this.fonts)
-        this.#configure()
-        await this.#draw()
-        this.#drawAll()
-        this.input = this.dom.querySelector("input")
-        this.loadEvents()
-    }
-
     #configure = () => {
-        this.css = this.css ? this.based.config(this.defaultCss, this.css, "css", this) : this.defaultCss
-        this.logic = this.logic ? this.based.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
+        this.css = this.css ? this.deps.base.config(this.defaultCss, this.css, "css", this) : this.defaultCss
+        this.logic = this.logic ? this.deps.base.config(this.defaultLogic, this.logic, "logic", this) : this.defaultLogic
     }
 
     #addSwitch = async () => {
-        const switchBox = this.based.add("div", this.container, "switchBox center")
-        const back = this.based.add("div", switchBox, "back verticalCenter relative")
-        const pointer = this.based.add("div", back, "pointer absolute center")
+        const switchBox = this.deps.base.add("div", this.container, "switchBox center")
+        const back = this.deps.base.add("div", switchBox, "back verticalCenter relative")
+        const pointer = this.deps.base.add("div", back, "pointer absolute center")
     }
 
     #addLabel = () => {
         let iconBox
-        const label = this.based.add("div", this.container, "label max")
-        this.logic.icon !== "none" && (iconBox = this.based.add("div", document.body, "iconBox center"))
+        const label = this.deps.base.add("div", this.container, "label max")
+        this.logic.icon !== "none" && (iconBox = this.deps.base.add("div", document.body, "iconBox center"))
 
-        const labelText = this.based.add("div", label, "labelText")
+        const labelText = this.deps.base.add("div", label, "labelText")
         labelText.textContent = this.logic.label_content
 
         if (this.logic.icon) {
@@ -217,12 +208,22 @@ export class CheckBox_1 extends HTMLElement {
             }
         }
 
-        const ckeckbox = this.based.addInput("checkbox", this.container, "checkbox", "", "inputHidden absolute max")
+        const ckeckbox = this.deps.base.addInput("checkbox", this.container, "checkbox", "", "inputHidden absolute max")
+    }
+
+    /* public */
+    init = () => {
+        this.deps.base.addLinks(this.dom, this.fonts)
+        this.#configure()
+        this.#draw()
+        this.#drawAll()
+        this.input = this.dom.querySelector("input")
+        this.loadEvents()
     }
 
     loadEvents = () => {
         this.input.addEventListener("change", (e) => {
-            this.based.sendEvent(this.eventDom, this.eventName, {value: e.target.checked})
+            this.deps.base.sendEvent(this.eventDom, this.eventName, { value: e.target.checked })
         })
     }
 
@@ -233,10 +234,7 @@ export class CheckBox_1 extends HTMLElement {
     async addDependency(dependency) {
         if (!this.eventDom) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (!this.eventName) { (console.log({ eventName: this.eventName }, "not configured")); return }
-        if (!this.based) {
-            this.based = dependency
-            await this.#init()
-        }
+        this.deps = dependency
     }
 }
 customElements.define(tag, CheckBox_1)

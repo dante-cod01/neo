@@ -1,56 +1,77 @@
-const loadModules = async (loads) => {
-    let modules = {}
-    for (const [key, value] of Object.entries(loads)) { modules[key] = await import(value) }
-    return modules
+const loadModules = async (type, modules) => {
+    const imports = []
+    const imported = {}
+    for (const [name, value] of Object.entries(modules)) {
+        console.log(value)
+        imports.push(import(value[type]).then(mod => imported[name] = mod))
+    }
+    await Promise.all(imports)
+    return imported
+}
+
+/* controls */
+const initControls = (loadedControls) => {
+    loadedControls.configMenuPanel.control()
 }
 
 /* interface */
-const loadCss = async (loadedInterface) => {
-    await loadedInterface.styles.init()
+const loadCss = async (styles) => {
+    return new Promise((resolve, reject) => {
+        let cssLoaded = 0
+        styles.forEach((style) => {
+            const link = document.head.appendChild(document.createElement("link"))
+            Object.entries(style).forEach(([key, value]) => { link.setAttribute(key, value) })
+
+            link.onload = () => {
+                cssLoaded++
+                cssLoaded === styles.length && resolve()
+            }
+            link.onerror = reject
+        })
+    })
 }
 
-const loadInterface = async (loadedInterface) => {
-    await Promise.all([
-        loadedInterface.mainBox.init(document.body),
-        loadedInterface.listMenuPanel.init(document.body),
-        loadedInterface.configMenuPanel.init(document.body),
-        loadedInterface.topBar.init(document.body),
-        loadedInterface.bottomBar.init(document.body),
-        loadedInterface.titles.init(document.body)
-    ])
+const loadInterface = (loadedModules) => {
+    loadedModules.configMenuPanel.init(document.body)
 }
 
 /* runtime */
-const loadBusEvent = async (loadedRuntime) => {
-    await Promise.all([
-        loadedRuntime.eventBus.init()
-    ])
+const loadRuntime = async (runtimeMods) => {
+    const eventBusModule = await import(runtimeMods.eventBus)
+    await eventBusModule.init()
 }
 
+/* main */
 const main = async () => {
-    const interfaceMods = {
-        styles: "../scripts/interface/loads/loadStylesSheets.js",
-        mainBox: "../scripts/interface/loads/loadComponentBox.js",
-        topBar: "../scripts/interface/loads/loadTopBar.js",
-        listMenuPanel: "../scripts/interface/loads/loadListPanel.js",
-        configMenuPanel: "../scripts/interface/loads/loadConfigPanel2.js",
-        bottomBar: "../scripts/interface/loads/loadBottomBar.js",
-        titles: "../scripts/interface/loads/loadTitles.js"
+    const modules = {
+        configMenuPanel: {
+            path: "../scripts/interface/components/panel_config.js",
+            control: "../scripts/interface/components_controls/panel_config_control.js"
+        }
     }
+
+    const styles = [
+        { id: "globalConf", rel: "stylesheet", href: "app/styles/globalConf.css" },
+        { id: "mainBoxes", rel: "stylesheet", href: "app/styles/mainBoxes.css" }
+    ]
 
     const runtimeMods = {
         eventBus: "./eventsBus.js"
     }
 
-    const loadedInterface = await loadModules(interfaceMods)
-    await loadCss(loadedInterface)
-    await loadInterface(loadedInterface)
+    await loadCss(styles) /* important contains vars - FIRST at load */
+    await loadRuntime(runtimeMods)
 
-    const loadedRuntime = await loadModules(runtimeMods)
-    await loadBusEvent(loadedRuntime)
+    const [loadedControls, loadedModules] = await Promise.all([
+        loadModules("control", modules),
+        loadModules("path", modules),
+    ])
 
-    /* auto start mode from appConfig*/
-    await import("../scripts/interface/loads/loadAutoStart.js")
-}
+    initControls(loadedControls)
+    loadInterface(loadedModules)
+
+    /* last load */
+/*     import("../scripts/interface/loads/loadAutoStart.js")
+ */ }
 
 main()

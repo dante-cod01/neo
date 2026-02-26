@@ -58,7 +58,8 @@ const drawAutoStart = async (box) => {
     autoStartToogle.fonts = fonts
     autoStartToogle.eventDom = document
     autoStartToogle.eventName = autoStartToogle.id
-    autoStartToogle.addDependency(new dependency())
+    autoStartToogle.addDependency({base: new dependency()})
+    autoStartToogle.init()
     return autoStartToogle
 }
 

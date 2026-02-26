@@ -58,6 +58,7 @@ const drawSection = async (box, dependency) => {
     sectionComponent.eventDom = document
     sectionComponent.eventName = sectionComponent.id
     sectionComponent.addDependency(new dependency())
+    sectionComponent.init()
     return sectionComponent
 }
 
@@ -103,6 +104,7 @@ const drawName = async (box, dependency) => {
     nameBar.eventDom = document
     nameBar.eventName = nameBar.id
     nameBar.addDependency(new dependency())
+    nameBar.init()
     return nameBar
 }
 

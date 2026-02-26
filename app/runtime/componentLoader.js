@@ -24,7 +24,8 @@ export const load = async (componentClass, conf, cssClass, box) => {
     cssClass.length && (component.classList = cssClass)
     box.appendChild(component)
 
-    conf.data && (component.data = conf.data)
+    conf.links && (component.links = conf.links)
+    conf.data && (component.newData = conf.data)
     conf.css && (component.newCss = conf.css)
     conf.logic && (component.newLogic = conf.logic)
     component.id = conf.id
@@ -32,6 +33,7 @@ export const load = async (componentClass, conf, cssClass, box) => {
     component.eventDom = document
 
     component.addDependency(await createUniqDep(conf.dependencies))
+    component.init()
     conf.commands && conf.commands.forEach(command => command(component))
     return component
 }
