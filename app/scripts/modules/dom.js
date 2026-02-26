@@ -1,8 +1,13 @@
-export const search = (string, dom = null) => {
+export const search = (string, dom = null) => { /* old */
     const root = dom || document
-    
+    console.log("deprecated use dom_helper find")
     if (string.startsWith("#")) return root.querySelector(string)
     if (string.startsWith(".")) return Array.from(root.querySelectorAll(string))
+}
+
+export const find = (dom, string) => { /* old */
+    if (string.startsWith("#")) return dom.querySelector(string)
+    if (string.startsWith(".")) return Array.from(dom.querySelectorAll(string))
 }
 
 export const add = (tag, box, classNames = null, idName = null, attr = null, props = null) => {

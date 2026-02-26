@@ -12,6 +12,7 @@ export class TitleIcon extends HTMLElement {
         this.newLogic = null            /* custom LOGIC */
         this.newData = null             /* custom DATA */
         this.customStyle
+        this.info = {}
 
         this.defaultCss = {
             box_width: "100%",
@@ -79,9 +80,12 @@ export class TitleIcon extends HTMLElement {
 
     #activeEvents() {
         const inputCheck = this.dom.querySelector("#inputCheck")
-        inputCheck.addEventListener("change", (e) => {
-            this.deps.base.sendEvent(this.eventDom, this.id, {value: e.target.checked})
-        })
+        inputCheck.addEventListener("change", (e) => { this.#setInfo("check", e.target.checked) })
+    }
+
+    #setInfo(key, value) {
+        this.info[key] = value
+        this.deps.base.sendEvent(this.eventDom, this.id, { ...this.info })
     }
 
     #draw() {

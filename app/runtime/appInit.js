@@ -1,17 +1,13 @@
-const loadModules = async (type, modules) => {
+const loadModules = async (modules) => {
     const imports = []
     const imported = {}
     for (const [name, value] of Object.entries(modules)) {
-        console.log(value)
-        imports.push(import(value[type]).then(mod => imported[name] = mod))
+        imported[name] = {}
+        imports.push(import(value.path).then(mod => imported[name].init = mod.init))
+        imports.push(import(value.control).then(mod => imported[name].control = mod.control))
     }
     await Promise.all(imports)
     return imported
-}
-
-/* controls */
-const initControls = (loadedControls) => {
-    loadedControls.configMenuPanel.control()
 }
 
 /* interface */
@@ -31,8 +27,9 @@ const loadCss = async (styles) => {
     })
 }
 
-const loadInterface = (loadedModules) => {
-    loadedModules.configMenuPanel.init(document.body)
+const loadInterface = async (loadedModules) => {
+    await loadedModules.configMenuPanel.init(document.body)
+    loadedModules.configMenuPanel.control()
 }
 
 /* runtime */
@@ -43,33 +40,28 @@ const loadRuntime = async (runtimeMods) => {
 
 /* main */
 const main = async () => {
-    const modules = {
-        configMenuPanel: {
-            path: "../scripts/interface/components/panel_config.js",
-            control: "../scripts/interface/components_controls/panel_config_control.js"
-        }
-    }
-
     const styles = [
         { id: "globalConf", rel: "stylesheet", href: "app/styles/globalConf.css" },
         { id: "mainBoxes", rel: "stylesheet", href: "app/styles/mainBoxes.css" }
     ]
+
+    const modules = {
+        configMenuPanel: {
+            path: "../scripts/interface/components/panelConfig.js",
+            control: "../scripts/interface/components_composite/panelConfig_composite.js"
+        }
+    }
 
     const runtimeMods = {
         eventBus: "./eventsBus.js"
     }
 
     await loadCss(styles) /* important contains vars - FIRST at load */
-    await loadRuntime(runtimeMods)
-
-    const [loadedControls, loadedModules] = await Promise.all([
-        loadModules("control", modules),
-        loadModules("path", modules),
-    ])
-
-    initControls(loadedControls)
+    const loadedModules = await loadModules(modules)
     loadInterface(loadedModules)
 
+    /*     await loadRuntime(runtimeMods)
+     */
     /* last load */
 /*     import("../scripts/interface/loads/loadAutoStart.js")
  */ }

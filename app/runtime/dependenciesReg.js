@@ -4,10 +4,10 @@ export const get = (name) => {
     return dependenciesReg.get(name)
 }
 
-export const set = (name, path) => {
+export const set = async (name, path) => {
     if (!dependenciesReg.has(name)) {
-        const imported = import(path).then(mod => mod.default)
-        dependenciesReg.set(name, imported)
+        const imported = await import(path)
+        dependenciesReg.set(name, imported.default)
     }
     return get(name)
 }
