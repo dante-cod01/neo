@@ -1,5 +1,5 @@
 export const tag = "magic-box"
-export class MagicBox extends HTMLElement {
+export default class MagicBox extends HTMLElement {
     constructor() {
         super()
 
@@ -8,10 +8,10 @@ export class MagicBox extends HTMLElement {
         this.links
         this.eventDom
         this.eventName
-        this.newCss         /* custom Conf */
-        this.css            /* final Conf */
-        this.newLogic       /*  custom Logic */
-        this.logic          /*  final Logic */
+        this.links = null               /* custom LINKS */
+        this.newCss = null              /* custom CONF */
+        this.newLogic = null            /* custom LOGIC */
+        this.newData = null             /* custom DATA */
 
         this.defaultCss = {
             box_width: "100%",
@@ -23,12 +23,26 @@ export class MagicBox extends HTMLElement {
             box_transition: "none"
         }
 
+        this.defaultLogic = {
+            node_direction: ["hor", "ver"],
+            node_align: ["left", "right"]
+        }
+
         this.dom = this.attachShadow({ mode: "open" })
     }
 
     #configure() {
-        this.css = this.newCss === "" ? this.defaultCss : this.deps.base.generateConf(this.defaultCss, this.newCss, this)
+        this.css = !this.newCss ? this.defaultCss : this.deps.base.generateConf(this.defaultCss, this.newCss, this)
         this.deps.base.objToCssVar(this.css, this)
+        this.logic = !this.newLogic ? this.defaultLogic : this.deps.base.generateLogic(this.defaultLogic, this.newLogic, this)
+    }
+
+    #applyDirection() {
+        const node = this.dom.querySelector(".node")
+        node.classList.add(this.logic.node_direction === "hor" ? "hor" : "ver")
+        if (this.logic.node_direction === "ver") {
+            node.classList.add(this.logic.node_align === "left" ? "align_left" : "align_right")
+        }
     }
 
     #draw() {
@@ -58,6 +72,7 @@ export class MagicBox extends HTMLElement {
 
                 --host_width: var(--box_width);
                 --host_height: var(--box_height);
+                --host_side: flex-start
                 --left_width: 0px;
                 --left_pos: 0px;
                 --right_width: 0px;
@@ -102,6 +117,7 @@ export class MagicBox extends HTMLElement {
                 }  
                     
                 .node {
+                display: flex;
                     width: 100%;
                     height: 100%;
                     background: var(--box_back);
@@ -113,6 +129,10 @@ export class MagicBox extends HTMLElement {
 
             .absolute {position: absolute;}
             .relative {position: relative;}
+            .hor {display: flex;}
+            .ver {display: flex; flex-direction: column;}
+            .align_left {align-items: flex-start;}
+            .align_right {align-items: flex-end;}
         `
     }
 
@@ -121,6 +141,7 @@ export class MagicBox extends HTMLElement {
         if (this.eventDom === undefined) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.deps = dependencies
+        this.init()
     }
 
     getNodes() { return Array.from(this.dom.querySelectorAll(".node")) }
@@ -146,21 +167,21 @@ export class MagicBox extends HTMLElement {
         this.deps.base.sendEvent(this.eventDom, this.eventName, { expand: boolean, value: "finish" })
     }
 
-
     contract(boolean, orientation) {
-        if (orientation === "left" || orientation === "right") {
+        if (orientation === "horizontal") {
             this.deps.base.cssVar("host_width", boolean ? this.css.box_width_contract : this.css.box_width, this)
         }
-        if (orientation === "top" || orientation === "bottom") {
+        if (orientation === "vertical") {
             this.deps.base.cssVar("host_height", boolean ? this.css.box_height_contract : this.css.box_height, this)
         }
     }
 
-    updateConf(propOrVar, value) {this.deps.base.updateConf(propOrVar, value, this)}
+    updateConf(propOrVar, value) { this.deps.base.updateConf(propOrVar, value, this) }
 
     async init() {
         this.#configure()
         this.#draw()
+        this.#applyDirection()
         if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 }

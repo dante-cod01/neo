@@ -1,6 +1,7 @@
-import * as dep from "./dependenciesReg.js"
+import * as dep from "./registerDeps.js"
+import * as comp from "./registerComps.js"
 
-const classInReg = async (name, path) => {
+const depInReg = async (name, path) => {
     const classExits = dep.get(name)
     if (classExits) {
         return classExits
@@ -9,10 +10,19 @@ const classInReg = async (name, path) => {
     }
 }
 
+const compInReg = async (path) => {
+    const classExits = comp.get(path)
+    if (classExits) {
+        return classExits
+    } else {
+        return await comp.set(path)
+    }
+}
+
 const createUniqDep = async (dependencies) => {
     let uniqueDependency = {}
     for (const [key, value] of Object.entries(dependencies)) {
-        const depClass = await classInReg(key, value)
+        const depClass = await depInReg(key, value)
         const instance = new depClass()
         uniqueDependency[key] = instance
     }
@@ -20,7 +30,16 @@ const createUniqDep = async (dependencies) => {
 }
 
 export const load = async (componentClass, conf, cssClass, box) => {
-    const component = document.createElement(componentClass.tag)
+    const module = (await compInReg(componentClass))
+    if (!module.default) {
+        console.log(module, "default export not found")
+        return null
+    }
+    if (!module.tag) {
+        console.log(module, "not tag export found")
+        return null
+    }
+    const component = document.createElement(module.tag)
     cssClass.length && (component.classList = cssClass)
     box.appendChild(component)
 
@@ -33,7 +52,6 @@ export const load = async (componentClass, conf, cssClass, box) => {
     component.eventDom = document
 
     component.addDependency(await createUniqDep(conf.dependencies))
-    component.init()
     conf.commands && conf.commands.forEach(command => command(component))
     return component
 }

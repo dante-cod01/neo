@@ -2,8 +2,8 @@ import * as dom_helper from "../../modules/dom.js"
 import * as utils_helper from "../../modules/utils.js"
 
 const toggleSequence = async (boolean) => {
-    const panel = dom_helper.find(document, "#panelConfig")
-    const title = dom_helper.find(panel.shadowRoot, "#panelConfig_title")
+    const panel = dom_helper.find(document, "#panelMenu")
+    const title = dom_helper.find(panel.shadowRoot, "#panelMenu_title")
 
     const pauseTime = utils_helper.getTime(panel.css.box_transition)
     if (boolean) {
@@ -24,7 +24,7 @@ const toggleSequence = async (boolean) => {
 }
 
 const titleEvents = () => {
-    document.addEventListener("panelConfig_title", async (e) => {
+    document.addEventListener("panelMenu_title", async (e) => {
         toggleSequence(e.detail.check)
     })
 }

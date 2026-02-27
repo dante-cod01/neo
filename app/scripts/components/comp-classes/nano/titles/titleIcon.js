@@ -49,10 +49,10 @@ export class TitleIcon extends HTMLElement {
     }
 
     #configure() {
-        this.css = this.newCss === null ? this.defaultCss : this.deps.base.generateConf(this.defaultCss, this.newCss, this)
+        this.css = !this.newCss ? this.defaultCss : this.deps.base.generateConf(this.defaultCss, this.newCss, this)
         this.deps.base.objToCssVar(this.css, this)
-        this.logic = this.newLogic === null ? this.defaultLogic : this.deps.base.generateConf(this.defaultLogic, this.newLogic, this)
-        this.data = this.newData === null ? this.defaultData : this.deps.base.generateConf(this.defaultData, this.newData, this)
+        this.logic = !this.newLogic ? this.defaultLogic : this.deps.base.generateConf(this.defaultLogic, this.newLogic, this)
+        this.data = !this.newData ? this.defaultData : this.deps.base.generateConf(this.defaultData, this.newData, this)
     }
 
     #applySide() {

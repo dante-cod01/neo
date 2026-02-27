@@ -13,11 +13,11 @@ body {
         top: var(--body_padding);
     }
 
-    .panelLeft {
+    .panelMenu {
         left: var(--body_padding);
     }
 
-    .configPanel {
+    .panelConfig {
         right: var(--body_padding);
     }
 

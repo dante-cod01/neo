@@ -28,8 +28,10 @@ const loadCss = async (styles) => {
 }
 
 const loadInterface = async (loadedModules) => {
-    await loadedModules.configMenuPanel.init(document.body)
-    loadedModules.configMenuPanel.control()
+    await loadedModules.panelMenu.init(document.body)
+    loadedModules.panelMenu.control()
+    await loadedModules.panelConfig.init(document.body)
+    loadedModules.panelConfig.control()
 }
 
 /* runtime */
@@ -46,7 +48,11 @@ const main = async () => {
     ]
 
     const modules = {
-        configMenuPanel: {
+        panelMenu: {
+            path: "../scripts/interface/components_composites/panelMenu.js",
+            control: "../scripts/interface/components_controls/panelMenu_control.js"
+        },
+        panelConfig: {
             path: "../scripts/interface/components_composites/panelConfig.js",
             control: "../scripts/interface/components_controls/panelConfig_control.js"
         }

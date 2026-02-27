@@ -4,7 +4,7 @@ import * as component from "../../../runtime/componentLoader.js"
 
 const drawPanelBox = async (box) => {
     /* panel-box component */
-    const componentClass = "/app/scripts/components/comp-classes/nano/boxes/magicBox.js"
+    const componentClass = await import("../../components/comp-classes/nano/boxes/magicBox.js")
 
     const conf = {
         css: {
@@ -17,19 +17,20 @@ const drawPanelBox = async (box) => {
             box_transition: css_helper.getVar("normal_transition")
         },
         logic: {
-            node_direction: "ver"
+            node_direction: "ver",
+            node_align: "right"
         },
-        id: "panelConfig",
+        id: "panelMenu",
         events: document,
         dependencies: { "base": "../scripts/components/comp-dependencies/base.js" }
     }
-    const componentLoaded = await component.load(componentClass, conf, "panelConfig panel absolute", box)
+    const componentLoaded = await component.load(componentClass, conf, "panelMenu panel absolute", box)
     const node = componentLoaded
     return node
 }
 
 const drawTitleBox = async (box) => {
-    const componentClass = "/app/scripts/components/comp-classes/nano/titles/titleIcon.js"
+    const componentClass = await import("../../components/comp-classes/nano/titles/titleIcon.js")
 
     const conf = {
         links: [
@@ -37,8 +38,8 @@ const drawTitleBox = async (box) => {
             { type: "font", name: "Anta", href: "https://fonts.googleapis.com/css2?family=Anta&display=swap" },
         ],
         data: {
-            title: "Config",
-            icon: "tune"
+            title: "Components",
+            icon: "dehaze"
         },
         css: {
             box_width: css_helper.getVar("100%"),
@@ -49,7 +50,7 @@ const drawTitleBox = async (box) => {
             title_fontFamily: "Anta",
             title_fontSize: "14px",
             title_fontColor: css_helper.getVar("light_3"),
-            title_margin: "0 20px 0 0",
+            title_margin: "0 0 0 20px",
 
             icon_fontSize: "16px",
             icon_fontColor: css_helper.getVar("light_3"),
@@ -57,13 +58,14 @@ const drawTitleBox = async (box) => {
         },
         logic: {
             iconType: "material",
-            iconSide: "right"
+            iconSide: "left"
         },
-        id: "panelConfig_title",
+        id: "panelMenu_title",
         events: document,
         dependencies: { "base": "../scripts/components/comp-dependencies/base.js" }
     }
     const componentLoaded = await component.load(componentClass, conf, "", box)
+    return componentLoaded
 }
 
 const drawConfigSection = (box, dom) => {
@@ -80,8 +82,15 @@ const drawConfigSection = (box, dom) => {
     return configSection
 }
 
+const drawMenuList = async () => {
+    const componentClass = await import("../../components/comp-classes/nano/titles/titleIcon.js")
+
+}
+
+
 export const init = async (box) => {
-    const panelBox = await drawPanelBox(box)
+/*     const panelBox = await drawPanelBox(box)
     const titleBox = await drawTitleBox(panelBox.getNodes()[0])
     const configSection = drawConfigSection(panelBox.getNodes()[0], panelBox)
-}
+    const menuList = await drawMenuList(configSection)
+ */}
