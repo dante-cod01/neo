@@ -88,7 +88,7 @@ export default class Base {
         })
     }
 
-    toCssVar(cssVar, value, dom) {
+    cssVar(cssVar, value, dom) {
         dom.style.setProperty(`--${cssVar}`, value)
     }
 
@@ -130,12 +130,12 @@ export default class Base {
     updateConf(prop, value, dom) {
         if (prop in dom.css) {
             dom.css[prop] = value
-            dom.base.toCssVar2(prop, value, dom)
+            this.cssVar(prop, value, dom)
         }
-        if (prop in dom.logic) {
+/*         if (prop in dom.logic) {
             dom.logic[prop] = value
         }
-    }
+ */    }
 
     /* EVENTS */
     sendEvent(dom, eventName, detail) {

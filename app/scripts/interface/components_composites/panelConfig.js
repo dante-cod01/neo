@@ -8,8 +8,10 @@ const drawPanelBox = async (box) => {
 
     const conf = {
         css: {
-            box_width: css_helper.getVar("panel_width"),
-            box_height: css_helper.getVar("panel_height"),
+            box_width: css_helper.getVar("panel_width_open"),
+            box_height: css_helper.getVar("panel_height_open"),
+            box_width_contract: css_helper.getVar("panel_width_close"),
+            box_height_contract: css_helper.getVar("panel_height_close"),
             box_back: "transparent",
             box_radius: css_helper.getVar("interface_radius"),
             box_transition: css_helper.getVar("normal_transition")
@@ -19,7 +21,7 @@ const drawPanelBox = async (box) => {
         dependencies: { "base": "../scripts/components/comp-dependencies/base.js" }
     }
     const componentLoaded = await component.load(componentClass, conf, "configPanel panel absolute", box)
-    const node = componentLoaded.getNodes()[0]
+    const node = componentLoaded
     return node
 }
 
@@ -59,12 +61,26 @@ const drawTitleBox = async (box) => {
         dependencies: { "base": "../scripts/components/comp-dependencies/base.js" }
     }
     const componentLoaded = await component.load(componentClass, conf, "configPanelTitle", box)
+}
 
+const drawConfigSection = (box, dom) => {
+    const ccsClass = dom_helper.add("style", dom.shadowRoot, "panel_configSection")
+    ccsClass.textContent = `
+        .panel_configSection {
+            width: 100%;
+            height: 100%;
+            background: ${css_helper.getVar("dark_4")};
+        }
+    `
+
+    const configSection = dom_helper.add("div", box, "panel_configSection", "panel_configSection")
+    return configSection
 }
 
 export const init = async (box) => {
     const panelBox = await drawPanelBox(box)
-    const titleBox = drawTitleBox(panelBox)
+    const titleBox = await drawTitleBox(panelBox.getNodes()[0])
+    const configSection = drawConfigSection(panelBox.getNodes()[0], panelBox)
 /*     console.log("panel")
     const dependency = (await import("../../components/comp-dependencies/base.js")).default
     const sections = drawPresetsBox(panel.nodes.node_0, panel)

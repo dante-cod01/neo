@@ -47,8 +47,8 @@ const main = async () => {
 
     const modules = {
         configMenuPanel: {
-            path: "../scripts/interface/components/panelConfig.js",
-            control: "../scripts/interface/components_composite/panelConfig_composite.js"
+            path: "../scripts/interface/components_composites/panelConfig.js",
+            control: "../scripts/interface/components_controls/panelConfig_control.js"
         }
     }
 

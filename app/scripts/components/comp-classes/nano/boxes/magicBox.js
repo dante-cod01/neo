@@ -16,6 +16,8 @@ export class MagicBox extends HTMLElement {
         this.defaultCss = {
             box_width: "100%",
             box_height: "100%",
+            box_width_contract: "50%",
+            box_height_contract: "50%",
             box_back: "none",
             box_radius: "none",
             box_transition: "none"
@@ -53,7 +55,6 @@ export class MagicBox extends HTMLElement {
                 width: var(--host_width);
                 height: var(--host_height);
                 transition: var(--box_transition);
-                border: 1px solid green;
 
                 --host_width: var(--box_width);
                 --host_height: var(--box_height);
@@ -70,12 +71,11 @@ export class MagicBox extends HTMLElement {
             .main {
                 width: 100%;
                 height: 100%;
-                background: var(--box_back);
 
                 .side {
+                    background: var(--box_back);
                     transition: var(--box_transition);
-/*                     border: 1px solid red;
- */                }
+                }
 
                 .top {
                     top: var(--top_pos);
@@ -104,9 +104,10 @@ export class MagicBox extends HTMLElement {
                 .node {
                     width: 100%;
                     height: 100%;
+                    background: var(--box_back);
                     overflow: hidden;
                     border-radius: var(--box_radius);
-                    border: 1px solid blue;
+                    transition: var(--box_transition);
                 }
             }
 
@@ -127,79 +128,40 @@ export class MagicBox extends HTMLElement {
     expand(boolean, side, length) {
         this.deps.base.sendEvent(this.eventDom, this.eventName, { expand: boolean, value: "init" })
         if (side === "left") {
-            this.deps.base.toCssVar("left_width", boolean ? length : "0px", this)
-            this.deps.base.toCssVar("left_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
+            this.deps.base.cssVar("left_width", boolean ? length : "0px", this)
+            this.deps.base.cssVar("left_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
         }
         if (side === "right") {
-            this.deps.base.toCssVar("right_width", boolean ? length : "0px", this)
-            this.deps.base.toCssVar("right_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
+            this.deps.base.cssVar("right_width", boolean ? length : "0px", this)
+            this.deps.base.cssVar("right_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
         }
         if (side === "top") {
-            this.deps.base.toCssVar("top_height", boolean ? length : "0px", this)
-            this.deps.base.toCssVar("top_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
+            this.deps.base.cssVar("top_height", boolean ? length : "0px", this)
+            this.deps.base.cssVar("top_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
         }
         if (side === "bottom") {
-            this.deps.base.toCssVar("bottom_height", boolean ? length : "0px", this)
-            this.deps.base.toCssVar("bottom_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
+            this.deps.base.cssVar("bottom_height", boolean ? length : "0px", this)
+            this.deps.base.cssVar("bottom_pos", boolean ? parseFloat(length) * -1 + `${length.replace(parseFloat(length), "")}` : "0px", this)
         }
         this.deps.base.sendEvent(this.eventDom, this.eventName, { expand: boolean, value: "finish" })
     }
 
 
-    contract(boolean, orientation, length) {
+    contract(boolean, orientation) {
         if (orientation === "left" || orientation === "right") {
-            this.deps.base.toCssVar("host_width", boolean ? length : this.css.box_width, this)
+            this.deps.base.cssVar("host_width", boolean ? this.css.box_width_contract : this.css.box_width, this)
         }
         if (orientation === "top" || orientation === "bottom") {
-            this.deps.base.toCssVar("host_height", boolean ? length : this.css.box_height, this)
+            this.deps.base.cssVar("host_height", boolean ? this.css.box_height_contract : this.css.box_height, this)
         }
     }
 
-        async init() {
+    updateConf(propOrVar, value) {this.deps.base.updateConf(propOrVar, value, this)}
+
+    async init() {
         this.#configure()
         this.#draw()
         if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
-
-/*         await this.deps.base.pause(1000)
-        this.expand(true, "left", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "left")
-
-        await this.deps.base.pause(1000)
-        this.expand(true, "right", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "right")
-
-        await this.deps.base.pause(1000)
-        this.expand(true, "top", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "top")
-
-        await this.deps.base.pause(1000)
-        this.expand(true, "bottom", "100px")
-        await this.deps.base.pause(1000)
-        this.expand(false, "bottom")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "left", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "left")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "right", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "right")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "top", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "top")
-
-        await this.deps.base.pause(1000)
-        this.contract(true, "bottom", "100px")
-        await this.deps.base.pause(1000)
-        this.contract(false, "bottom")
- */
     }
 }
 customElements.define(tag, MagicBox)

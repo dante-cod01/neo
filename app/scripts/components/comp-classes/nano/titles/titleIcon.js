@@ -27,11 +27,12 @@ export class TitleIcon extends HTMLElement {
             title_fontWeight: "initial",
             title_fontStyle: "initial",
             title_margin: "none",
+            title_opacity: "1",
 
             icon_fontSize: "initial",
             icon_fontColor: "initial",
             icon_margin: "none",
-            icon_hover_scale: "1.2"
+            icon_opacity: "1"
         }
 
         this.defaultLogic = {
@@ -109,8 +110,7 @@ export class TitleIcon extends HTMLElement {
                 display: flex;
                 width: var(--box_width);
                 height: var(--box_height);
-                background: var(--box_back);
-                border-radius: var(--box_radius);
+                background: var(--box_back);                
             }
 
             .main {
@@ -122,6 +122,8 @@ export class TitleIcon extends HTMLElement {
                 .titleBox {
                     width: fit-content;
                     height: 100%;
+                    opacity: var(--title_opacity);
+                    transition: var(--box_transition);
 
                     .text {
                         width: fit-content;
@@ -139,6 +141,8 @@ export class TitleIcon extends HTMLElement {
                     height: 100%;
                     aspect-ratio: 1/1;
                     margin: var(--icon_margin);
+                    opacity: var(--icon_opacity);
+                    transition: var(--box_transition);
                     
                     .material {
                         font-family: "Material Symbols Outlined";
@@ -163,6 +167,10 @@ export class TitleIcon extends HTMLElement {
         this.deps = dependencies
     }
 
+    titleVisible(boolean) { this.deps.base.cssVar("title_opacity", boolean ? "1" : "0", this) }
+
+    updateConf(propOrVar, value) { this.deps.base.updateConf(propOrVar, value, this) }
+
     init() {
         this.#configure()
         this.#draw()
@@ -170,8 +178,8 @@ export class TitleIcon extends HTMLElement {
         this.#loadLinks()
         this.#applyData()
         this.#applyIconType()
+        this.info.id = this.id
         this.#activeEvents()
-        if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 
 }
