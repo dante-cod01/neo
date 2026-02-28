@@ -48,8 +48,8 @@ export const load = async (componentClass, conf, cssClass, box) => {
     conf.css && (component.newCss = conf.css)
     conf.logic && (component.newLogic = conf.logic)
     component.id = conf.id
-    component.eventName = conf.id
-    component.eventDom = document
+    component.eventName = conf.events.eventName
+    component.eventDom = conf.events.eventDom
 
     component.addDependency(await createUniqDep(conf.dependencies))
     conf.commands && conf.commands.forEach(command => command(component))

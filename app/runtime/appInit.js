@@ -30,9 +30,9 @@ const loadCss = async (styles) => {
 const loadInterface = async (loadedModules) => {
     await loadedModules.panelMenu.init(document.body)
     loadedModules.panelMenu.control()
-    await loadedModules.panelConfig.init(document.body)
+/*     await loadedModules.panelConfig.init(document.body)
     loadedModules.panelConfig.control()
-}
+ */}
 
 /* runtime */
 const loadRuntime = async (runtimeMods) => {

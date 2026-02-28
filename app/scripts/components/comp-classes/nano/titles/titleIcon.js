@@ -1,5 +1,5 @@
 export const tag = "title-icon"
-export class TitleIcon extends HTMLElement {
+export default class TitleIcon extends HTMLElement {
     constructor() {
         super()
         /* FALTA LOGICA PARA ICONO IMAGEN */
@@ -85,8 +85,10 @@ export class TitleIcon extends HTMLElement {
     }
 
     #setInfo(key, value) {
+        this.info.component = this
+        this.info.id = this.id
         this.info[key] = value
-        this.deps.base.sendEvent(this.eventDom, this.id, { ...this.info })
+        this.deps.base.sendEvent(this.eventDom, this.eventName, { ...this.info })
     }
 
     #draw() {
@@ -165,6 +167,7 @@ export class TitleIcon extends HTMLElement {
         if (this.eventDom === undefined) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.deps = dependencies
+        this.init()
     }
 
     titleVisible(boolean) { this.deps.base.cssVar("title_opacity", boolean ? "1" : "0", this) }
@@ -178,7 +181,6 @@ export class TitleIcon extends HTMLElement {
         this.#loadLinks()
         this.#applyData()
         this.#applyIconType()
-        this.info.id = this.id
         this.#activeEvents()
     }
 
