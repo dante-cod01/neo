@@ -49,7 +49,7 @@ const main = async () => {
 
     const modules = {
         panelMenu: {
-            path: "../scripts/interface/components_composites/panelMenu.js",
+            path: "/app/components/comp_classes/micro/panel/panel-autoClose.js",
             control: "../scripts/interface/components_controls/panelMenu_control.js"
         },
         panelConfig: {
