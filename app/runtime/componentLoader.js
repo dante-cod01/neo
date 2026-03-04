@@ -6,16 +6,18 @@ export const register = (type, module) => {
     const url = new URL(Object.values(module)[0], window.location.origin).href
     const registry = type === "component" ? registeredComponents : registeredDependencies
 
-    if (registry[name]) {
+    const existName = registry[name] ? true : false
+    const existUrl = Object.values(registry).includes(url)
+
+    if (!existName && !existUrl) {
+        registry[name] = url
+    }
+/*     else if (existName) { NO BORRAR PARA UASAR CON MODE VERBOSE DESDE CONF GLOBAL
         console.log("Component Name already registered")
-        return
-    }
-    if (Object.values(registry).includes(url)) {
+    } else if (existUrl) {
         console.log("Component class already registered")
-        return
     }
-    registry[name] = url
-}
+ */}
 
 const createUniqDep = (dependencies) => {
     let deps = []
@@ -54,49 +56,58 @@ const createInstances = (importedMods) => {
     return instances
 }
 
-export const load = async (componentMod, dependencies = null, box, conf) => {
+const createComponent = (module, box) => {
+    const component = document.createElement(module.tag)
+    box.appendChild(component)
+    return component
+}
+
+const basicConf = () => {
+    return {
+        id: crypto.randomUUID(),
+        css: {
+            box_width: "400px",
+            box_height: "440px",
+            box_border: "1px solid red",
+            box_back: "rgba(255, 0, 0, 0.14)"
+        }
+    }
+}
+
+export const load = async (box, componentMod, dependencies = null, conf = null) => {
+    /* validate conf */
+    if (!conf) {
+        console.error("LOADER INFO: no CONF ussing default")
+        conf = basicConf()
+    } else if (!conf.css || !Object.keys(conf.css).length) {
+        console.error("conf css is empty or not declared, reject")
+        return
+    } else if (conf.logic && !Object.keys(conf.logic).length) {
+        console.error("conf Logic is empty, reject")
+        return
+    } else if (!conf.id) {
+        console.error("no ID in conf. component not created ")
+        return
+    }
+
     /* register */
     register("component", componentMod)
     dependencies && register("dependencies", dependencies)
     /* instances */
-    const importedMods = await importModules(componentMod, dependencies ? dependencies : null)
-    const module = Object.values(importedMods.module)[0].default
-    const modInstance = new module()
+    const importedMods = await importModules(componentMod, dependencies || null)
+    const module = Object.values(importedMods.module)[0]
     const depsInstances = dependencies && createInstances(importedMods.dependencies)
-    /*  */
-    console.log(modInstance, depsInstances)
-
-
-
-
-
-
-    
-    /*     console.log(importedMods)
-     */    /*     const uniqueDep = createInstances(module, deps)
-        */    /*     if (!module.default) {
-console.log(module, "default export not found")
-return null
-}
-if (!module.tag) {
-console.log(module, "not tag export found")
-return null
-}
-const component = document.createElement(module.tag)
-*/
-    /*     cssClass.length && (component.classList = cssClass)
-     */ /*    box.appendChild(component)
-console.log(component) */
-
-    /*     conf.links && (component.links = conf.links)
-        conf.data && (component.newData = conf.data)
-        conf.css && (component.newCss = conf.css)
-        conf.logic && (component.newLogic = conf.logic)
-        component.id = conf.id
-        component.eventName = conf.events.eventName
-        component.eventDom = conf.events.eventDom
-     */
-    /*     component.addDependency(await createUniqDep(conf.dependencies))
-     *//*     conf.commands && conf.commands.forEach(command => command(component))
-*/    /* return component */
+    /* create component */
+    const component = createComponent(module, box)
+    /* apply conf */
+    component.id = conf.id
+    component.eventDom = conf.eventDom || document
+    component.eventName = conf.id
+    component.newCss = conf.css || null
+    conf.logic && (component.newLogic = conf.logic)
+    conf.links && (component.links = conf.links)
+    conf.data && (component.data = conf.data)
+    /* inject deps */
+    component.addDependency(depsInstances)
+    return component
 }

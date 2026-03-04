@@ -1,85 +1,54 @@
 export default class Base {
 
-    /* CHECK PROPS */
-    #convertToObj(defaultObj) {
-        let newObj = {}
-        Object.entries(defaultObj).forEach(([key, value]) => {
-            newObj[key] = Array.isArray(defaultObj[key])
-                ? defaultObj[key][0]
-                : value
-        })
-        return newObj
-    }
-
-    isValidProp(prop, defaultData) {
-        return prop in defaultData
-    }
-
-    isValidValue(value, defaultProp) {
-        if (typeof (value) === typeof (defaultProp)) return true
-        if (typeof (defaultProp) === "object" && defaultProp.includes(value)) return true
-        return false
-    }
-
-    config(defaultData, newData, type, dom = null) {
-        let out = this.#convertToObj(defaultData)
-        if (Object.entries(newData).length) {
-            Object.entries(newData).forEach(([key, value]) => {
-                if (!this.isValidProp(key, defaultData)) {
-                    console.log({ type }, key, "not valid", { dom })
-                    return
-                }
-                if (!this.isValidValue(value, defaultData[key], type)) {
-                    console.log({ type }, key, "value not valid using default")
-                }
-                out[key] = value
-            })
-        }
-        return out
-    }
-
-
     /* GENERATE CONF & LOGIC */
-    #resumeValues(defaultObj) {
+    #resumeValues(obj) {
         let resumed = {}
-        Object.entries(defaultObj).forEach(([key, value]) => {
-            resumed[key] = Array.isArray(defaultObj[key]) ? defaultObj[key][0] : value
+        Object.entries(obj).forEach(([key, value]) => {
+            resumed[key] = Array.isArray(obj[key]) ? obj[key][0] : value
         })
         return resumed
     }
 
-    generateConf(defaultConf, newConf, dom) {
-        const resumedConf = this.#resumeValues(defaultConf)
-        Object.entries(newConf).forEach(([key, value]) => {
-            !defaultConf[key] && console.log([dom], [key], "PROP not valid")
-            if (defaultConf[key] && typeof (value) !== "string") { console.log([dom], "VALUE must be string →", [key, value]) }
+    #generateCss(dom) {
+        const resumedCss = this.#resumeValues(dom.defaultCss)
+        Object.entries(dom.newCss).forEach(([key, value]) => {
+            !dom.defaultCss[key] && console.error([dom], [key], "PROP not valid")
+            if (dom.defaultCss[key] && typeof (value) !== "string") { console.error([dom], "VALUE must be string →", [key, value]) }
         })
-        Object.entries(newConf).forEach(([key, value]) => {
-            if (typeof (defaultConf[key]) === "string") resumedConf[key] = value
-            if (typeof (defaultConf[key]) === "object") {
-                defaultConf[key].includes(value)
-                    ? resumedConf[key] = value
-                    : console.log([this], [key, value], "VALUE not valid using DEFAULT", [key, resumedConf[key]])
+        Object.entries(dom.newCss).forEach(([key, value]) => {
+            if (typeof (dom.defaultCss[key]) === "string") resumedCss[key] = value
+            if (typeof (dom.defaultCss[key]) === "object") {
+                dom.defaultCss[key].includes(value)
+                    ? resumedCss[key] = value
+                    : console.error([this], [key, value], "VALUE not valid using DEFAULT", [key, resumedCss[key]])
             }
         })
-        return resumedConf
+        return resumedCss
     }
 
-    generateLogic(defaultLogic, newLogic, dom) {
-        const resumedLogic = this.#resumeValues(defaultLogic)
-        Object.keys(newLogic).forEach(key => {
-            if (!defaultLogic[key]) {
-                console.log([dom], [key], "PROP not valid")
-            }
-        })
-        Object.entries(newLogic).forEach(([key, value]) => {
-            defaultLogic[key].includes(value)
-                ? resumedLogic[key] = value
-                : console.log([dom], "\n", "BOOLEAN using default →", [key, resumedLogic[key]])
-        })
+    #generateLogic(dom) {
+        const resumedLogic = this.#resumeValues(dom.defaultLogic)
+        if (dom.newLogic) {
+            Object.keys(dom.newLogic).forEach(key => { !resumedLogic[key] && console.error([dom], [key], "PROP not valid") })
+            Object.entries(dom.newLogic).forEach(([key, value]) => {
+                dom.defaultLogic[key].includes(value) && (resumedLogic[key] = value)
+                !dom.defaultLogic[key].includes(value) && console.error([dom], "\n", "LOGIC using default →", [key, resumedLogic[key]])
+            })
+        }
         return resumedLogic
     }
 
+    generateConf(dom) {
+        let finalConf = {}
+        !dom.newCss && console.warn("no newConf using default")
+        finalConf.css = !dom.newCss ? dom.defaultCss : this.#generateCss(dom)
+        this.objToCssVar(finalConf.css, dom)
+
+        finalConf.logic = this.#generateLogic(dom)
+
+        console.log(finalConf)
+        return finalConf
+    }
 
     /* CONFIGURE CSS */
     objToCssVar(obj, dom) { /* new */
@@ -112,7 +81,8 @@ export default class Base {
         links.forEach(item => {
             if (item.type === "font") {
                 this.#createFontLink(item.href, dom)
-                if (!document.head.querySelector(`link[rel="stylesheet"][href="${item.href}"]`)) this.#createFontLink(item.href, document.head)
+                if (!document.head.querySelector(`link[rel="stylesheet"][href="${item.href}"]`))
+                    this.#createFontLink(item.href, document.head)
             }
         })
     }

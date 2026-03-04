@@ -12,15 +12,18 @@ export default class MagicBox extends HTMLElement {
         this.newCss = null              /* custom CONF */
         this.newLogic = null            /* custom LOGIC */
         this.newData = null             /* custom DATA */
+        this.nodes = null
 
         this.defaultCss = {
             box_width: "200px",
             box_height: "200px",
-            box_width_contract: "50%",
-            box_height_contract: "50%",
+            box_width_contract: "60px",
+            box_height_contract: "60px",
             box_back: "rgba(255, 0, 0, 0.2)",
+            box_border: "1px solid red",
             box_radius: "none",
-            box_transition: "none"
+            box_transition: "1s",
+            node_border: "none"
         }
 
         this.defaultLogic = {
@@ -32,9 +35,9 @@ export default class MagicBox extends HTMLElement {
     }
 
     #configure() {
-        this.css = !this.newCss ? this.defaultCss : this.deps.base.generateConf(this.defaultCss, this.newCss, this)
-        this.deps.base.objToCssVar(this.css, this)
-        this.logic = !this.newLogic ? this.defaultLogic : this.deps.base.generateLogic(this.defaultLogic, this.newLogic, this)
+        const genetaredConf = this.deps.base.generateConf(this)
+        this.css = genetaredConf.css
+        this.logic = genetaredConf.logic
     }
 
     #applyDirection() {
@@ -52,7 +55,7 @@ export default class MagicBox extends HTMLElement {
                 <div class="side right absolute"></div>
                 <div class="side bottom absolute"></div>
                 <div class="side left absolute"></div>
-                <div class="node center relative"></div>
+                <div id="uniqueNode" class="node center relative"></div>
             </div>
         `
 
@@ -86,6 +89,9 @@ export default class MagicBox extends HTMLElement {
             .main {
                 width: 100%;
                 height: 100%;
+                border: var(--box_border);
+                border-radius: var(--box_radius);
+                overflow: hidden;
 
                 .side {
                     background: var(--box_back);
@@ -122,7 +128,8 @@ export default class MagicBox extends HTMLElement {
                     height: 100%;
                     background: var(--box_back);
                     overflow: hidden;
-                    border-radius: var(--box_radius);
+                    border: var(--node_border);
+                    border-radius: var(--node_radius);
                     transition: var(--box_transition);
                 }
             }
@@ -136,15 +143,14 @@ export default class MagicBox extends HTMLElement {
         `
     }
 
+    #getNodes() { this.nodes = Array.from(this.dom.querySelectorAll(".node")) }
+
     /* public */
     addDependency(dependencies) {
         if (this.eventDom === undefined) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.deps = dependencies
-        this.init()
     }
-
-    getNodes() { return Array.from(this.dom.querySelectorAll(".node")) }
 
     expand(boolean, side, length) {
         this.deps.base.sendEvent(this.eventDom, this.eventName, { expand: boolean, value: "init" })
@@ -182,6 +188,7 @@ export default class MagicBox extends HTMLElement {
         this.#configure()
         this.#draw()
         this.#applyDirection()
+        this.#getNodes()
         if (this.eventDom && this.eventName) this.deps.base.sendEvent(this.eventDom, this.eventName, { ready: true })
     }
 }
