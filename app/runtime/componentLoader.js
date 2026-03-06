@@ -62,34 +62,7 @@ const createComponent = (module, box) => {
     return component
 }
 
-const basicConf = () => {
-    return {
-        id: crypto.randomUUID(),
-        css: {
-            box_width: "400px",
-            box_height: "440px",
-            box_border: "1px solid red",
-            box_back: "rgba(255, 0, 0, 0.14)"
-        }
-    }
-}
-
-export const load = async (box, componentMod, dependencies = null, conf = null) => {
-    /* validate conf */
-    if (!conf) {
-        console.error("LOADER INFO: no CONF ussing default")
-        conf = basicConf()
-    } else if (!conf.css || !Object.keys(conf.css).length) {
-        console.error("conf css is empty or not declared, reject")
-        return
-    } else if (conf.logic && !Object.keys(conf.logic).length) {
-        console.error("conf Logic is empty, reject")
-        return
-    } else if (!conf.id) {
-        console.error("no ID in conf. component not created ")
-        return
-    }
-
+export const load = async (box, componentMod, dependencies, conf = null) => {
     /* register */
     register("component", componentMod)
     dependencies && register("dependencies", dependencies)
@@ -100,13 +73,13 @@ export const load = async (box, componentMod, dependencies = null, conf = null) 
     /* create component */
     const component = createComponent(module, box)
     /* apply conf */
-    component.id = conf.id
-    component.eventDom = conf.eventDom || document
-    component.eventName = conf.id
-    component.newCss = conf.css || null
-    conf.logic && (component.newLogic = conf.logic)
-    conf.links && (component.links = conf.links)
-    conf.data && (component.data = conf.data)
+    component.id = conf?.id || crypto.randomUUID()
+    component.eventDom = conf?.eventDom || document
+    component.eventName = component.id
+    component.newCss = conf?.css || null
+    component.newLogic = conf?.logic || null
+    component.links = conf?.links || null
+    component.data = conf?.data || null
     /* inject deps */
     component.addDependency(depsInstances)
     return component

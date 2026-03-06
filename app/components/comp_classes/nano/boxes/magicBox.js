@@ -8,6 +8,7 @@ export default class MagicBox extends HTMLElement {
         this.links
         this.eventDom
         this.eventName
+        
         this.links = null               /* custom LINKS */
         this.newCss = null              /* custom CONF */
         this.newLogic = null            /* custom LOGIC */
@@ -23,7 +24,6 @@ export default class MagicBox extends HTMLElement {
             box_border: "1px solid red",
             box_radius: "none",
             box_transition: "1s",
-            node_border: "none"
         }
 
         this.defaultLogic = {
@@ -123,7 +123,6 @@ export default class MagicBox extends HTMLElement {
                 }  
                     
                 .node {
-                display: flex;
                     width: 100%;
                     height: 100%;
                     background: var(--box_back);

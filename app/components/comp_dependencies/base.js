@@ -9,7 +9,7 @@ export default class Base {
         return resumed
     }
 
-    #generateCss(dom) {
+    #generateSimple(dom) {
         const resumedCss = this.#resumeValues(dom.defaultCss)
         Object.entries(dom.newCss).forEach(([key, value]) => {
             !dom.defaultCss[key] && console.error([dom], [key], "PROP not valid")
@@ -40,13 +40,11 @@ export default class Base {
 
     generateConf(dom) {
         let finalConf = {}
-        !dom.newCss && console.warn("no newConf using default")
-        finalConf.css = !dom.newCss ? dom.defaultCss : this.#generateCss(dom)
+        !dom.newCss && console.warn(dom, "no newCss using default")
+        finalConf.css = !dom.newCss ? dom.defaultCss : this.#generateSimple(dom)
         this.objToCssVar(finalConf.css, dom)
 
-        finalConf.logic = this.#generateLogic(dom)
-
-        console.log(finalConf)
+        dom.defaultLogic && (finalConf.logic = this.#generateLogic(dom))
         return finalConf
     }
 
@@ -57,10 +55,10 @@ export default class Base {
         })
     }
 
-    cssVar(cssVar, value, dom) {
+/*     cssVar(cssVar, value, dom) {
         dom.style.setProperty(`--${cssVar}`, value)
     }
-
+ */
     /* CONFIGURE DOM */
     add(tag, box, classN = null, id = null) {
         const element = document.createElement(tag)
@@ -113,30 +111,13 @@ export default class Base {
     }
 
     /* UTILS */
-    getParentInfo(element) {
-        const props = getComputedStyle(element)
-        let info = {}
-        info["width"] = props.width
-        info["height"] = props.height
-        return info
+    addHiddenInput(type, dom, classes = null, id = null) {
+        const input = this.add("input", dom, classes || null, id || null)
+        input.type = type === "radio" ? "radio" : "checkbox"
+        return input
     }
 
-    convertTransition(transition) { /* old */
-        const stringTime = transition.split(" ")[0]
-        return stringTime.endsWith("ms")
-            ? parseFloat(stringTime)
-            : parseFloat(stringTime) * 1000
-    }
-
-    transitionTime(transition) { /* new */
-        const strings = transition.split(" ")
-        const stringTime = strings.find(item => /\d/.test(item))
-        return stringTime.endsWith("ms")
-            ? parseFloat(stringTime)
-            : parseFloat(stringTime) * 1000
-    }
-
-    transitionTime2(transition) { /* renew */
+/*     #transitionTime(transition) {
         const strings = transition.split(" ")
         const stringTime = strings.find(item => /\d/.test(item))
         return stringTime.endsWith("ms")
@@ -144,24 +125,11 @@ export default class Base {
             : [parseFloat(stringTime) * 1000, "ms"]
     }
 
-    transitionTimeById(id, dom) {
-        return this.transitionTime(dom.querySelector(`#${id}`))
+    #transitionTimeById(id, dom) {
+        return this.#transitionTime(dom.querySelector(`#${id}`))
     }
 
     async pause(time) {
         await new Promise(resolve => setTimeout(resolve, time))
     }
-
-    setAttr(item, object) {
-        Object.entries(object).forEach(([key, value]) => {
-            item.setAttribute(key, value)
-        })
-    }
-
-    getNodes(dom) {
-        const nodes = Array.from(dom.querySelectorAll("[node]"))
-        let obj = {}
-        nodes.forEach(item => { obj[item.getAttribute("node")] = item })
-        return obj
-    }
-}
+ */}

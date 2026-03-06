@@ -7,19 +7,21 @@ export default class TitleIcon extends HTMLElement {
         this.deps
         this.eventDom
         this.eventName
-        this.links = null               /* custom LINKS */
+        this.customStyle
+
         this.newCss = null              /* custom CONF */
         this.newLogic = null            /* custom LOGIC */
+        this.links = null               /* custom LINKS */
         this.data = null                /* custom DATA */
-        this.customStyle
         this.info = {}
 
         this.defaultCss = {
             box_width: "100%",
             box_height: "100%",
             box_back: "none",
-            box_border: "1px solid red",
+            box_border: "none",
             box_radius: "none",
+            box_margin: "20px",
             box_transition: "1s",
 
             title_fontFamily: "system-ui",
@@ -52,8 +54,6 @@ export default class TitleIcon extends HTMLElement {
         const genetaredConf = this.deps.base.generateConf(this)
         this.css = genetaredConf.css
         this.logic = genetaredConf.logic
-        /* need refactor */
-        this.data = !this.data ? this.defaultData : this.deps.base.generateConf(this.defaultData, this.data, this)
     }
 
     #applySide() {
@@ -119,14 +119,14 @@ export default class TitleIcon extends HTMLElement {
                 display: flex;
                 width: var(--box_width);
                 height: var(--box_height);
+                background: var(--box_back); 
+                border: var(--box_border);
+                border-radius: var(--box_radius);               
             }
 
             .main {
                 width: 100%;
                 height: 100%;
-                background: var(--box_back); 
-                border: var(--box_border);
-                radius: var(--box_radius);               
 
                 .titleBox {
                     width: fit-content;
@@ -175,7 +175,6 @@ export default class TitleIcon extends HTMLElement {
         if (this.eventDom === undefined) { (console.log({ eventDom: this.eventDom }, "not configured")); return }
         if (this.eventName === undefined) { (console.log({ eventName: this.eventName }, "not configured")); return }
         this.deps = dependencies
-        this.init()
     }
 
     titleVisible(boolean) { this.deps.base.cssVar("title_opacity", boolean ? "1" : "0", this) }
